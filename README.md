@@ -9,7 +9,7 @@ Available in the AUR as `ungoogled-chromium`
 
 Alternatively, [get builds from the Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/).
 
-**Source Code**: Use the tags. The branches are for development and may not be stable.
+**Source Code**: It is recommended to use a tag. You may also use `master`, but it is for development and may not be stable.
 
 ## Building
 
