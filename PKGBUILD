@@ -9,14 +9,12 @@
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
 _ungoogled_version=736d57f5509e7cd3498035a9d7485ef699ba906e
-_chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
-_ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
-pkgver=${_chromium_version}_${_ungoogled_revision}
-pkgrel=1
+pkgver=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
+pkgrel=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 _launcher_ver=6
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
-url="https://github.com/Eloston/ungoogled-chromium-archlinux"
+url="https://github.com/Eloston/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
@@ -32,11 +30,11 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-vdpau-driver: for hardware video acceleration with NVIDIA GPUs')
 provides=('chromium')
 conflicts=('chromium')
-source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz
+source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        'https://github.com/Eloston/ungoogled-chromium/archive/${_ungoogled_version}.tar.gz'
-        'https://github.com/ungoogled-software/ungoogled-chromium-archlinux/archive/${pkgver}-${pkgrel}.tar.gz')
-sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
+        https://github.com/Eloston/ungoogled-chromium/archive/${_ungoogled_version}.tar.gz
+        https://github.com/ungoogled-software/ungoogled-chromium-archlinux/archive/${pkgver}-${pkgrel}.tar.gz)
+sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'SKIP'
             'SKIP')
@@ -70,11 +68,11 @@ _unwanted_bundled_libs=(
 )
 depends+=(${_system_libs[@]})
 
-_ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
-_utils="${_ungoogled_repo}/utils"
-
 prepare() {
-  cd "$srcdir/chromium-${_chromium_version}"
+  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+  _utils="${_ungoogled_repo}/utils"
+
+  cd "$srcdir/chromium-$pkgver"
 
   msg2 'Pruning binaries'
   python "$_utils/prune_binaries.py" ./ "$_ungoogled_repo/pruning.list"
@@ -107,9 +105,12 @@ prepare() {
 }
 
 build() {
+  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+  _utils="${_ungoogled_repo}/utils"
+
   make -C chromium-launcher-$_launcher_ver
 
-  cd "$srcdir/chromium-${_chromium_version}"
+  cd "$srcdir/chromium-$pkgver"
 
   if check_buildoption ccache y; then
     # Avoid falling back to preprocessor mode when sources contain time macros
@@ -126,7 +127,7 @@ build() {
   # Assemble GN flags
   cp "$_ungoogled_repo/flags.gn" "out/Default/args.gn"
   printf '\n' >> "out/Default/args.gn"
-  cat flags.archlinux.gn >> "out/Default/args.gn"
+  cat "$srcdir/ungoogled-chromium-archlinux-${pkgver}-${pkgrel}/flags.archlinux.gn" >> "out/Default/args.gn"
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
@@ -145,7 +146,7 @@ package() {
   install -Dm644 LICENSE \
     "$pkgdir/usr/share/licenses/chromium/LICENSE.launcher"
 
-  cd "$srcdir/chromium-${_chromium_version}"
+  cd "$srcdir/chromium-$pkgver"
 
   install -D out/Default/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Default/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
