@@ -6,7 +6,7 @@ author: Michael Gilbert <mgilbert@debian.org>
 @@ -7,7 +7,7 @@
  
  #include "base/compiler_specific.h"
- #include "base/macros.h"
+ #include "base/stl_util.h"
 -#include "base/third_party/nspr/prtime.h"
 +#include <nspr/prtime.h>
  #include "base/time/time.h"
@@ -35,7 +35,7 @@ author: Michael Gilbert <mgilbert@debian.org>
  }
  
  config("base_implementation") {
-@@ -829,8 +832,6 @@ jumbo_component("base") {
+@@ -828,8 +831,6 @@ jumbo_component("base") {
      "third_party/dmg_fp/g_fmt.cc",
      "third_party/icu/icu_utf.cc",
      "third_party/icu/icu_utf.h",
@@ -46,12 +46,12 @@ author: Michael Gilbert <mgilbert@debian.org>
      "threading/platform_thread.cc",
 --- a/tools/gn/build/gen.py
 +++ b/tools/gn/build/gen.py
-@@ -324,6 +324,8 @@ def WriteGNNinja(path, platform, host, o
+@@ -322,6 +322,8 @@ def WriteGNNinja(path, platform, host, o
+       ldflags.extend([
+           '-Wl,--as-needed',
        ])
-       # This is needed by libc++.
-       libs.append('-ldl')
 +      # Additional system libraries that are used.
 +      libs.append('-lnspr4')
+       # This is needed by libc++.
+       libs.append('-ldl')
      elif platform.is_darwin():
-       min_mac_version_flag = '-mmacosx-version-min=10.9'
-       cflags.append(min_mac_version_flag)

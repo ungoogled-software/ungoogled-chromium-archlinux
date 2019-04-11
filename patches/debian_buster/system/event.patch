@@ -10,7 +10,7 @@ author: Michael Gilbert <mgilbert@debian.org>
 -#include "base/third_party/libevent/event.h"
 +#include <event.h>
  #include "rtc_base/checks.h"
- #include "rtc_base/criticalsection.h"
+ #include "rtc_base/critical_section.h"
  #include "rtc_base/logging.h"
 --- a/base/message_loop/message_pump_libevent.cc
 +++ b/base/message_loop/message_pump_libevent.cc
@@ -25,11 +25,11 @@ author: Michael Gilbert <mgilbert@debian.org>
  #include "build/build_config.h"
 --- a/tools/gn/build/gen.py
 +++ b/tools/gn/build/gen.py
-@@ -326,6 +326,7 @@ def WriteGNNinja(path, platform, host, o
-       libs.append('-ldl')
+@@ -324,6 +324,7 @@ def WriteGNNinja(path, platform, host, o
+       ])
        # Additional system libraries that are used.
        libs.append('-lnspr4')
 +      libs.append('-levent')
+       # This is needed by libc++.
+       libs.append('-ldl')
      elif platform.is_darwin():
-       min_mac_version_flag = '-mmacosx-version-min=10.9'
-       cflags.append(min_mac_version_flag)
