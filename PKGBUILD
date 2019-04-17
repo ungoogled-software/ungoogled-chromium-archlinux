@@ -8,7 +8,8 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version=736d57f5509e7cd3498035a9d7485ef699ba906e
+_ungoogled_version=master
+_ungoogled_archlinux_version=master
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}_${_ungoogled_revision}
@@ -34,8 +35,8 @@ provides=('chromium')
 conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        "https://github.com/Eloston/ungoogled-chromium/archive/${_ungoogled_version}.tar.gz"
-        "https://github.com/ungoogled-software/ungoogled-chromium-archlinux/archive/${pkgver}-${pkgrel}.tar.gz")
+        "ungoogled-chromium-${_ungoogled_version}.tar.gz::https://github.com/Eloston/ungoogled-chromium/archive/${_ungoogled_version}.tar.gz"
+        "ungoogled-chromium-archlinux-${_ungoogled_archlinux_version}.tar.gz::https://github.com/ungoogled-software/ungoogled-chromium-archlinux/archive/${_ungoogled_archlinux_version}.tar.gz")
 sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'SKIP'
@@ -70,16 +71,17 @@ _unwanted_bundled_libs=(
 )
 depends+=(${_system_libs[@]})
 
-_ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
-_utils="${_ungoogled_repo}/utils"
-
 prepare() {
+  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux-${_ungoogled_archlinux_version}"
+  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+  _utils="${_ungoogled_repo}/utils"
+
   cd "$srcdir/chromium-${_chromium_version}"
 
   msg2 'Pruning binaries'
   python "$_utils/prune_binaries.py" ./ "$_ungoogled_repo/pruning.list"
   msg2 'Applying patches'
-  python "$_utils/patches.py" apply ./ "$_ungoogled_repo/patches" "$srcdir/ungoogled-chromium-archlinux-${pkgver}-${pkgrel}/patches"
+  python "$_utils/patches.py" apply ./ "$_ungoogled_repo/patches" "$_ungoogled_archlinux_repo/patches"
   msg2 'Applying domain substitution'
   python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
 
@@ -126,7 +128,7 @@ build() {
   # Assemble GN flags
   cp "$_ungoogled_repo/flags.gn" "out/Default/args.gn"
   printf '\n' >> "out/Default/args.gn"
-  cat flags.archlinux.gn >> "out/Default/args.gn"
+  cat "$_ungoogled_archlinux_repo/flags.archlinux.gn" >> "out/Default/args.gn"
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
