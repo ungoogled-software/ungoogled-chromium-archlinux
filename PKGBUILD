@@ -21,7 +21,7 @@ url="https://github.com/Eloston/ungoogled-chromium-archlinux"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
-         'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp')
+         'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp' 'openjpeg2')
 makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git'
              'clang' 'lld' 'gn' 'llvm' 'quilt')
 optdepends=('pepper-flash: support for Flash content'
