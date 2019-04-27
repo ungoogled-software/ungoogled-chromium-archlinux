@@ -8,8 +8,8 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version=39dceb86e00a866685b3c763eb6bf701dfeae45a
-_ungoogled_archlinux_version=1e8c9be41b957e44860305fdcfe15937e93e8f1f
+_ungoogled_version=9fa9c7ad3d1191f1977efad7880e1f0fae9e792c
+_ungoogled_archlinux_version=5d46bb543f71d2ddcb5ced543cec89e617b6c189
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
@@ -17,7 +17,7 @@ pkgrel=${_ungoogled_revision}
 _launcher_ver=6
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
-url="https://github.com/Eloston/ungoogled-chromium-archlinux"
+url="https://github.com/ungoogled-software/ungoogled-chromium-archlinux"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
