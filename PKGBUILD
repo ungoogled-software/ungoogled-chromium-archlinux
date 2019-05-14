@@ -110,6 +110,9 @@ prepare() {
 }
 
 build() {
+  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux-${_ungoogled_archlinux_version}"
+  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+
   make -C chromium-launcher-$_launcher_ver
 
   cd "$srcdir/chromium-${_chromium_version}"
