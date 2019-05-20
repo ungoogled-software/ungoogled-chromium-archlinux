@@ -8,8 +8,7 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='74.0.3729.136-1'
-_ungoogled_archlinux_version=c0bd60f9726f68c62471f15a701f1087baec87c4
+_ungoogled_version='74.0.3729.157-1'
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
@@ -36,11 +35,9 @@ provides=('chromium')
 conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        "ungoogled-chromium-${_ungoogled_version}.tar.gz::https://github.com/Eloston/ungoogled-chromium/archive/${_ungoogled_version}.tar.gz"
-        "ungoogled-chromium-archlinux-${_ungoogled_archlinux_version}.tar.gz::https://github.com/ungoogled-software/ungoogled-chromium-archlinux/archive/${_ungoogled_archlinux_version}.tar.gz")
+        "git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux#branch=master")
 sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
-            'SKIP'
             'SKIP')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -73,9 +70,14 @@ _unwanted_bundled_libs=(
 depends+=(${_system_libs[@]})
 
 prepare() {
-  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux-${_ungoogled_archlinux_version}"
-  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux"
+  _ungoogled_repo="${_ungoogled_archlinux_repo}/$pkgname"
   _utils="${_ungoogled_repo}/utils"
+  
+  cd "${_ungoogled_archlinux_repo}"
+  
+  git submodule init
+  git submodule update --recursive
 
   cd "$srcdir/chromium-${_chromium_version}"
 
@@ -110,8 +112,8 @@ prepare() {
 }
 
 build() {
-  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux-${_ungoogled_archlinux_version}"
-  _ungoogled_repo="$srcdir/$pkgname-${_ungoogled_version}"
+  _ungoogled_archlinux_repo="$srcdir/$pkgname-archlinux"
+  _ungoogled_repo="${_ungoogled_archlinux_repo}/$pkgname"
 
   make -C chromium-launcher-$_launcher_ver
 
