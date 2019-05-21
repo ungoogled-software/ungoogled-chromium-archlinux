@@ -6,7 +6,7 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chr
 
 Available in the AUR as `ungoogled-chromium`
 
-        * NOTE: `ungoogled-chromium-bin` is *not* officially part of ungoogled-chromium. Please submit all issues to the maintainer of the PKGBUILD.
+* NOTE: `ungoogled-chromium-bin` is *not* officially part of ungoogled-chromium. Please submit all issues to the maintainer of the PKGBUILD.
 
 Alternatively, [get builds from the Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/).
 
@@ -14,9 +14,9 @@ Alternatively, [get builds from the Contributor Binaries website](//ungoogled-so
 
 ## Building
 
+You only need to download the PKGBUILD from this repository. After that, run this command:
+
 ```
-git clone --recurse-submodules https://github.com/ungoogled-software/ungoogled-chromium-archlinux
-cd ./ungoogled-chromium-archlinux
 makepkg
 ```
 
