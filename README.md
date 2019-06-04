@@ -28,7 +28,17 @@ If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-c
 
 ## Developer info
 
+### Update submodule
+
+The submodule is primarily needed for `devutils`. Use `devutils/update_submodule.sh` to update the submodule.
+
 ### Update patches
+
+You need to clone the entire repository, along with the submodules, with this command:
+
+`git clone --recurse-submodules https://github.com/ungoogled-software/ungoogled-chromium-archlinux`
+
+After cloning, cd into that repository and do this entire section below:
 
 ```sh
 ./devutils/update_patches.sh merge
