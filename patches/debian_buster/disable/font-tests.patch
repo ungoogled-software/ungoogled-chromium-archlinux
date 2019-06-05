@@ -1,6 +1,6 @@
 --- a/skia/BUILD.gn
 +++ b/skia/BUILD.gn
-@@ -831,7 +831,7 @@ group("test_fonts_resources") {
+@@ -853,7 +853,7 @@ group("test_fonts_resources") {
    if (is_mac) {
      deps += [ ":test_fonts_bundle_data" ]
      data_deps += [ ":test_fonts_bundle_data" ]
