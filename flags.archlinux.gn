@@ -4,6 +4,7 @@ gold_path=""
 goma_dir=""
 host_toolchain="//build/toolchain/linux/unbundle:default"
 is_clang=true
+jumbo_file_merge_limit=8
 link_pulseaudio=true
 linux_use_bundled_binutils=false
 proprietary_codecs=true
