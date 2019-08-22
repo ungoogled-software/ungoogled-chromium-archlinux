@@ -23,6 +23,6 @@ if [ CURRENT_TAG == UPDATED_TAG ]
 then
     echo "Submodule already on latest version."
 else
-    git checkout $TAG
+    git checkout $UPDATED_TAG
     echo "Submodule updated. Commit the change when you can."
 fi
