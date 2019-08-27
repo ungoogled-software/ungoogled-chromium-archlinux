@@ -24,7 +24,7 @@ fi
 
 # Update the submodule.
 cd $UNGOOGLED_REPO
-if [ CURRENT_TAG == UPDATED_TAG ]
+if [ $CURRENT_TAG == $UPDATED_TAG ]
 then
     echo "Submodule already on latest version."
 else
