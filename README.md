@@ -38,7 +38,7 @@ You need to clone the entire repository, along with the submodules, with this co
 
 `git clone --recurse-submodules https://github.com/ungoogled-software/ungoogled-chromium-archlinux`
 
-After cloning, cd into that repository and do this entire section below:
+You should update the submodule first. After that, do this entire section below:
 
 ```sh
 ./devutils/update_patches.sh merge
@@ -63,6 +63,8 @@ cd ../../
 
 # Use git to add changes and commit
 ```
+
+Afterwards, update `_ungoogled_version` in PKGBUILD to the same tag the submodule is using (`cd` into the submodule, then use `git describe` to get the needed tag).
 
 ## License
 
