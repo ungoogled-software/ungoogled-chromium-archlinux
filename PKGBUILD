@@ -39,6 +39,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         "git+https://github.com/Eloston/ungoogled-chromium#tag=${_ungoogled_version}")
 sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
+            'SKIP'
             'SKIP')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
