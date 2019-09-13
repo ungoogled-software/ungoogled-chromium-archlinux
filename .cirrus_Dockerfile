@@ -8,6 +8,6 @@ RUN pacman -Syu --noconfirm \
     sudo \
     tar
 
-RUN echo "nobody ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-RUN echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "nobody ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
+RUN echo "root ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
 RUN echo "Defaults lecture=\"never\"" > /etc/sudoers.d/lecture
