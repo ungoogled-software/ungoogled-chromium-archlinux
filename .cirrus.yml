@@ -25,6 +25,8 @@ validate_with_source_task:
         - ./ungoogled-chromium/utils/downloads.py unpack -i ungoogled-chromium/downloads.ini -c chromium_download_cache chromium_src
     validate_patches_script:
         - ./ungoogled-chromium/devutils/validate_patches.py -l chromium_src -p patches -s patches/series
+
+validate_makepkg_task:
     validate_makepkg_script:
         - chmod -R 777 .
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
