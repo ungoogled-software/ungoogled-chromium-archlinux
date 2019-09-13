@@ -1,5 +1,13 @@
-# Dockerfile for Python 3 with xz-utils (for tar.xz unpacking)
+FROM archlinux/base:latest
 
-FROM python:3.5-slim
+RUN pacman -Syu --noconfirm \
+    binutils \
+    git \
+    python \
+    quilt \
+    sudo \
+    tar
 
-RUN apt update && apt install -y xz-utils wget git
+RUN echo "nobody ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
+RUN echo "root ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
+RUN echo "Defaults lecture=\"never\"" > /etc/sudoers.d/lecture
