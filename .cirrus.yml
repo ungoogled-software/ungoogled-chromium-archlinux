@@ -27,6 +27,6 @@ validate_with_source_task:
         - ./ungoogled-chromium/devutils/validate_patches.py -l chromium_src -p patches -s patches/series
     validate_makepkg_script:
         - chmod -R 777 .
-        - echo '' | sudo -S -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
+        - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 
 # vim: set expandtab shiftwidth=4 softtabstop=4:
