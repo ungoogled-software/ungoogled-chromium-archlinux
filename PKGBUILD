@@ -8,8 +8,8 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='76.0.3809.132-1'
-_ungoogled_archlinux_version=943c4a3abc7a6d88a01bd9d51bdce9b9919064c2
+_ungoogled_version='77.0.3865.90-1'
+_ungoogled_archlinux_version=1ca411e4aced5e0acb01cb554893818bf37ccda1
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
@@ -178,7 +178,7 @@ package() {
     cp out/Default/icudtl.dat "$pkgdir/usr/lib/chromium/"
   fi
 
-  for size in 22 24 48 64 128 256; do
+  for size in 24 48 64 128 256; do
     install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
       "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
