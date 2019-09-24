@@ -19,8 +19,6 @@ Cr-Commit-Position: refs/heads/master@{#684731}
  .../platform/wtf/list_hash_set_test.cc        | 45 +++++++++++++++++--
  3 files changed, 55 insertions(+), 4 deletions(-)
 
-diff --git a/third_party/blink/renderer/platform/fonts/font_cache_key.h b/third_party/blink/renderer/platform/fonts/font_cache_key.h
-index 0efc8fb909..90063cb2ea 100644
 --- a/third_party/blink/renderer/platform/fonts/font_cache_key.h
 +++ b/third_party/blink/renderer/platform/fonts/font_cache_key.h
 @@ -133,6 +133,10 @@ struct FontCacheKeyHash {
@@ -34,11 +32,9 @@ index 0efc8fb909..90063cb2ea 100644
  };
  
  }  // namespace blink
-diff --git a/third_party/blink/renderer/platform/wtf/linked_hash_set.h b/third_party/blink/renderer/platform/wtf/linked_hash_set.h
-index b35b6e95f1..77e524c084 100644
 --- a/third_party/blink/renderer/platform/wtf/linked_hash_set.h
 +++ b/third_party/blink/renderer/platform/wtf/linked_hash_set.h
-@@ -146,6 +146,11 @@ class LinkedHashSetNode : public LinkedHashSetNodeBase {
+@@ -146,6 +146,11 @@ class LinkedHashSetNode : public LinkedH
                      LinkedHashSetNodeBase* next)
        : LinkedHashSetNodeBase(prev, next), value_(value) {}
  
@@ -65,8 +61,6 @@ index b35b6e95f1..77e524c084 100644
  
    static const int kDeletedValue = -1;
  
-diff --git a/third_party/blink/renderer/platform/wtf/list_hash_set_test.cc b/third_party/blink/renderer/platform/wtf/list_hash_set_test.cc
-index 4c3f8990b0..cd1be0089b 100644
 --- a/third_party/blink/renderer/platform/wtf/list_hash_set_test.cc
 +++ b/third_party/blink/renderer/platform/wtf/list_hash_set_test.cc
 @@ -487,6 +487,7 @@ struct Simple {
@@ -87,7 +81,7 @@ index 4c3f8990b0..cd1be0089b 100644
  };
  
  int Complicated::objects_constructed_ = 0;
-@@ -731,4 +729,45 @@ TYPED_TEST(ListOrLinkedHashSetMoveOnlyTest, MoveOnlyValue) {
+@@ -731,4 +729,45 @@ TYPED_TEST(ListOrLinkedHashSetMoveOnlyTe
  
  }  // anonymous namespace
  

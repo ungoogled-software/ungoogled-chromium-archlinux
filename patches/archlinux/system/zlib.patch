@@ -2,7 +2,7 @@ description: [PATCH] Update zlib
 
 --- a/third_party/perfetto/gn/BUILD.gn
 +++ b/third_party/perfetto/gn/BUILD.gn
-@@ -200,7 +200,7 @@ group("zlib") {
+@@ -224,7 +224,7 @@ group("zlib") {
        "//buildtools:zlib",
      ]
    } else if (build_with_chromium) {

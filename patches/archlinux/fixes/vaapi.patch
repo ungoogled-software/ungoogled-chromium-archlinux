@@ -9,11 +9,9 @@ Subject: [PATCH] Disable VAProfileNone on Linux and fix vaapi drm
  media/gpu/vaapi/vaapi_wrapper.cc              | 24 +++++++++++++++----
  3 files changed, 42 insertions(+), 5 deletions(-)
 
-diff --git a/media/gpu/gpu_video_decode_accelerator_factory.cc b/media/gpu/gpu_video_decode_accelerator_factory.cc
-index dc9ff3fb3..53189759c 100644
 --- a/media/gpu/gpu_video_decode_accelerator_factory.cc
 +++ b/media/gpu/gpu_video_decode_accelerator_factory.cc
-@@ -183,6 +183,8 @@ GpuVideoDecodeAcceleratorFactory::CreateVDA(
+@@ -171,6 +171,8 @@ GpuVideoDecodeAcceleratorFactory::Create
      vda = (this->*create_vda_function)(workarounds, gpu_preferences, media_log);
      if (vda && vda->Initialize(config, client))
        return vda;
@@ -22,11 +20,9 @@ index dc9ff3fb3..53189759c 100644
    }
  
    return nullptr;
-diff --git a/media/gpu/vaapi/vaapi_video_decode_accelerator.cc b/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
-index 3c1316dca..a5fa64b5a 100644
 --- a/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
 +++ b/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
-@@ -64,6 +64,9 @@ void ReportToUMA(VAVDADecoderFailure failure) {
+@@ -63,6 +63,9 @@ void ReportToUMA(VAVDADecoderFailure fai
                              VAVDA_DECODER_FAILURES_MAX + 1);
  }
  
@@ -36,7 +32,7 @@ index 3c1316dca..a5fa64b5a 100644
  // Returns true if the CPU is an Intel Gemini Lake or later (including Kaby
  // Lake) Cpu platform id's are referenced from the following file in kernel
  // source arch/x86/include/asm/intel-family.h
-@@ -77,6 +80,8 @@ bool IsGeminiLakeOrLater() {
+@@ -76,6 +79,8 @@ bool IsGeminiLakeOrLater() {
    return is_geminilake_or_later;
  }
  
@@ -45,8 +41,8 @@ index 3c1316dca..a5fa64b5a 100644
  }  // namespace
  
  #define RETURN_AND_NOTIFY_ON_FAILURE(result, log, error_code, ret) \
-@@ -627,6 +632,13 @@ void VaapiVideoDecodeAccelerator::AssignPictureBuffers(
-   const unsigned int va_format = GetVaFormatForVideoCodecProfile(profile_);
+@@ -631,6 +636,13 @@ void VaapiVideoDecodeAccelerator::Assign
+   va_surface_format_ = GetVaFormatForVideoCodecProfile(profile_);
    std::vector<VASurfaceID> va_surface_ids;
  
 +  // Nvidia doesn't support VAProfileNone, so don't try to create a temporary
@@ -59,15 +55,14 @@ index 3c1316dca..a5fa64b5a 100644
    // If we aren't in BufferAllocationMode::kNone, we have to allocate a
    // |vpp_vaapi_wrapper_| for VaapiPicture to DownloadFromSurface() the VA's
    // internal decoded frame.
-@@ -640,6 +652,7 @@ void VaapiVideoDecodeAccelerator::AssignPictureBuffers(
+@@ -644,15 +656,20 @@ void VaapiVideoDecodeAccelerator::Assign
        NotifyError(PLATFORM_FAILURE);
      }
    }
 +  #endif
  
    for (size_t i = 0; i < buffers.size(); ++i) {
-     DCHECK(requested_pic_size_ == buffers[i].size());
-@@ -648,9 +661,13 @@ void VaapiVideoDecodeAccelerator::AssignPictureBuffers(
+     // If we aren't in BufferAllocationMode::kNone, this |picture| is
      // only used as a copy destination. Therefore, the VaapiWrapper used and
      // owned by |picture| is |vpp_vaapi_wrapper_|.
      std::unique_ptr<VaapiPicture> picture = vaapi_picture_factory_->Create(
@@ -81,7 +76,7 @@ index 3c1316dca..a5fa64b5a 100644
          make_context_current_cb_, bind_image_cb_, buffers[i]);
      RETURN_AND_NOTIFY_ON_FAILURE(picture, "Failed creating a VaapiPicture",
                                   PLATFORM_FAILURE, );
-@@ -1063,6 +1080,9 @@ VaapiVideoDecodeAccelerator::GetSupportedProfiles() {
+@@ -1077,6 +1094,9 @@ VaapiVideoDecodeAccelerator::GetSupporte
  
  VaapiVideoDecodeAccelerator::BufferAllocationMode
  VaapiVideoDecodeAccelerator::DecideBufferAllocationMode() {
@@ -91,7 +86,7 @@ index 3c1316dca..a5fa64b5a 100644
    // TODO(crbug.com/912295): Enable a better BufferAllocationMode for IMPORT
    // |output_mode_| as well.
    if (output_mode_ == VideoDecodeAccelerator::Config::OutputMode::IMPORT)
-@@ -1095,6 +1115,7 @@ VaapiVideoDecodeAccelerator::DecideBufferAllocationMode() {
+@@ -1112,6 +1132,7 @@ VaapiVideoDecodeAccelerator::DecideBuffe
      return BufferAllocationMode::kReduced;
  
    return BufferAllocationMode::kSuperReduced;
@@ -99,11 +94,9 @@ index 3c1316dca..a5fa64b5a 100644
  }
  
  bool VaapiVideoDecodeAccelerator::IsBufferAllocationModeReducedOrSuperReduced()
-diff --git a/media/gpu/vaapi/vaapi_wrapper.cc b/media/gpu/vaapi/vaapi_wrapper.cc
-index f6008d288..d829582a6 100644
 --- a/media/gpu/vaapi/vaapi_wrapper.cc
 +++ b/media/gpu/vaapi/vaapi_wrapper.cc
-@@ -266,6 +266,10 @@ void VADisplayState::PreSandboxInitialization() {
+@@ -323,6 +323,10 @@ void VADisplayState::PreSandboxInitializ
        base::File::FLAG_OPEN | base::File::FLAG_READ | base::File::FLAG_WRITE);
    if (drm_file.IsValid())
      VADisplayState::Get()->SetDrmFd(drm_file.GetPlatformFile());
@@ -114,7 +107,7 @@ index f6008d288..d829582a6 100644
  }
  
  VADisplayState::VADisplayState()
-@@ -303,10 +307,11 @@ bool VADisplayState::InitializeOnce() {
+@@ -361,10 +365,11 @@ bool VADisplayState::InitializeOnce() {
      case gl::kGLImplementationDesktopGL:
  #if defined(USE_X11)
        va_display_ = vaGetDisplay(gfx::GetXDisplay());
@@ -129,7 +122,7 @@ index f6008d288..d829582a6 100644
        break;
      // Cannot infer platform from GL, try all available displays
      case gl::kGLImplementationNone:
-@@ -339,8 +344,17 @@ bool VADisplayState::InitializeOnce() {
+@@ -397,8 +402,17 @@ bool VADisplayState::InitializeOnce() {
    int major_version, minor_version;
    VAStatus va_res = vaInitialize(va_display_, &major_version, &minor_version);
    if (va_res != VA_STATUS_SUCCESS) {
@@ -149,5 +142,3 @@ index f6008d288..d829582a6 100644
    }
  
    va_initialized_ = true;
--- 
-2.21.0
