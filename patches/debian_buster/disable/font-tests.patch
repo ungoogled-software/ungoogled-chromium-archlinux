@@ -3,7 +3,7 @@ author: Michael Gilbert <mgilbert@debian.org>
 
 --- a/skia/BUILD.gn
 +++ b/skia/BUILD.gn
-@@ -795,7 +795,7 @@ group("test_fonts_resources") {
+@@ -797,7 +797,7 @@ group("test_fonts_resources") {
    if (is_mac) {
      deps += [ ":test_fonts_bundle_data" ]
      data_deps += [ ":test_fonts_bundle_data" ]
@@ -12,7 +12,7 @@ author: Michael Gilbert <mgilbert@debian.org>
      deps += [ "//third_party/test_fonts" ]
      data_deps += [ "//third_party/test_fonts" ]
    }
-@@ -836,7 +836,7 @@ source_set("test_fonts") {
+@@ -838,7 +838,7 @@ source_set("test_fonts") {
        "//third_party/fuchsia-sdk/sdk:sys",
      ]
    }
