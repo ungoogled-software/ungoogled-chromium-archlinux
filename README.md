@@ -14,7 +14,7 @@ Alternatively, [get builds from the Contributor Binaries website](//ungoogled-so
 
 ## Building
 
-You only need to download the PKGBUILD from this repository. After that, run this command:
+Download the PKGBUILD file from the `pkgbuild` branch. After that, run this command:
 
 ```
 makepkg
@@ -63,8 +63,6 @@ cd ../../
 
 # Use git to add changes and commit
 ```
-
-Afterwards, update `_ungoogled_version` in PKGBUILD to the same tag the submodule is using (`cd` into the submodule, then use `git describe` to get the needed tag).
 
 ## License
 

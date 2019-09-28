@@ -29,6 +29,7 @@ validate_with_source_task:
 validate_makepkg_task:
     validate_makepkg_script:
         - chmod -R 777 .
+        - ./generate_pkgbuild.py > PKGBUILD
         - pacman -Sy
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 

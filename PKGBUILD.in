@@ -7,11 +7,9 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-# Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='77.0.3865.90-1'
-_ungoogled_archlinux_version=91ddb32901286c7e339152118b1e622a0d5dafda
-_chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
-_ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
+_chromium_version=$$PKGBUILD_TEMPLATE{chromium_version}
+_ungoogled_revision=$$PKGBUILD_TEMPLATE{ungoogled_revision}
+_ungoogled_version="${_chromium_version}-${_ungoogled_revision}"
 pkgver=${_chromium_version}
 _ungoogled_archlinux_pkgrel=0
 pkgrel=$((_ungoogled_revision + _ungoogled_archlinux_pkgrel))
@@ -36,7 +34,7 @@ provides=('chromium')
 conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        "git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git#commit=${_ungoogled_archlinux_version}"
+        "$$PKGBUILD_TEMPLATE{archlinux_git_source}"
         "git+https://github.com/Eloston/ungoogled-chromium#tag=${_ungoogled_version}")
 sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
