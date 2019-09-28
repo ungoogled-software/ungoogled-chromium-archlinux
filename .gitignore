@@ -1,5 +1,5 @@
 pkg
 src
 *.tar.*
-ungoogled-chromium-archlinux
-PKGBUILD
+/ungoogled-chromium-archlinux
+/PKGBUILD
