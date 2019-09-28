@@ -28,9 +28,10 @@ validate_with_source_task:
 
 validate_makepkg_task:
     validate_makepkg_script:
-        - chmod -R 777 .
+        - git submodule update --init --recursive
         - ./generate_pkgbuild.py > PKGBUILD
         - pacman -Sy
+        - chmod -R 777 .
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 
 # vim: set expandtab shiftwidth=4 softtabstop=4:
