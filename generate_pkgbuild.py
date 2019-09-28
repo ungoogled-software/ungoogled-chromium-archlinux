@@ -72,13 +72,11 @@ def main():
     ungoogled_repo = root_dir / 'ungoogled-chromium'
 
     if args.prod:
-        archlinux_git_source = _PRODUCTION_URL.format(
-            commit=_get_current_commit(),
-        )
+        archlinux_git_source = _PRODUCTION_URL
     else:
         if not args.force and _unstaged_changes():
             parser.error('There are unstaged changes in git; please commit them or add --force')
-        archlinux_git_source = 'git+file://{}'.format(
+        archlinux_git_source = '$pkgname-archlinux::git+file://{}'.format(
             Path(root_dir, '.git').resolve().as_posix()
         )
     archlinux_git_source += '#commit={commit}'.format(
