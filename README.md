@@ -64,6 +64,15 @@ cd ../../
 # Use git to add changes and commit
 ```
 
+### Building locally
+
+You can build locally by running:
+
+```sh
+generate_pkgbuild.py > PKGBUILD
+makepkg
+```
+
 ## License
 
 See [LICENSE](LICENSE)
