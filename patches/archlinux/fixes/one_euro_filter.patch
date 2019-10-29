@@ -2,9 +2,9 @@ description: Include <memory> in one_euro_filter.h as it uses std::unique_ptr
 
 --- a/third_party/one_euro_filter/src/one_euro_filter.h
 +++ b/third_party/one_euro_filter/src/one_euro_filter.h
-@@ -1,6 +1,8 @@
- #ifndef ONE_EURO_ONE_EURO_FILTER_H_
- #define ONE_EURO_ONE_EURO_FILTER_H_
+@@ -3,6 +3,8 @@
+ 
+ #include <memory>
  
 +#include <memory>
 +
