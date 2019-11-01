@@ -23,7 +23,7 @@ author: Michael Gilbert <mgilbert@debian.org>
    if (is_mac) {
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
-@@ -212,7 +212,7 @@ static_library("test_support") {
+@@ -214,7 +214,7 @@ static_library("test_support") {
      deps += [ "//third_party/fuchsia-sdk/sdk:zx" ]
    }
  
@@ -32,7 +32,7 @@ author: Michael Gilbert <mgilbert@debian.org>
      public_deps += [ ":fontconfig_util_linux" ]
      data_deps = [
        "//third_party/test_fonts",
-@@ -423,7 +423,7 @@ if (is_linux) {
+@@ -411,7 +411,7 @@ if (is_linux) {
      ]
    }
  
@@ -43,7 +43,7 @@ author: Michael Gilbert <mgilbert@debian.org>
        sources = [
 --- a/content/shell/app/shell_main_delegate.cc
 +++ b/content/shell/app/shell_main_delegate.cc
-@@ -298,7 +298,7 @@ bool ShellMainDelegate::BasicStartupComp
+@@ -301,7 +301,7 @@ bool ShellMainDelegate::BasicStartupComp
      BlinkTestPlatformInitialize();
  #endif
  
