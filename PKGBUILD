@@ -8,8 +8,8 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='77.0.3865.90-1'
-_ungoogled_archlinux_version=91ddb32901286c7e339152118b1e622a0d5dafda
+_ungoogled_version='78.0.3904.70-1'
+_ungoogled_archlinux_version=1755f2dd6cdc75689737349f7e2035eadbf56c73
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
@@ -56,7 +56,7 @@ declare -gA _system_libs=(
   [libevent]=libevent
   [libjpeg]=libjpeg
   #[libpng]=libpng            # https://crbug.com/752403#c10
-  [libvpx]=libvpx
+  #[libvpx]=libvpx            # https://github.com/webmproject/libvpx/commit/5a0242ba5c
   [libwebp]=libwebp
   [libxml]=libxml2
   [libxslt]=libxslt
@@ -138,6 +138,10 @@ build() {
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
   CPPFLAGS+=' -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__='
+
+  # Do not warn about unknown warning options
+  CFLAGS+='   -Wno-unknown-warning-option'
+  CXXFLAGS+=' -Wno-unknown-warning-option'
 
   msg2 'Configuring Chromium'
   gn gen out/Default --script-executable=/usr/bin/python2 --fail-on-unused-args

@@ -11,7 +11,6 @@ debian_buster/system/convertutf.patch
 archlinux/fixes/add-missing-include-for-unique_ptr.patch
 archlinux/fixes/dns_util-make-DohUpgradeEntry-non-const.patch
 archlinux/fixes/fix-shutdown-crash-in-ProfileManager.patch
-archlinux/fixes/one_euro_filter.patch
 archlinux/fixes/vaapi.patch
 archlinux/system/icu.patch
 archlinux/system/jsoncpp.patch
