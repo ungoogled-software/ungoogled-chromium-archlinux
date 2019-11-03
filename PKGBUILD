@@ -21,10 +21,10 @@ arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium-archlinux"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
-         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
-         'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp' 'openjpeg2')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git'
-             'clang' 'lld' 'gn' 'llvm' 'quilt')
+         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
+         'desktop-file-utils' 'hicolor-icon-theme')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git'
+             'pipewire' 'clang' 'lld' 'gn' 'java-runtime-headless')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -79,6 +79,16 @@ prepare() {
 
   cd "$srcdir/chromium-${_chromium_version}"
 
+  # Allow building against system libraries in official builds
+  sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
+    tools/generate_shim_headers/generate_shim_headers.py
+
+  # https://crbug.com/893950
+  sed -i -e 's/\<xmlMalloc\>/malloc/' -e 's/\<xmlFree\>/free/' \
+    third_party/blink/renderer/core/xml/*.cc \
+    third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
+    third_party/libxml/chromium/libxml_utils.cc
+
   msg2 'Pruning binaries'
   python "$_utils/prune_binaries.py" ./ "$_ungoogled_repo/pruning.list"
   msg2 'Applying patches'
@@ -89,18 +99,18 @@ prepare() {
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
+  mkdir -p third_party/node/linux/node-linux-x64/bin
+  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
+
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
   # added benefit of not having to list all the remaining libraries
   local _lib
   for _lib in ${_unwanted_bundled_libs[@]}; do
-    find -type f -path "*third_party/$_lib/*" \
-      \! -path "*third_party/$_lib/chromium/*" \
-      \! -path "*third_party/$_lib/google/*" \
-      \! -path './base/third_party/icu/*' \
-      \! -path './third_party/crashpad/crashpad/third_party/zlib/zlib_crashpad.h' \
-      \! -path './third_party/pdfium/third_party/freetype/include/pstables.h' \
-      \! -path './third_party/yasm/run_yasm.py' \
+    find "third_party/$_lib" -type f \
+      \! -path "third_party/$_lib/chromium/*" \
+      \! -path "third_party/$_lib/google/*" \
+      \! -path 'third_party/yasm/run_yasm.py' \
       \! -regex '.*\.\(gn\|gni\|isolate\)' \
       -delete
   done
@@ -124,15 +134,15 @@ build() {
 
   export CC=clang
   export CXX=clang++
-  export AR=llvm-ar
-  export NM=llvm-nm
+  export AR=ar
+  export NM=nm
 
-  mkdir -p out/Default
+  mkdir -p out/Release
 
   # Assemble GN flags
-  cp "$_ungoogled_repo/flags.gn" "out/Default/args.gn"
-  printf '\n' >> "out/Default/args.gn"
-  cat "$_ungoogled_archlinux_repo/flags.archlinux.gn" >> "out/Default/args.gn"
+  cp "$_ungoogled_repo/flags.gn" "out/Release/args.gn"
+  printf '\n' >> "out/Release/args.gn"
+  cat "$_ungoogled_archlinux_repo/flags.archlinux.gn" >> "out/Release/args.gn"
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
@@ -144,9 +154,9 @@ build() {
   CXXFLAGS+=' -Wno-unknown-warning-option'
 
   msg2 'Configuring Chromium'
-  gn gen out/Default --script-executable=/usr/bin/python2 --fail-on-unused-args
+  gn gen out/Release --script-executable=/usr/bin/python2 --fail-on-unused-args
   msg2 'Building Chromium'
-  ninja -C out/Default chrome chrome_sandbox chromedriver
+  ninja -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {
@@ -157,8 +167,8 @@ package() {
 
   cd "$srcdir/chromium-${_chromium_version}"
 
-  install -D out/Default/chrome "$pkgdir/usr/lib/chromium/chromium"
-  install -Dm4755 out/Default/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
+  install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
+  install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
   ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
 
   install -Dm644 chrome/installer/linux/common/desktop.template \
@@ -173,13 +183,13 @@ package() {
     "$pkgdir/usr/share/man/man1/chromium.1"
 
   cp \
-    out/Default/{chrome_{100,200}_percent,resources}.pak \
-    out/Default/{*.bin,chromedriver} \
+    out/Release/{chrome_{100,200}_percent,resources}.pak \
+    out/Release/{*.bin,chromedriver} \
     "$pkgdir/usr/lib/chromium/"
-  install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Default/locales/*.pak
+  install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
   if [[ -z ${_system_libs[icu]+set} ]]; then
-    cp out/Default/icudtl.dat "$pkgdir/usr/lib/chromium/"
+    cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
   fi
 
   for size in 24 48 64 128 256; do
