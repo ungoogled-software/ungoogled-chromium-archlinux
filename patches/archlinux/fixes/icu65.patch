@@ -33,11 +33,9 @@ Cr-Commit-Position: refs/heads/master@{#711027}
  ui/gfx/render_text_harfbuzz.cc                  | 5 ++++-
  2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 511aac29086..f188cf548a6 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -6191,7 +6191,7 @@ static ParseQualifiedNameResult ParseQualifiedNameInternal(
+@@ -6232,7 +6232,7 @@ static ParseQualifiedNameResult ParseQua
  
    for (unsigned i = 0; i < length;) {
      UChar32 c;
@@ -46,11 +44,9 @@ index 511aac29086..f188cf548a6 100644
      if (c == ':') {
        if (saw_colon)
          return ParseQualifiedNameResult(kQNMultipleColons);
-diff --git a/ui/gfx/render_text_harfbuzz.cc b/ui/gfx/render_text_harfbuzz.cc
-index 50e86af6b97..0339ff3ff8e 100644
 --- a/ui/gfx/render_text_harfbuzz.cc
 +++ b/ui/gfx/render_text_harfbuzz.cc
-@@ -971,7 +971,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBounds(RenderTextHarfBuzz* render_text,
+@@ -908,7 +908,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBound
          ++total;
        }
      }
