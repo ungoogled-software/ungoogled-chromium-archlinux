@@ -16,3 +16,4 @@ archlinux/system/icu.patch
 archlinux/system/jsoncpp.patch
 archlinux/system/lcms.patch
 archlinux/system/zlib.patch
+archlinux/fixes/widevine-other-locations.patch
