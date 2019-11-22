@@ -1,6 +1,5 @@
 blink_symbol_level=0
 custom_toolchain="//build/toolchain/linux/unbundle:default"
-enable_ac3_eac3_audio_demuxing=true
 enable_iterator_debugging=false
 enable_swiftshader=false
 fatal_linker_warnings=false
@@ -17,6 +16,7 @@ proprietary_codecs=true
 symbol_level=0
 use_cups=true
 use_custom_libcxx=false
+icu_use_data_file=false
 use_gio=true
 use_gnome_keyring=false
 use_jumbo_build=true

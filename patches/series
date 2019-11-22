@@ -8,11 +8,10 @@ debian_buster/system/nspr.patch
 debian_buster/system/event.patch
 debian_buster/system/openjpeg.patch
 debian_buster/system/convertutf.patch
-archlinux/fixes/add-missing-include-for-unique_ptr.patch
-archlinux/fixes/dns_util-make-DohUpgradeEntry-non-const.patch
-archlinux/fixes/fix-shutdown-crash-in-ProfileManager.patch
+archlinux/fixes/chromium-include.patch
 archlinux/fixes/vaapi.patch
 archlinux/fixes/icu65.patch
+archlinux/system/harfbuzz.patch
 archlinux/system/icu.patch
 archlinux/system/jsoncpp.patch
 archlinux/system/lcms.patch
