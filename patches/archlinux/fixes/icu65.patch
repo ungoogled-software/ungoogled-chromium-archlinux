@@ -35,7 +35,7 @@ Cr-Commit-Position: refs/heads/master@{#711027}
 
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -6232,7 +6232,7 @@ static ParseQualifiedNameResult ParseQua
+@@ -6210,7 +6210,7 @@ static ParseQualifiedNameResult ParseQua
  
    for (unsigned i = 0; i < length;) {
      UChar32 c;
@@ -46,7 +46,7 @@ Cr-Commit-Position: refs/heads/master@{#711027}
          return ParseQualifiedNameResult(kQNMultipleColons);
 --- a/ui/gfx/render_text_harfbuzz.cc
 +++ b/ui/gfx/render_text_harfbuzz.cc
-@@ -908,7 +908,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBound
+@@ -944,7 +944,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBound
          ++total;
        }
      }

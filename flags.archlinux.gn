@@ -1,6 +1,5 @@
 blink_symbol_level=0
 custom_toolchain="//build/toolchain/linux/unbundle:default"
-enable_ac3_eac3_audio_demuxing=true
 enable_iterator_debugging=false
 enable_swiftshader=false
 fatal_linker_warnings=false
@@ -8,6 +7,7 @@ ffmpeg_branding="ChromeOS"
 gold_path=""
 goma_dir=""
 host_toolchain="//build/toolchain/linux/unbundle:default"
+icu_use_data_file=false
 is_clang=true
 is_debug=false
 jumbo_file_merge_limit=8
