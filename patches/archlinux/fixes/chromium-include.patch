@@ -1,61 +1,31 @@
-From f7c177d35242311ea7a2cf49a0980c61664f27ba Mon Sep 17 00:00:00 2001
-From: Jose Dapena Paz <jose.dapena@lge.com>
-Date: Fri, 25 Oct 2019 15:07:09 +0000
-Subject: [PATCH] IWYU: include algorithm to use std::lower_bound in ui/gfx/font.cc
+From 8273f4d3130e06fd8b6bef87b07c936304b971d9 Mon Sep 17 00:00:00 2001
+From: Raphael Kubo da Costa <raphael.kubo.da.costa@intel.com>
+Date: Tue, 10 Dec 2019 20:59:57 +0000
+Subject: [PATCH] [cros search service]: Include <cmath> for std::pow()
 
-Fix GCC build because of missing include:
-../../ui/gfx/font.cc: In function ‘gfx::Font::Weight gfx::FontWeightFromInt(int)’:
-../../ui/gfx/font.cc:114:8: error: no matching function for call to ‘lower_bound(const gfx::Font::Weight*, const gfx::Font::Weight*, int&, gfx::FontWeightFromInt(int)::<lambda(const gfx::Font::Weight&, const int&)>)’
-       });
-        ^
-In file included from /usr/include/c++/8/bits/char_traits.h:39,
-                 from /usr/include/c++/8/string:40,
-                 from ../../ui/gfx/font.h:8,
-                 from ../../ui/gfx/font.cc:5:
-/usr/include/c++/8/bits/stl_algobase.h:984:5: note: candidate: ‘template<class _ForwardIterator, class _Tp> _ForwardIterator std::lower_bound(_ForwardIterator, _ForwardIterator, const _Tp&)’
-     lower_bound(_ForwardIterator __first, _ForwardIterator __last,
-     ^~~~~~~~~~~
-/usr/include/c++/8/bits/stl_algobase.h:984:5: note:   template argument deduction/substitution failed:
-../../ui/gfx/font.cc:114:8: note:   candidate expects 3 arguments, 4 provided
-       });
-        ^
+IWYU. Follow up to commit 2b2ea3c09b ("[cros search service] Move shared
+string matching functions to //chrome"), which broke the libstdc++ build:
 
-Bug: 819294
-Change-Id: Ic59dcf3a06bdd54d1d426c08a61624873a0ff30c
-Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/1879909
-Commit-Queue: Alexei Svitkine <asvitkine@chromium.org>
-Reviewed-by: Alexei Svitkine <asvitkine@chromium.org>
-Cr-Commit-Position: refs/heads/master@{#709472}
+    ../../chrome/common/string_matching/fuzzy_tokenized_string_match.cc:199:14: error: no member named 'pow' in namespace 'std'
+            std::pow(partial_match_penalty_rate, long_start - current - 1);
+            ~~~~~^
+
+Bug: 957519
+Change-Id: I66f61cb4f93cfa0bfa3d1b00ba391ddd8f31a7fb
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/1960310
+Auto-Submit: Raphael Kubo da Costa <raphael.kubo.da.costa@intel.com>
+Reviewed-by: Jia Meng <jiameng@chromium.org>
+Commit-Queue: Raphael Kubo da Costa <raphael.kubo.da.costa@intel.com>
+Cr-Commit-Position: refs/heads/master@{#723499}
 ---
 
---- a/ui/gfx/font.cc
-+++ b/ui/gfx/font.cc
-@@ -4,6 +4,8 @@
+--- a/chrome/common/string_matching/fuzzy_tokenized_string_match.cc
++++ b/chrome/common/string_matching/fuzzy_tokenized_string_match.cc
+@@ -5,6 +5,7 @@
+ #include "chrome/common/string_matching/fuzzy_tokenized_string_match.h"
  
- #include "ui/gfx/font.h"
+ #include <algorithm>
++#include <cmath>
+ #include <iterator>
  
-+#include <algorithm>
-+
- #include "base/strings/utf_string_conversions.h"
- #include "build/build_config.h"
- #include "ui/gfx/platform_font.h"
---- a/chrome/browser/apps/launch_service/launch_manager.h
-+++ b/chrome/browser/apps/launch_service/launch_manager.h
-@@ -6,6 +6,7 @@
- #define CHROME_BROWSER_APPS_LAUNCH_SERVICE_LAUNCH_MANAGER_H_
- 
- #include <string>
-+#include <vector>
- 
- #include "base/macros.h"
- 
---- a/base/profiler/register_context.h
-+++ b/base/profiler/register_context.h
-@@ -9,6 +9,7 @@
- #ifndef BASE_PROFILER_REGISTER_CONTEXT_H_
- #define BASE_PROFILER_REGISTER_CONTEXT_H_
- 
-+#include <cstdint>
- #include <type_traits>
- 
- #include "build/build_config.h"
+ #include "base/i18n/case_conversion.h"
