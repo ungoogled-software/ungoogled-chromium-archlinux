@@ -8,12 +8,12 @@ debian_buster/system/nspr.patch
 debian_buster/system/event.patch
 debian_buster/system/openjpeg.patch
 debian_buster/system/convertutf.patch
+archlinux/fixes/chromium-gcc-incomplete-type.patch
 archlinux/fixes/chromium-include.patch
+archlinux/fixes/unbundle-libxml.patch
 archlinux/fixes/vaapi.patch
-archlinux/fixes/icu65.patch
-archlinux/system/harfbuzz.patch
+archlinux/fixes/widevine-other-locations.patch
 archlinux/system/icu.patch
 archlinux/system/jsoncpp.patch
 archlinux/system/lcms.patch
 archlinux/system/zlib.patch
-archlinux/fixes/widevine-other-locations.patch

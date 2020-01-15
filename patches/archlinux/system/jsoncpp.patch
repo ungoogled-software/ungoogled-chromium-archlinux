@@ -57,4 +57,4 @@ description: use system jsoncpp
 -  }
  }
  
- fuzzer_test("jsoncpp_fuzzer") {
+ if (build_with_chromium) {
