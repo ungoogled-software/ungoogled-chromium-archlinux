@@ -1,0 +1,31 @@
+name: Ungoogled-chromium-archlinux build test
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build Chromium
+    runs-on: ubuntu-18.04
+    container: archlinux:latest
+
+    steps:
+      - uses: actions/checkout@v1
+        name: Clone repository
+        with:
+          submodules: true
+      - name: Install dependencies
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm gnu-free-fonts sudo
+          pacman -S --noconfirm --needed base base-devel
+      - name: Create build user
+        run: |
+          useradd builduser -m
+          passwd -d builduser
+          printf 'builduser ALL=(ALL) ALL\n' | tee -a /etc/sudoers
+      - name: Build
+        run: |
+          sudo -u builduser bash -c 'makepkg -s --noconfirm' # Clone and build a package
+      - name: Move artifact
+        run: |
+          pwd
+          ls -la
