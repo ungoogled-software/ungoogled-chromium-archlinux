@@ -24,6 +24,7 @@ jobs:
           printf 'builduser ALL=(ALL) ALL\n' | tee -a /etc/sudoers
       - name: Build
         run: |
+          chown builduser -R .
           sudo -u builduser bash -c 'makepkg -s --noconfirm' # Clone and build a package
       - name: Move artifact
         run: |
