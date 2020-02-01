@@ -11,3 +11,4 @@ RUN pacman -Syu --noconfirm \
 RUN echo "nobody ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
 RUN echo "root ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> /etc/sudoers
 RUN echo "Defaults lecture=\"never\"" > /etc/sudoers.d/lecture
+
