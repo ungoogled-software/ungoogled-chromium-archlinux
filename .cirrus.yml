@@ -30,7 +30,7 @@ validate_makepkg_task:
     validate_makepkg_script:
         - chmod -R 777 .
         - pacman -Sy
-        - pacman -S archlinux-keyring
+        - pacman -S --noconfirm archlinux-keyring
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 
 # vim: set expandtab shiftwidth=4 softtabstop=4:
