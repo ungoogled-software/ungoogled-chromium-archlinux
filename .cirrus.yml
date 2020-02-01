@@ -29,6 +29,8 @@ validate_with_source_task:
 validate_makepkg_task:
     validate_makepkg_script:
         - chmod -R 777 .
+        - pacman-key --init
+        - pacman-key --populate archlinux
         - pacman -Sy
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 
