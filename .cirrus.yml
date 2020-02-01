@@ -30,8 +30,7 @@ validate_makepkg_task:
     validate_makepkg_script:
         - chmod -R 777 .
         - pacman -Sy
-        - pacman -Ql
-        - ls -l /etc/pacman/gnupg
+        - pacman -Qs
         - sudo -u nobody makepkg --cleanbuild --syncdeps --nobuild --noconfirm
 
 # vim: set expandtab shiftwidth=4 softtabstop=4:
