@@ -9,7 +9,7 @@
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
 _ungoogled_version='79.0.3945.130-2'
-_ungoogled_archlinux_version=8d92cae068bfe1d787cdda09a8cc856e07f21513
+_ungoogled_archlinux_version=5ea8b260d0d1da4d72f32c8f0ea10cfbbac4d790
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
