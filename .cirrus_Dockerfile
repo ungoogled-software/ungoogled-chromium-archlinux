@@ -1,6 +1,6 @@
 FROM archlinux/base:latest
 
-RUN pacman -Syu --noconfirm \
+RUN pacman -Syu --noconfirm --noprogressbar \
     binutils \
     git \
     python \

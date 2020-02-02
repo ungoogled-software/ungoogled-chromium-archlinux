@@ -28,6 +28,12 @@ If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-c
 
 ## Developer info
 
+### Updating docker image
+
+You can forcefully update the docker image used for CI by committing any
+change to the `.cirrus_Dockerfile` file. This is particularly important to
+try when `validate_makepkg_task` is failing for unknown reasons.
+
 ### Update submodule
 
 The submodule is primarily needed for `devutils`. Use `devutils/update_submodule.sh` to update the submodule.

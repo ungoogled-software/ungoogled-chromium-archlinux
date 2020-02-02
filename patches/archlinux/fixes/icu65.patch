@@ -46,7 +46,7 @@ Cr-Commit-Position: refs/heads/master@{#711027}
          return ParseQualifiedNameResult(kQNMultipleColons);
 --- a/ui/gfx/render_text_harfbuzz.cc
 +++ b/ui/gfx/render_text_harfbuzz.cc
-@@ -944,7 +944,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBound
+@@ -935,7 +935,10 @@ RangeF TextRunHarfBuzz::GetGraphemeBound
          ++total;
        }
      }
