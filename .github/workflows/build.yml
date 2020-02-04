@@ -6,9 +6,13 @@ jobs:
     env:
         container_name: archlinuxlatest_47dabf
         XHYVE_CPU_COUNT: 4
-        XHYVE_MEMORY_SIZE: 11264
+        XHYVE_MEMORY_SIZE: 10240
     name: Build Chromium
     runs-on: macos-latest
+    strategy:
+        fail-fast: false
+        matrix:
+            target: [release,debug]
 
     steps:
       - name: Check Environment
@@ -28,16 +32,18 @@ jobs:
             brew install docker docker-compose docker-machine xhyve docker-machine-driver-xhyve
             sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
             sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
-            brew services start docker-machine
       - name: Create Docker Machine
+        env:
+            machine_config_path: /Users/runner/.docker/machine/machines/default
         run: |
             mkdir -p ~/.docker/machine/cache
             curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.5/boot2docker.iso
-            docker-machine create --driver xhyve default
+            for i in $(seq 1 10); do docker-machine create --driver xhyve default && s=0 && break || sudo kill -9 `ps aux | grep xhyve | grep -v grep | awk '{print $2}'` && sudo rm -rf ${machine_config_path} && s=$? && sleep 15; done; (exit $s)    # Retry 10 times before abort
             docker-machine ssh default pwd
             docker-machine ssh default id -un
             docker-machine ssh default mkdir -p /home/docker/work/_temp /home/docker/work/_actions /home/docker/work/_temp/_github_home /home/docker/work/_temp/_github_workflow
       - name: Start Docker
+        # Security profile is from https://github.com/Zenika/alpine-chrome/blob/master/chrome.json. The original file is licensed under MIT.
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
@@ -48,7 +54,7 @@ jobs:
             docker network create --label 488dfb github_network_28ec84219b9a42c98a67ea807a1d376e
             docker pull archlinux:latest
             docker volume create --name ${container_name}_local_volume
-            docker create --name ${container_name} --label 488dfb --workdir /__w/ungoogled-chromium-archlinux/ungoogled-chromium-archlinux --network github_network_28ec84219b9a42c98a67ea807a1d376e  -e "HOME=/github/home" -e GITHUB_ACTIONS=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "${container_name}_local_volume":"/__w" -v "/home/docker/work/_temp":"/__w/_temp" -v "/home/docker/work/_actions":"/__w/_actions" -v "/home/docker/work/_temp/_github_home":"/github/home" -v "/home/docker/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" archlinux:latest "-f" "/dev/null"
+            docker create --name ${container_name} --label 488dfb --workdir /__w/ungoogled-chromium-archlinux/ungoogled-chromium-archlinux --network github_network_28ec84219b9a42c98a67ea807a1d376e  -e "HOME=/github/home" -e GITHUB_ACTIONS=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "${container_name}_local_volume":"/__w" -v "/home/docker/work/_temp":"/__w/_temp" -v "/home/docker/work/_actions":"/__w/_actions" -v "/home/docker/work/_temp/_github_home":"/github/home" -v "/home/docker/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" --security-opt seccomp=./.github/workflows/chromium.json archlinux:latest "-f" "/dev/null"
             docker ps --all
             docker inspect --format "{{range .Config.Env}}{{println .}}{{end}}" ${container_name}
             docker start ${container_name}
@@ -59,7 +65,7 @@ jobs:
             docker exec ${container_name} pacman -Sy --noconfirm
             docker exec ${container_name} pacman -S --noconfirm gnu-free-fonts
             docker exec ${container_name} pacman -S --noconfirm --needed base base-devel git
-      - name: Move repository
+      - name: Copy repository to Docker
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
@@ -72,12 +78,25 @@ jobs:
             docker exec ${container_name} useradd builduser -m
             docker exec ${container_name} passwd -d builduser
             docker exec ${container_name} bash -c "printf 'builduser ALL=(ALL) ALL\n' | tee -a /etc/sudoers"
+      - name: Replace gn parameters if DEBUG
+        if: matrix.target == 'debug'
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} bash -c "cd ungoogled-chromium-archlinux && sed -i -e 's/is_debug=false/is_debug=true/g' flags.archlinux.gn && sed -i -e 's/blink_symbol_level=0/blink_symbol_level=1/g' flags.archlinux.gn && sed -i -e 's/symbol_level=0/symbol_level=1/g' flags.archlinux.gn"
+            docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/flags.archlinux.gn'
       - name: Build
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
             docker exec ${container_name} chown builduser -R ungoogled-chromium-archlinux
             docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && makepkg -s --noconfirm' # Clone and build a package
+      - name: Install and Test run
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && makepkg -i --noconfirm'
+            docker exec ${container_name} sudo -u builduser chromium --headless --disable-gpu https://github.com/Eloston/ungoogled-chromium
       - name: Move artifact
         env:
             SUMS: checksums.txt
@@ -94,5 +113,5 @@ jobs:
       - uses: actions/upload-artifact@master
         name: Upload artifact
         with:
-          name: Ungoogled-chromium-archlinux
+          name: Ungoogled-chromium-archlinux ${{matrix.target}} build
           path: ../artifact/
