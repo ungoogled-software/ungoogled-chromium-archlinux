@@ -63,7 +63,7 @@ Cr-Commit-Position: refs/heads/master@{#725070}
  #include <set>
  #include <string>
  #include <utility>
-@@ -205,66 +204,44 @@ UpdatesPerParentId GroupValidUpdatesByPa
+@@ -203,66 +202,44 @@ UpdatesPerParentId GroupValidUpdatesByPa
  
  }  // namespace
  
