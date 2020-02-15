@@ -25,7 +25,7 @@ author: Michael Gilbert <mgilbert@debian.org>
 -  out->clear();
 -  out->insert(out->begin(), source_length, 0);
 -  uint16_t *target_ptr = &(*out)[0];
--  uint16_t *target_end_ptr = target_ptr + out->capacity() * sizeof(uint16_t);
+-  uint16_t *target_end_ptr = target_ptr + out->capacity();
 -  ConversionResult result = ConvertUTF8toUTF16(&source_ptr, source_end_ptr,
 -                                               &target_ptr, target_end_ptr,
 -                                               strictConversion);
@@ -75,7 +75,7 @@ author: Michael Gilbert <mgilbert@debian.org>
 -  out->clear();
 -  out->insert(out->begin(), source_length, 0);
 -  uint16_t *target_ptr = &(*out)[0];
--  uint16_t *target_end_ptr = target_ptr + out->capacity() * sizeof(uint16_t);
+-  uint16_t *target_end_ptr = target_ptr + out->capacity();
 -  ConversionResult result = ConvertUTF32toUTF16(&source_ptr, source_end_ptr,
 -                                                &target_ptr, target_end_ptr,
 -                                                strictConversion);
@@ -188,7 +188,7 @@ author: Michael Gilbert <mgilbert@debian.org>
        "breakpad/src/client/minidump_file_writer-inl.h",
        "breakpad/src/client/minidump_file_writer.cc",
        "breakpad/src/client/minidump_file_writer.h",
--      "breakpad/src/common/convert_UTF.c",
+-      "breakpad/src/common/convert_UTF.cc",
 -      "breakpad/src/common/convert_UTF.h",
        "breakpad/src/common/linux/elf_core_dump.cc",
        "breakpad/src/common/linux/elf_core_dump.h",

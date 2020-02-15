@@ -8,8 +8,8 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='79.0.3945.130-2'
-_ungoogled_archlinux_version=5ea8b260d0d1da4d72f32c8f0ea10cfbbac4d790
+_ungoogled_version='80.0.3987.87-2'
+_ungoogled_archlinux_version=3292d5530e041f81a296fbe7be9ade0ee3862ac1
 _chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
 _ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
 pkgver=${_chromium_version}
@@ -23,7 +23,7 @@ license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
          'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp' 'openjpeg2')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git'
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git'
              'clang' 'lld' 'gn' 'llvm' 'quilt')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
@@ -56,7 +56,7 @@ declare -gA _system_libs=(
   [libevent]=libevent
   [libjpeg]=libjpeg
   #[libpng]=libpng            # https://crbug.com/752403#c10
-  #[libvpx]=libvpx            # https://github.com/webmproject/libvpx/commit/5a0242ba5c
+  [libvpx]=libvpx
   [libwebp]=libwebp
   [libxml]=libxml2
   [libxslt]=libxslt
@@ -88,6 +88,9 @@ prepare() {
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
+
+  mkdir -p third_party/node/linux/node-linux-x64/bin
+  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
