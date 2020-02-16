@@ -9,7 +9,6 @@ debian_buster/system/event.patch
 debian_buster/system/openjpeg.patch
 debian_buster/system/convertutf.patch
 archlinux/fixes/cros-search-service-include.patch
-archlinux/fixes/fix-browser-frame-view-not-getting-a-relayout.patch
 archlinux/fixes/move-RemoteTreeNode-declaration.patch
 archlinux/fixes/remove-verbose-logging-in-local-unique-font-matching.patch
 archlinux/fixes/unbundle-libxml.patch
