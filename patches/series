@@ -8,6 +8,7 @@ debian_buster/system/nspr.patch
 debian_buster/system/event.patch
 debian_buster/system/openjpeg.patch
 debian_buster/system/convertutf.patch
+archlinux/fixes/gpu_mojo_media_client.patch
 archlinux/fixes/vaapi.patch
 archlinux/fixes/vaapi_picture_tfp.patch
 archlinux/fixes/widevine-other-locations.patch
