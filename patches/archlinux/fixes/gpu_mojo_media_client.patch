@@ -3,7 +3,7 @@ is not defined.
 
 --- a/media/mojo/services/gpu_mojo_media_client.cc
 +++ b/media/mojo/services/gpu_mojo_media_client.cc
-@@ -157,7 +157,7 @@
+@@ -157,7 +157,7 @@ GpuMojoMediaClient::GetSupportedVideoDec
    supported_config_map[VideoDecoderImplementation::kAlternate] =
        *d3d11_supported_configs_;
  

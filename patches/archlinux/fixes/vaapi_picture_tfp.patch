@@ -3,7 +3,7 @@ It appears that the equivalent to GL_RGB is RGBX_8888.
 
 --- a/media/gpu/vaapi/vaapi_picture_tfp.cc
 +++ b/media/gpu/vaapi/vaapi_picture_tfp.cc
-@@ -57,7 +57,7 @@
+@@ -57,7 +57,7 @@ bool VaapiTFPPicture::Initialize() {
    if (make_context_current_cb_ && !make_context_current_cb_.Run())
      return false;
  
