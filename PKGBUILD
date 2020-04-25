@@ -22,7 +22,7 @@ url="https://github.com/ungoogled-software/ungoogled-chromium-archlinux"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib' 'libva'
-         'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp' 'openjpeg2')
+         'desktop-file-utils' 'hicolor-icon-theme' 'jsoncpp' 'openjpeg2' 'libffi')
 makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git'
              'clang' 'lld' 'gn' 'llvm' 'quilt')
 optdepends=('pepper-flash: support for Flash content'
