@@ -3,8 +3,8 @@ author: Michael Gilbert <mgilbert@debian.org>
 
 --- a/skia/BUILD.gn
 +++ b/skia/BUILD.gn
-@@ -868,7 +868,7 @@ group("test_fonts_resources") {
-   if (is_mac) {
+@@ -850,7 +850,7 @@ group("test_fonts_resources") {
+   if (is_mac || is_ios) {
      deps += [ ":test_fonts_bundle_data" ]
      data_deps += [ ":test_fonts_bundle_data" ]
 -  } else {
@@ -12,7 +12,7 @@ author: Michael Gilbert <mgilbert@debian.org>
      deps += [ "//third_party/test_fonts" ]
      data_deps += [ "//third_party/test_fonts" ]
    }
-@@ -910,7 +910,7 @@ source_set("test_fonts") {
+@@ -890,7 +890,7 @@ source_set("test_fonts") {
        "//third_party/fuchsia-sdk/sdk:sys_cpp",
      ]
    }
@@ -30,20 +30,20 @@ author: Michael Gilbert <mgilbert@debian.org>
 -  if (is_linux) {
 +  if (false) {
      public_deps += [ ":fontconfig_util_linux" ]
-     data_deps = [
-       "//third_party/test_fonts",
-@@ -437,7 +437,7 @@ if (is_linux) {
-     ]
+     data_deps = [ "//third_party/test_fonts" ]
+     if (current_toolchain == host_toolchain) {
+@@ -411,7 +411,7 @@ if (is_linux) {
+     outputs = [ "${root_build_dir}/etc/fonts/{{source_file_part}}" ]
    }
  
 -  if (current_toolchain == host_toolchain) {
 +  if (false) {
      executable("generate_fontconfig_caches") {
        testonly = true
-       sources = [
+       sources = [ "generate_fontconfig_caches.cc" ]
 --- a/content/shell/app/shell_main_delegate.cc
 +++ b/content/shell/app/shell_main_delegate.cc
-@@ -297,7 +297,7 @@ bool ShellMainDelegate::BasicStartupComp
+@@ -293,7 +293,7 @@ bool ShellMainDelegate::BasicStartupComp
      BlinkTestPlatformInitialize();
  #endif
  
