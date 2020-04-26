@@ -7,6 +7,7 @@ jobs:
         container_name: archlinuxlatest_47dabf
         XHYVE_CPU_COUNT: 4
         XHYVE_MEMORY_SIZE: 11264
+        XHYVE_RAWDISK: true
     name: Build Chromium
     runs-on: macos-latest
     strategy:
@@ -18,6 +19,7 @@ jobs:
         run: |
             pwd
             uname -r
+            csrutil status
             system_profiler SPHardwareDataType
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -61,7 +63,7 @@ jobs:
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
-            docker exec ${container_name} pacman -Sy --noconfirm
+            docker exec ${container_name} pacman -Syu --noconfirm
             docker exec ${container_name} pacman -S --noconfirm gnu-free-fonts
             docker exec ${container_name} pacman -S --noconfirm --needed base base-devel git
       - name: Copy repository to Docker
@@ -70,6 +72,9 @@ jobs:
             eval "$(docker-machine env default)"
             docker-machine scp -r ../ungoogled-chromium-archlinux docker@default:/home/docker/work/_temp/_github_home
             docker exec ${container_name} bash -c 'cp -r ${HOME}/ungoogled-chromium-archlinux .'
+            docker exec ${container_name} bash -c 'mkdir src && cp -ar ungoogled-chromium-archlinux src/ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'sed -i -e '\''s|"git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git#commit=${_ungoogled_archlinux_version}"|"git+file:///$(pwd)/../src/ungoogled-chromium-archlinux"|g'\'' ungoogled-chromium-archlinux/PKGBUILD'
+            docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
       - name: Create build user
         run: |
             docker-machine env default
@@ -91,7 +96,7 @@ jobs:
             docker-machine env default
             eval "$(docker-machine env default)"
             docker exec ${container_name} chown builduser -R ungoogled-chromium-archlinux
-            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && timeout -k 320m -s SIGINT 310m makepkg -s --noconfirm || true'
+            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && timeout -k 335m -s SIGINT 330m makepkg -s --noconfirm || true'
       - name: Move artifact
         run: |
             docker-machine env default
@@ -113,6 +118,7 @@ jobs:
         container_name: archlinuxlatest_47dabf
         XHYVE_CPU_COUNT: 4
         XHYVE_MEMORY_SIZE: 11264
+        XHYVE_RAWDISK: true
         repo_name: ungoogled-software/ungoogled-chromium-archlinux
     name: Build Chromium
     needs: build_part_1
@@ -186,7 +192,7 @@ jobs:
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
-            docker exec ${container_name} pacman -Sy --noconfirm
+            docker exec ${container_name} pacman -Syu --noconfirm
             docker exec ${container_name} pacman -S --noconfirm gnu-free-fonts
             docker exec ${container_name} pacman -S --noconfirm --needed base base-devel git
       - name: Copy repository to Docker
@@ -195,6 +201,9 @@ jobs:
             eval "$(docker-machine env default)"
             docker-machine scp -r ../ungoogled-chromium-archlinux docker@default:/home/docker/work/_temp/_github_home
             docker exec ${container_name} bash -c 'cp -r ${HOME}/ungoogled-chromium-archlinux . && rm -rf ${HOME}/ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'mkdir src && cp -ar ungoogled-chromium-archlinux src/ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'sed -i -e '\''s|"git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git#commit=${_ungoogled_archlinux_version}"|"git+file:///$(pwd)/../src/ungoogled-chromium-archlinux"|g'\'' ungoogled-chromium-archlinux/PKGBUILD'
+            docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
       - name: Create build user
         run: |
             docker-machine env default
@@ -209,7 +218,137 @@ jobs:
             eval "$(docker-machine env default)"
             docker exec ${container_name} bash -c "cd ungoogled-chromium-archlinux && chmod +x .github/workflows/debug.sh && .github/workflows/debug.sh"
             docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
-      - name: Build second part
+      - name: Build part 2
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} chown builduser -R ungoogled-chromium-archlinux
+            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && sed -i -e '\''/out\/Default\/args.gn/d'\'' -e '\''/gn gen/d'\'' PKGBUILD'
+            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && sed -i -e '\''/# Assemble GN flags/a \ \ cd .. && rm -rf "chromium-$pkgver" && tar -xzpf ../out.tar.gz --same-owner -C . && rm -rf ../out.tar.gz && cd "chromium-$pkgver"'\'' PKGBUILD'
+            docker exec ${container_name} sudo -u builduser bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
+            docker exec ${container_name} sudo -u builduser bash -c 'cd ungoogled-chromium-archlinux && timeout -k 325m -s SIGINT 320m makepkg -s --noconfirm || true'
+      - name: Move artifact
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} bash -c 'ps aux | grep ninja'
+            docker exec ${container_name} bash -c 'ls -la ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'mkdir ${HOME}/artifact && cd ungoogled-chromium-archlinux && source ./.github/workflows/get_chromium_version && cd src && tar -cz -H posix --atime-preserve -C $(pwd) -f ${HOME}/artifact/out.tar.gz chromium-${_chromium_version}'
+            docker-machine scp -r docker@default:/home/docker/work/_temp/_github_home/artifact ..
+            ls -la ..
+            cd ../artifact
+      - uses: actions/upload-artifact@v1
+        name: Upload artifact
+        with:
+          name: ${{matrix.target}}_intermediate_build_2
+          path: ../artifact/
+
+  build_part_3:
+    env:
+        container_name: archlinuxlatest_47dabf
+        XHYVE_CPU_COUNT: 4
+        XHYVE_MEMORY_SIZE: 11264
+        XHYVE_RAWDISK: true
+        repo_name: ungoogled-software/ungoogled-chromium-archlinux
+    name: Build Chromium
+    needs: build_part_2
+    runs-on: macos-latest
+    if: always()
+    strategy:
+        fail-fast: false
+        matrix:
+            target: [release,debug]
+    steps:
+      - name: Check Environment
+        run: |
+            pwd
+            uname -r
+            system_profiler SPHardwareDataType
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: |
+            auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+            git submodule sync --recursive
+            git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - uses: actions/download-artifact@v1
+        name: Download artifact
+        with:
+            name: ${{matrix.target}}_intermediate_build_2
+            path: .
+      - name: Delete artifact (Not yet working)
+        env:
+            artifact_name: ${{matrix.target}}_intermediate_build_2
+        run: |
+            ls -la .
+            echo $(curl --request GET --url "https://api.github.com/repos/${repo_name}/actions/runs/${{ github.run_id }}/artifacts" --header 'authorization: Bearer ${{ github.token }}')
+            # artifact_id=$(curl --request GET --url "https://api.github.com/repos/${repo_name}/actions/runs/${{ github.run_id }}/artifacts" --header 'authorization: Bearer ${{ github.token }}' | jq -r -c --arg name "${artifact_name}" '.artifacts[] | select(.name == $name) | .id')
+            # echo ${artifact_id}
+            # response=$(curl --request DELETE --url "https://api.github.com/repos/${repo_name}/actions/artifacts/${artifact_id}" --header 'authorization: Bearer ${{ github.token }}')
+            # echo ${response}
+            # if [[ $response == *"200"* ]] || [[ $response == *"202"* ]] || [[ $response == *"204"* ]]; then echo "Artifact deleted"; else exit 1; fi
+      - name: Install Docker
+        run: |
+            brew install docker docker-compose docker-machine xhyve docker-machine-driver-xhyve
+            sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+            sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+      - name: Create Docker Machine
+        env:
+            machine_config_path: /Users/runner/.docker/machine/machines/default
+        run: |
+            mkdir -p ~/.docker/machine/cache
+            curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.5/boot2docker.iso
+            for i in $(seq 1 10); do docker-machine create --driver xhyve default && s=0 && break || sudo kill -9 `ps aux | grep xhyve | grep -v grep | awk '{print $2}'` && sudo rm -rf ${machine_config_path} && s=$? && sleep 15; done; (exit $s)    # Retry 10 times before abort
+            docker-machine ssh default pwd
+            docker-machine ssh default id -un
+            docker-machine ssh default mkdir -p /home/docker/work/_temp /home/docker/work/_actions /home/docker/work/_temp/_github_home /home/docker/work/_temp/_github_workflow
+      - name: Start Docker
+        # Security profile is from https://github.com/Zenika/alpine-chrome/blob/master/chrome.json. The original file is licensed under MIT.
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker version --format '{{.Server.APIVersion}}'
+            docker version --format '{{.Client.APIVersion}}'
+            docker ps --all --quiet --no-trunc --filter "label=488dfb"
+            docker network prune --force --filter "label=488dfb"
+            docker network create --label 488dfb github_network_28ec84219b9a42c98a67ea807a1d376e
+            docker pull archlinux:latest
+            docker volume create --name ${container_name}_local_volume
+            docker create --name ${container_name} --label 488dfb --workdir /__w/ungoogled-chromium-archlinux/ungoogled-chromium-archlinux --network github_network_28ec84219b9a42c98a67ea807a1d376e  -e "HOME=/github/home" -e GITHUB_ACTIONS=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "${container_name}_local_volume":"/__w" -v "/home/docker/work/_temp":"/__w/_temp" -v "/home/docker/work/_actions":"/__w/_actions" -v "/home/docker/work/_temp/_github_home":"/github/home" -v "/home/docker/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" --security-opt seccomp=./.github/workflows/chromium.json archlinux:latest "-f" "/dev/null"
+            docker ps --all
+            docker inspect --format "{{range .Config.Env}}{{println .}}{{end}}" ${container_name}
+            docker start ${container_name}
+      - name: Install dependencies
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} pacman -Syu --noconfirm
+            docker exec ${container_name} pacman -S --noconfirm gnu-free-fonts
+            docker exec ${container_name} pacman -S --noconfirm --needed base base-devel git
+      - name: Copy repository to Docker
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker-machine scp -r ../ungoogled-chromium-archlinux docker@default:/home/docker/work/_temp/_github_home
+            docker exec ${container_name} bash -c 'cp -r ${HOME}/ungoogled-chromium-archlinux . && rm -rf ${HOME}/ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'mkdir src && cp -ar ungoogled-chromium-archlinux src/ungoogled-chromium-archlinux'
+            docker exec ${container_name} bash -c 'sed -i -e '\''s|"git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git#commit=${_ungoogled_archlinux_version}"|"git+file:///$(pwd)/../src/ungoogled-chromium-archlinux"|g'\'' ungoogled-chromium-archlinux/PKGBUILD'
+            docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
+      - name: Create build user
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} useradd builduser -m
+            docker exec ${container_name} passwd -d builduser
+            docker exec ${container_name} bash -c "printf 'builduser ALL=(ALL) ALL\n' | tee -a /etc/sudoers"
+      - name: Replace gn parameters if DEBUG
+        if: matrix.target == 'debug'
+        run: |
+            docker-machine env default
+            eval "$(docker-machine env default)"
+            docker exec ${container_name} bash -c "cd ungoogled-chromium-archlinux && chmod +x .github/workflows/debug.sh && .github/workflows/debug.sh"
+            docker exec ${container_name} bash -c 'cat ungoogled-chromium-archlinux/PKGBUILD'
+      - name: Build part 3
         run: |
             docker-machine env default
             eval "$(docker-machine env default)"
