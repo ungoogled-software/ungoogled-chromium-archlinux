@@ -19,13 +19,13 @@ Original commit message:
 Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
 ---
  common.gypi                             |  2 +-
- deps/v8/src/objects/js-number-format.cc | 72 +++++++++++++------------
+ v8/src/objects/js-number-format.cc | 72 +++++++++++++------------
  2 files changed, 38 insertions(+), 36 deletions(-)
 
-diff --git a/deps/v8/src/objects/js-number-format.cc b/deps/v8/src/objects/js-number-format.cc
+diff --git a/v8/src/objects/js-number-format.cc b/v8/src/objects/js-number-format.cc
 index 92d3e2fb82e..ced408aa173 100644
---- a/deps/v8/src/objects/js-number-format.cc
-+++ b/deps/v8/src/objects/js-number-format.cc
+--- a/v8/src/objects/js-number-format.cc
++++ b/v8/src/objects/js-number-format.cc
 @@ -1197,42 +1197,31 @@ MaybeHandle<JSNumberFormat> JSNumberFormat::New(Isolate* isolate,
  }
  
