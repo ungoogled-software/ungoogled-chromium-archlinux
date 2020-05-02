@@ -9,7 +9,7 @@
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
 _ungoogled_version='81.0.4044.129-1'
-_ungoogled_archlinux_version=34d6f7061c7f1daeb7ed892ea2fbf4ddc520eae5
+_ungoogled_archlinux_version=debba4845c16d774990c02cb1b1ffd9df6f5a452
 _chromium_version=${_ungoogled_version%-*}
 _ungoogled_revision=${_ungoogled_version#*-}
 pkgver=${_chromium_version}
