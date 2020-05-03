@@ -8,10 +8,10 @@
 
 pkgname=ungoogled-chromium
 # Commit or tag for the upstream ungoogled-chromium repo
-_ungoogled_version='81.0.4044.122-2'
-_ungoogled_archlinux_version=07b174b51db58b1cbd91d0ce6789a143f267395e
-_chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
-_ungoogled_revision=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/revision.txt)
+_ungoogled_version='81.0.4044.129-1'
+_ungoogled_archlinux_version=debba4845c16d774990c02cb1b1ffd9df6f5a452
+_chromium_version=${_ungoogled_version%-*}
+_ungoogled_revision=${_ungoogled_version#*-}
 pkgver=${_chromium_version}
 _ungoogled_archlinux_pkgrel=0
 pkgrel=$((_ungoogled_revision + _ungoogled_archlinux_pkgrel))
@@ -38,7 +38,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         "git+https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git#commit=${_ungoogled_archlinux_version}"
         "git+https://github.com/Eloston/ungoogled-chromium#tag=${_ungoogled_version}")
-sha256sums=($(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${_chromium_version}.tar.xz.hashes | grep sha256 | cut -d ' ' -f3)
+sha256sums=('ff74592f83ed91c082f746c6b0a3acf384bad91f170bd24548971c17f43046d3'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'SKIP'
             'SKIP')
