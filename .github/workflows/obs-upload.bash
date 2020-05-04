@@ -126,7 +126,7 @@ upload_obs()
     local ROOT="${3}"
     local TYPE="${4}"
     local REPOSITORY
-    local PACKAGE="ungoogled-chromium-arch"
+    local PACKAGE="ungoogled-chromium"
     local FILE
     local FILENAME
 
