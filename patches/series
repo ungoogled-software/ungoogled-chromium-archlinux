@@ -15,3 +15,4 @@ archlinux/fixes/widevine-other-locations.patch
 archlinux/fixes/icu67.patch
 archlinux/system/jsoncpp.patch
 archlinux/system/lcms.patch
+archlinux/fixes/address_rewriter_re2_fix.patch
