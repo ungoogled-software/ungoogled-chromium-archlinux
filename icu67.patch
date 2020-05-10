@@ -19,12 +19,14 @@ Original commit message:
 Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
 ---
  common.gypi                             |  2 +-
- v8/src/objects/js-number-format.cc | 72 +++++++++++++------------
+ deps/v8/src/objects/js-number-format.cc | 72 +++++++++++++------------
  2 files changed, 38 insertions(+), 36 deletions(-)
 
---- a/v8/src/objects/js-number-format.cc
-+++ b/v8/src/objects/js-number-format.cc
-@@ -1197,42 +1197,31 @@ MaybeHandle<JSNumberFormat> JSNumberForm
+diff --git a/deps/v8/src/objects/js-number-format.cc b/deps/v8/src/objects/js-number-format.cc
+index 92d3e2fb82e..ced408aa173 100644
+--- a/deps/v8/src/objects/js-number-format.cc
++++ b/deps/v8/src/objects/js-number-format.cc
+@@ -1197,42 +1197,31 @@ MaybeHandle<JSNumberFormat> JSNumberFormat::New(Isolate* isolate,
  }
  
  namespace {
@@ -75,7 +77,7 @@ Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
  }
  
  }  // namespace
-@@ -1243,10 +1232,16 @@ MaybeHandle<String> JSNumberFormat::Form
+@@ -1243,10 +1232,16 @@ MaybeHandle<String> JSNumberFormat::FormatNumeric(
      Handle<Object> numeric_obj) {
    DCHECK(numeric_obj->IsNumeric());
  
@@ -95,7 +97,7 @@ Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
  }
  
  namespace {
-@@ -1359,12 +1354,18 @@ std::vector<NumberFormatSpan> FlattenReg
+@@ -1359,12 +1354,18 @@ std::vector<NumberFormatSpan> FlattenRegionsToParts(
  }
  
  namespace {
@@ -117,7 +119,7 @@ Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
    int index = start_index;
    if (length == 0) return Just(index);
  
-@@ -1373,13 +1374,14 @@ Maybe<int> ConstructParts(Isolate* isola
+@@ -1373,13 +1374,14 @@ Maybe<int> ConstructParts(Isolate* isolate, const icu::UnicodeString& formatted,
    // other region covers some part of the formatted string. It's possible
    // there's another field with exactly the same begin and end as this backdrop,
    // in which case the backdrop's field_id of -1 will give it lower priority.
@@ -137,7 +139,7 @@ Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
      }
    }
  
-@@ -1401,7 +1403,7 @@ Maybe<int> ConstructParts(Isolate* isola
+@@ -1401,7 +1403,7 @@ Maybe<int> ConstructParts(Isolate* isolate, const icu::UnicodeString& formatted,
      Handle<String> substring;
      ASSIGN_RETURN_ON_EXCEPTION_VALUE(
          isolate, substring,
@@ -146,7 +148,7 @@ Refs: https://github.com/v8/v8/commit/3f8dc4b2e5baf77b463334c769af85b79d8c1463
          Nothing<int>());
      Intl::AddElement(isolate, result, index, field_type_string, substring);
      ++index;
-@@ -1421,14 +1423,14 @@ MaybeHandle<JSArray> JSNumberFormat::For
+@@ -1421,14 +1423,14 @@ MaybeHandle<JSArray> JSNumberFormat::FormatToParts(
        number_format->icu_number_formatter().raw();
    CHECK_NOT_NULL(fmt);
  
