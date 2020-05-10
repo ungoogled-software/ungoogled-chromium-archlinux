@@ -40,7 +40,11 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-skia-harmony.patch
         # -----------
         "git+https://github.com/Eloston/ungoogled-chromium#tag=${_ungoogled_version}"
-        flags.archlinux.gn)
+        flags.archlinux.gn
+        chromium-drirc-disable-10bpc-color-configs.conf
+        vdpau-support.patch
+        vaapi-build-fix.patch
+        eglGetMscRateCHROMIUM.patch)
 sha256sums=('f478f28b8111cb70231df4c36e754d812ad7a94b7c844e9d0515345a71fd77a6'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'ae3bf107834bd8eda9a3ec7899fe35fde62e6111062e5def7d24bf49b53db3db'
@@ -51,7 +55,11 @@ sha256sums=('f478f28b8111cb70231df4c36e754d812ad7a94b7c844e9d0515345a71fd77a6'
             '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
             # -----------
             'SKIP'
-            '24ada570fdac8156ce91ee790a860b2cac7689da8b4fb5cfadc59f1f8df7e658')
+            '24ada570fdac8156ce91ee790a860b2cac7689da8b4fb5cfadc59f1f8df7e658'
+            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
+            '0ec6ee49113cc8cc5036fa008519b94137df6987bf1f9fbffb2d42d298af868a'
+            'fad5e678d62de0e45db1c2aa871628fdc981f78c26392c1dccc457082906a350'
+            '1dd330409094dc4bf393f00a51961a983360ccf99affd4f97a61d885129d326e')
 provides=('chromium')
 conflicts=('chromium')
 
@@ -65,9 +73,8 @@ declare -gA _system_libs=(
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
   [libdrm]=
-  [libevent]=libevent
   [libjpeg]=libjpeg
-  #[libpng]=libpng            # https://crbug.com/752403#c10
+  #[libpng]=libpng    # https://crbug.com/752403#c10
   [libvpx]=libvpx
   [libwebp]=libwebp
   [libxml]=libxml2
@@ -86,6 +93,8 @@ depends+=(${_system_libs[@]})
 
 prepare() {
   cd "$srcdir/chromium-${_chromium_version}"
+
+  # Allow building against system libraries in official builds
   sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
     tools/generate_shim_headers/generate_shim_headers.py
 
@@ -111,6 +120,15 @@ prepare() {
 
   # https://crbug.com/skia/6663#c10
   patch -Np0 -i ../chromium-skia-harmony.patch
+
+  # Fix VA-API on Nvidia
+  patch -Np1 -i ../vdpau-support.patch
+
+  # Fix VAAPI build on chromium 81+
+  patch -Np1 -i ../vaapi-build-fix.patch
+
+  # https://bugs.chromium.org/p/chromium/issues/detail?id=1064078
+  patch -Np1 -i ../eglGetMscRateCHROMIUM.patch
 
   msg2 'Pruning binaries'
   _ungoogled_repo="$srcdir/$pkgname"
@@ -231,4 +249,4 @@ package() {
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
 }
 
-# vim:set ts=2 sw=2 et:
+# vim:set ts=2 sw=2 et ft=sh:
