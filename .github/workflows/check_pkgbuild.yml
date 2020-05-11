@@ -1,8 +1,5 @@
 name: Check PKGBUILD
-on:
-    pull_request:
-        branches:
-            - master
+on: [push, pull_reques]
     
 jobs:
     build:
