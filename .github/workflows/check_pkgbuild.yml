@@ -1,6 +1,6 @@
 name: Check PKGBUILD
-on: [push, pull_reques]
-    
+on: [push, pull_request]
+
 jobs:
     build:
         name: "Check PKGBUILD"
