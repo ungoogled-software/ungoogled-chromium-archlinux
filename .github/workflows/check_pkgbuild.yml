@@ -11,4 +11,4 @@ jobs:
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
             - name: Check makepkg
-              uses: jstkdng/arch-check-pkgbuild@master
+              uses: ungoogled-software/archlinux-check-pkgbuild@master
