@@ -36,6 +36,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-drirc-disable-10bpc-color-configs.conf
         vdpau-support.patch
+        fix-intel-vaapi-wayland.patch
         clean-up-a-call-to-set_utf8.patch
         iwyu-std-numeric_limits-is-defined-in-limits.patch
         add-missing-algorithm-header-in-crx_install_error.cc.patch
@@ -51,6 +52,7 @@ sha256sums=('4961f20c4ee6a94490e823f1b1c4128147068f1ce9cfc509e81815f2101405bc'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '0ec6ee49113cc8cc5036fa008519b94137df6987bf1f9fbffb2d42d298af868a'
+            'f6335d1e14e4ed865f37695d67df18008c8664778620e698bb46c35b88a8b4c2'
             '58c41713eb6fb33b6eef120f4324fa1fb8123b1fbc4ecbe5662f1f9779b9b6af'
             '675fb3d6276cce569a641436465f58d5709d1d4a5f62b7052989479fd4aaea24'
             '0e2a78e4aa7272ab0ff4a4c467750e01bad692a026ad9828aaf06d2a9418b9d8'
@@ -135,12 +137,19 @@ prepare() {
   # Fix VA-API on Nvidia
   patch -Np1 -i ../vdpau-support.patch
 
+  # Fix VA-API on Intel on Wayland
+  patch -Np1 -i ../fix-intel-vaapi-wayland.patch
+
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$_pkgname-$_ungoogled_ver"
   _utils="${_ungoogled_repo}/utils"
+  msg2 'Pruning binaries'
   python "$_utils/prune_binaries.py" ./ "$_ungoogled_repo/pruning.list"
+  msg2 'Applying patches'
   python "$_utils/patches.py" apply ./ "$_ungoogled_repo/patches"
-  python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
+  msg2 'Applying domain substitution'
+  python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" \
+    -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
