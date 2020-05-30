@@ -11,6 +11,8 @@ pkgname=ungoogled-chromium
 pkgver=83.0.4103.61
 pkgrel=1
 _pkgname=ungoogled-chromium
+# sometimes an ungoogled patches can be combined with a new chromium release
+# only if the release only includes security fixes
 _ungoogled_ver=83.0.4103.61-1
 _launcher_ver=6
 pkgdesc="A lightweight approach to removing Google web service dependency"
