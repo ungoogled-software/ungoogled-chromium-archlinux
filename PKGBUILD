@@ -9,7 +9,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=83.0.4103.61
-pkgrel=1
+pkgrel=2
 _pkgname=ungoogled-chromium
 # sometimes an ungoogled patches can be combined with a new chromium release
 # only if the release only includes security fixes
@@ -205,7 +205,6 @@ build() {
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'use_vaapi=true'
-    'enable_swiftshader=false'
   )
 
   if [[ -n ${_system_libs[icu]+set} ]]; then
@@ -259,15 +258,26 @@ package() {
     "$pkgdir/usr/share/applications/chromium.desktop" \
     "$pkgdir/usr/share/man/man1/chromium.1"
 
-  cp \
-    out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/{*.bin,chromedriver} \
-    "$pkgdir/usr/lib/chromium/"
-  install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
+  local toplevel_files=(
+    chrome_100_percent.pak
+    chrome_200_percent.pak
+    resources.pak
+    v8_context_snapshot.bin
+
+    # ANGLE
+    libEGL.so
+    libGLESv2.so
+
+    chromedriver
+  )
 
   if [[ -z ${_system_libs[icu]+set} ]]; then
-    cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
+    toplevel_files+=(icudtl.dat)
   fi
+
+  cp "${toplevel_files[@]/#/out/Release/}" "$pkgdir/usr/lib/chromium/"
+  install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
+  install -Dm755 -t "$pkgdir/usr/lib/chromium/swiftshader" out/Release/swiftshader/*.so
 
   for size in 24 48 64 128 256; do
     install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
