@@ -69,7 +69,7 @@ sha256sums+=('7a9a1e02ee4ac42beec03ba59cbae0334632f2e56e729c7adc95279f5a84a36b')
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
 declare -gA _system_libs=(
-  [ffmpeg]=ffmpeg
+  #[ffmpeg]=ffmpeg
   [flac]=flac
   [fontconfig]=fontconfig
   [freetype]=freetype2
