@@ -1,7 +1,7 @@
 name: OBS Upload
 
 on:
-  push:
+#  push:
   release:
     types:
       - published
