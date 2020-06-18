@@ -1,2 +1,0 @@
-_ungoogled_version=$(grep "_ungoogled_version=" PKGBUILD | cut -d\' -f2)
-_chromium_version=$(curl -sL https://raw.githubusercontent.com/Eloston/ungoogled-chromium/${_ungoogled_version}/chromium_version.txt)
