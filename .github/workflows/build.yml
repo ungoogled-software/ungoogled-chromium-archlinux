@@ -11,18 +11,17 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
+            - name: Prepare environment
               run: .github/workflows/build/env.sh
             - name: Prepare sources
               run: sudo -u build -H bash -c .github/workflows/build/prepare.sh
             - name: Upload sources
               uses: actions/upload-artifact@v2
               with:
-                  name: src1
-                  path: /home/build/src.tar.zst
+                  name: prepare
+                  path: /home/build/build/
     build_1:
+        continue-on-error: true
         runs-on: ubuntu-20.04
         needs: prepare
         container:
@@ -32,13 +31,11 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download artifacts
+            - name: Download sources
               uses: actions/download-artifact@v2
               with:
-                  name: src1
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
+                  name: prepare
+            - name: Prepare environment
               run: .github/workflows/build/env.sh
             - name: Extract sources
               run: .github/workflows/build/extract.sh
@@ -47,9 +44,15 @@ jobs:
             - name: Upload sources
               uses: actions/upload-artifact@v2
               with:
-                  name: src2
-                  path: /home/build/src.tar.zst
+                  name: build_1
+                  path: /home/build/build/
+            - name: Upload package
+              uses: actions/upload-artifact@v2
+              with:
+                  name: res
+                  path: /home/build/res
     build_2:
+        continue-on-error: true
         runs-on: ubuntu-20.04
         needs: build_1
         container:
@@ -59,13 +62,11 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download artifacts
+            - name: Download sources
               uses: actions/download-artifact@v2
               with:
-                  name: src2
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
+                  name: build_1
+            - name: Prepare environment
               run: .github/workflows/build/env.sh
             - name: Extract sources
               run: .github/workflows/build/extract.sh
@@ -74,9 +75,15 @@ jobs:
             - name: Upload sources
               uses: actions/upload-artifact@v2
               with:
-                  name: src3
-                  path: /home/build/src.tar.zst
+                  name: build_2
+                  path: /home/build/build/
+            - name: Upload package
+              uses: actions/upload-artifact@v2
+              with:
+                  name: res
+                  path: /home/build/res
     build_3:
+        continue-on-error: true
         runs-on: ubuntu-20.04
         needs: build_2
         container:
@@ -86,13 +93,11 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download artifacts
+            - name: Download sources
               uses: actions/download-artifact@v2
               with:
-                  name: src3
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
+                  name: build_2
+            - name: Prepare environment
               run: .github/workflows/build/env.sh
             - name: Extract sources
               run: .github/workflows/build/extract.sh
@@ -101,9 +106,15 @@ jobs:
             - name: Upload sources
               uses: actions/upload-artifact@v2
               with:
-                  name: src4
-                  path: /home/build/src.tar.zst
+                  name: build_3
+                  path: /home/build/build/
+            - name: Upload package
+              uses: actions/upload-artifact@v2
+              with:
+                  name: res
+                  path: /home/build/res
     build_4:
+        continue-on-error: true
         runs-on: ubuntu-20.04
         needs: build_3
         container:
@@ -113,13 +124,11 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download artifacts
+            - name: Download sources
               uses: actions/download-artifact@v2
               with:
-                  name: src4
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
+                  name: build_3
+            - name: Prepare environment
               run: .github/workflows/build/env.sh
             - name: Extract sources
               run: .github/workflows/build/extract.sh
@@ -128,34 +137,10 @@ jobs:
             - name: Upload sources
               uses: actions/upload-artifact@v2
               with:
-                  name: src5
-                  path: /home/build/src.tar.zst
-    package:
-        runs-on: ubuntu-20.04
-        needs: build_4
-        container:
-            image: justkdng/arch-build-chromium
-        steps:
-            - name: Checkout latest commit
-              uses: actions/checkout@v2
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download artifacts
-              uses: actions/download-artifact@v2
-              with:
-                  name: src5
-            - name: Update system
-              run: pacman -Syu --noconfirm
-            - name: Setup environment
-              run: .github/workflows/build/env.sh
-            - name: Extract sources
-              run: .github/workflows/build/extract.sh
-            - name: Build package
-              run: sudo -u build -H bash -c .github/workflows/build/package.sh
+                  name: build_4
+                  path: /home/build/build/
             - name: Upload package
               uses: actions/upload-artifact@v2
               with:
-                  name: artifact
-                  path: /home/build/artifacts
-
-        
+                  name: res
+                  path: /home/build/res

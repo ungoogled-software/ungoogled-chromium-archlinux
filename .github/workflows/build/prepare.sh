@@ -1,7 +1,8 @@
 #!/bin/bash
+set -e
 shopt -s dotglob
 
-cd $HOME
+cd /home/build
 
 echo "==> Prepairing sources..."
 makepkg --nobuild --nodeps
@@ -9,11 +10,11 @@ makepkg --nobuild --nodeps
 echo "==> Size of src/ directory"
 du -shc src/
 
-echo "==> Compressing src/ directory..."
+echo "==> Creating source archive... "
 tar caf src.tar.zst src/ --remove-file -H posix --atime-preserve
 
-echo "==> Size of src/ archive"
-du -shc src.tar.zst
+echo "==> Checksum of source archive"
+sha256sum src.tar.zst | tee sum.txt
 
-echo "==> Resulting sha256sum of src/ archive"
-sha256sum src.tar.zst
+mkdir build
+mv src.tar.zst sum.txt build/

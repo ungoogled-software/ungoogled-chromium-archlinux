@@ -1,18 +1,26 @@
 #!/bin/bash
 
-cd $HOME
+cd /home/build
 
 echo "==> Resuming build..."
-timeout -k 10m -s SIGTERM 5h makepkg --noextract --nodeps --noarchive
+timeout -k 10m -s SIGTERM 310m makepkg --noextract --nodeps
 
-echo "==> Size of src/ directory"
-du -shc src/
+if compgen -G "*.pkg.tar.zst" > /dev/null; then
+    echo "==> Checksum of built package:"
+    sha256sum *.pkg.tar.zst | tee sum.txt
 
-echo "==> Compressing src/ directory..."
-tar caf src.tar.zst src/ --remove-file -H posix --atime-preserve
+    mkdir res
+    mv *.pkg.tar.zst sum.txt res/
+else
+    echo "==> Size of src/ directory"
+    du -shc src/
 
-echo "==> Size of src/ archive"
-du -shc src.tar.zst
+    echo "==> Creating source archive... "
+    tar caf src.tar.zst src/ --remove-file -H posix --atime-preserve
 
-echo "==> Resulting sha256sum of src/ archive"
-sha256sum src.tar.zst
+    echo "==> Checksum of source archive"
+    sha256sum src.tar.zst | tee sum.txt
+
+    mkdir build
+    mv src.tar.zst sum.txt build/
+fi
