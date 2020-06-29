@@ -1,10 +1,11 @@
 #!/bin/bash
+set -e
 
-echo "==> Resulting sha256sum of src/ archive"
-sha256sum src.tar.zst
+echo "==> Verifying sums..."
+sha256sum -c sum.txt
 
-echo "==> Extracting src archive..."
+echo "==> Extracting source archive..."
 tar -xf src.tar.zst -C /home/build
 
-echo "==> Deleting src archive..."
+echo "==> Deleting source archive..."
 rm src.tar.zst
