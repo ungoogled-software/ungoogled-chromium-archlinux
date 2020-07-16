@@ -4,13 +4,20 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chr
 
 ## Downloads
 
-Available in the AUR as `ungoogled-chromium`
+Available in the AUR as `ungoogled-chromium`, wayland users could benefit from using `ungoogled-chromium-ozone` and `ungoogled-chromium-git` is for the bleeding edge experience.
 
-* NOTE: `ungoogled-chromium-bin` is *not* officially part of ungoogled-chromium. Please submit all issues to the maintainer of the PKGBUILD.
+### Binary Downloads
 
-Alternatively, [get builds from the Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/).
+You can get pre-built binaries from the following sources, just follow the instructions on each site:
 
-**Source Code**: It is recommended to use a tag. You may also use `master`, but it is for development and may not be stable.
+[Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/) - Binaries
+contributed by ungoogled chromium users.
+
+[chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
+
+[jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
+
+All issues should go to their respective maintainers,
 
 ## Building
 
@@ -20,7 +27,7 @@ You only need to download the PKGBUILD from this repository. After that, run thi
 makepkg
 ```
 
-If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-chromium-*pkgver*.tar.xz`. Running the latter requires you to be in sudo or root.
+If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-chromium-*.pkg.*`. Running the latter requires you to be in sudo or root.
 
 ### Hardware Requirements
 

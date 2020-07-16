@@ -9,7 +9,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=83.0.4103.116
-pkgrel=3
+pkgrel=4
 _pkgname=ungoogled-chromium
 # sometimes an ungoogled patches can be combined with a new chromium release
 # only if the release only includes security fixes
@@ -17,7 +17,7 @@ _ungoogled_ver=83.0.4103.116-1
 _launcher_ver=6
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
-url="https://github.com/ungoogled-software/ungoogled-chromium-archlinux"
+url="https://github.com/Eloston/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
@@ -50,7 +50,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         nvidia-vdpau.patch
         chromium-83-gcc-10.patch
-        chromium-skia-harmony.patch)
+        chromium-skia-harmony.patch
+        chromium-ffmpeg-4.3.patch)
 sha256sums=('bb0c7e8dfee9f3a5e30eca7f34fc9f21caefa82a86c058c552f52b1ae2da2ac3'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -67,7 +68,8 @@ sha256sums=('bb0c7e8dfee9f3a5e30eca7f34fc9f21caefa82a86c058c552f52b1ae2da2ac3'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             '8095bf73afbca7c2b07306c5b4dd8f79b66e1053fa4e58b07f71ef938be603f1'
             '3e5ba8c0a70a4bc673deec0c61eb2b58f05a4c784cbdb7c8118be1eb6580db6d'
-            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1')
+            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
+            '5390304b5f544868985ce00a3ec082d4ece2dacb1c73cdb35dd4facfea12449a')
 source+=($_pkgname-$_ungoogled_ver.zip::https://github.com/Eloston/ungoogled-chromium/archive/$_ungoogled_ver.zip)
 sha256sums+=('571531f04e9d97aa2b6bd1a1b2bcabd5985558ae16c0e88b25703c0689ec4f17')
 
@@ -140,6 +142,9 @@ prepare() {
 
   # https://crbug.com/skia/6663#c10
   patch -Np0 -i ../chromium-skia-harmony.patch
+
+  # https://crbug.com/1095962
+  patch -Np1 -i ../chromium-ffmpeg-4.3.patch
 
   # Fixes from Gentoo
   patch -Np1 -i ../chromium-83-gcc-10.patch
@@ -239,7 +244,9 @@ build() {
   CFLAGS+='   -Wno-unknown-warning-option'
   CXXFLAGS+=' -Wno-unknown-warning-option'
 
+  msg2 'Configuring Chromium'
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
+  msg2 'Building Chromium'
   ninja -C out/Release chrome chrome_sandbox chromedriver
 }
 
