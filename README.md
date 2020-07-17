@@ -13,11 +13,13 @@ You can get pre-built binaries from the following sources, just follow the instr
 [Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/) - Binaries
 contributed by ungoogled chromium users.
 
+** Unofficial Repositories **
+
 [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
 
 [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
 
-All issues should go to their respective maintainers,
+All issues should go to their respective maintainers.
 
 ## Building
 
