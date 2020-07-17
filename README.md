@@ -4,20 +4,23 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chr
 
 ## Downloads
 
-Available in the AUR as `ungoogled-chromium`, wayland users could benefit from using `ungoogled-chromium-ozone` and `ungoogled-chromium-git` is for the bleeding edge experience.
+In the AUR there are multiple ungoogled-chromium flavors:
+
+1. `ungoogled-chromium` : regular ungoogled-chromium
+2. `ungoogled-chromium-ozone` : ungoogled-chromium but with flags that enable ozone support - useful for wayland users
+3. `ungoogled-chromium-git` : ungoogled-chromium but using the master branch of upstream UC patches.
 
 ### Binary Downloads
 
 You can get pre-built binaries from the following sources, just follow the instructions on each site:
 
-[Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/) - Binaries
-contributed by ungoogled chromium users.
+[Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/) - Binaries contributed by ungoogled chromium users.
 
-** Unofficial Repositories **
+**Unofficial Repositories:**
 
-[chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
+- [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
 
-[jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
+- [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
 
 All issues should go to their respective maintainers.
 
