@@ -34,3 +34,4 @@ index 3010db5f40c..856dfb221e7 100644
 +  auto x32 = static_cast<int32_t>(x);
    return x32 * 1.0 / (1 << 16);
  }
+ 
