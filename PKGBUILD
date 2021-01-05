@@ -25,7 +25,10 @@ url="https://github.com/Eloston/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
-         'desktop-file-utils' 'hicolor-icon-theme')
+         'desktop-file-utils' 'hicolor-icon-theme'
+         'icu=68',
+         're2=1:20201101-1'
+)
 makedepends=('python' 'python2' 'gperf' 'mesa' 'ninja' 'nodejs' 'git' 'libva'
              'libpipewire02' 'clang' 'lld' 'gn' 'java-runtime-headless'
              'python2-setuptools')
