@@ -7,8 +7,7 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chr
 In the AUR there are multiple ungoogled-chromium flavors:
 
 1. `ungoogled-chromium` : regular ungoogled-chromium
-2. `ungoogled-chromium-ozone` : ungoogled-chromium but with flags that enable ozone support - useful for wayland users
-3. `ungoogled-chromium-git` : ungoogled-chromium but using the master branch of upstream UC patches.
+2. `ungoogled-chromium-git` : ungoogled-chromium but using the master branch of upstream UC patches.
 
 ### Binary Downloads
 
@@ -37,52 +36,6 @@ If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-c
 ### Hardware Requirements
 
 * A 64-bit system is required, as Arch has dropped 32-bit support. 8 GB of RAM is highly recommended (per the document in the Chromium source tree under `docs/linux_build_instructions.md`).
-
-## Developer info
-
-### Updating docker image
-
-You can forcefully update the docker image used for CI by committing any
-change to the `.cirrus_Dockerfile` file. This is particularly important to
-try when `validate_makepkg_task` is failing for unknown reasons.
-
-### Update submodule
-
-The submodule is primarily needed for `devutils`. Use `devutils/update_submodule.sh` to update the submodule.
-
-### Update patches
-
-You need to clone the entire repository, along with the submodules, with this command:
-
-`git clone --recurse-submodules https://github.com/ungoogled-software/ungoogled-chromium-archlinux`
-
-You should update the submodule first. After that, do this entire section below:
-
-```sh
-./devutils/update_patches.sh merge
-source devutils/set_quilt_vars.sh
-
-# Setup Chromium source
-mkdir -p build/{src,download_cache}
-./ungoogled-chromium/utils/downloads.py retrieve -i ungoogled-chromium/downloads.ini -c build/download_cache
-./ungoogled-chromium/utils/downloads.py unpack -i ungoogled-chromium/downloads.ini -c build/download_cache build/src
-
-cd build/src
-# Use quilt to refresh patches. See ungoogled-chromium's docs/developing.md section "Updating patches" for more details
-quilt pop -a
-
-cd ../../
-# Remove all patches introduced by ungoogled-chromium
-./devutils/update_patches.sh unmerge
-# Ensure patches/series is formatted correctly, e.g. blank lines
-
-# Sanity checking for consistency in series file
-./devutils/check_patch_files.sh
-
-# Use git to add changes and commit
-```
-
-Afterwards, update `_ungoogled_version` in PKGBUILD to the same tag the submodule is using (`cd` into the submodule, then use `git describe` to get the needed tag).
 
 ## License
 
