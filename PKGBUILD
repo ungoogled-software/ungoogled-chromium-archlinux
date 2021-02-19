@@ -8,7 +8,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=88.0.4324.146
+pkgver=88.0.4324.182
 pkgrel=1
 _launcher_ver=7
 _gcc_patchset=3
@@ -39,13 +39,15 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         chromium-drirc-disable-10bpc-color-configs.conf
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
+        chromium-glibc-2.33.patch
         wayland-egl.patch
         subpixel-anti-aliasing-in-FreeType-2.8.1.patch)
-sha256sums=('38b118fbe8bbdf89e4f170ced090088f5eb2bb68f2295abbb0006cc94b7f827d'
-            'cbbc917097ca089a2bcd2b85f9d7f160e52323a9d900d2fc1da5a84567f7b357'
+sha256sums=('30411fc3ec2d33df4c5cad41f21affa3823c80f7dbd394f6d68f9a1e81015b81'
+            '4b0e06af18f084c11b3fea6a084d27e13952e8192f39c066563dfa8890d6e6d8'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e5a60a4c9d0544d3321cc241b4c7bd4adb0a885f090c6c6c21581eac8e3b4ba9'
+            '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6')
 
@@ -87,6 +89,9 @@ prepare() {
     third_party/blink/renderer/core/xml/*.cc \
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/*.cc
+
+  # https://crbug.com/1164975
+  patch -Np1 -i ../chromium-glibc-2.33.patch
 
   # Upstream fixes
   patch -Np1 -d third_party/skia <../subpixel-anti-aliasing-in-FreeType-2.8.1.patch
