@@ -37,17 +37,21 @@ conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$_pkgver.tar.xz
         $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
-        chromium-drirc-disable-10bpc-color-configs.conf
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-glibc-2.33.patch
-        wayland-egl.patch)
+        add-dependency-on-opus-in-webcodecs.patch
+        x11-ozone-fix-two-edge-cases.patch
+        use-oauth2-client-switches-as-default.patch
+        chromium-drirc-disable-10bpc-color-configs.conf)
 sha256sums=('df4914407b68afdc6449cb8e3f1b08d110eb8689ac41f86490e337fa4d1be379'
             '2bc8d0089c1a687b146a7921fcc5946c5f5f7c1745a1fe1ea6f0e275d4338631'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
-            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'f8b1558f6c87b33423da854d42f0f69d47885a96d6bf6ce7f26373e93d47442f'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
-            '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574')
+            'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
+            '9e4743bdeaf5b668659ad53400e3977006916aac3a7ba045bbc750b7b4cbf274'
+            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
+            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -88,14 +92,22 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/*.cc
 
+  # Use the --oauth2-client-id= and --oauth2-client-secret= switches for
+  # setting GOOGLE_DEFAULT_CLIENT_ID and GOOGLE_DEFAULT_CLIENT_SECRET at
+  # runtime -- this allows signing into Chromium without baked-in values
+  patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
+
   # https://crbug.com/1164975
   patch -Np1 -i ../chromium-glibc-2.33.patch
-  
-  # Fixes for building with libstdc++ instead of libc++
-  cat ../patches/chromium-89-* | patch -Np1
 
-  # Wayland/EGL regression (crbug #1071528 #1071550)
-  patch -Np1 -i ../wayland-egl.patch
+  # Upstream fixes
+  patch -Np1 -i ../add-dependency-on-opus-in-webcodecs.patch
+  patch -Np1 -i ../x11-ozone-fix-two-edge-cases.patch
+
+  # Fixes for building with libstdc++ instead of libc++
+  patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
+  patch -Np1 -i ../patches/chromium-89-AXTreeSerializer-include.patch
+
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$_pkgname-$_uc_ver"
