@@ -42,7 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         add-dependency-on-opus-in-webcodecs.patch
         x11-ozone-fix-two-edge-cases.patch
         use-oauth2-client-switches-as-default.patch
-        chromium-drirc-disable-10bpc-color-configs.conf)
+        chromium-drirc-disable-10bpc-color-configs.conf
+        wayland-egl.patch)
 sha256sums=('df4914407b68afdc6449cb8e3f1b08d110eb8689ac41f86490e337fa4d1be379'
             '2bc8d0089c1a687b146a7921fcc5946c5f5f7c1745a1fe1ea6f0e275d4338631'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
@@ -51,7 +52,8 @@ sha256sums=('df4914407b68afdc6449cb8e3f1b08d110eb8689ac41f86490e337fa4d1be379'
             'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
             '9e4743bdeaf5b668659ad53400e3977006916aac3a7ba045bbc750b7b4cbf274'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb')
+            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
+            '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -108,6 +110,8 @@ prepare() {
   patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
   patch -Np1 -i ../patches/chromium-89-AXTreeSerializer-include.patch
 
+  # Wayland/EGL regression (crbug #1071528 #1071550)
+  patch -Np1 -i ../wayland-egl.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$_pkgname-$_uc_ver"
