@@ -175,35 +175,3 @@ jobs:
               with:
                   name: res
                   path: /home/build/res
-    build_6:
-        continue-on-error: true
-        runs-on: ubuntu-20.04
-        needs: build_5
-        container:
-            image: justkdng/arch-build-chromium
-        steps:
-            - name: Checkout latest commit
-              uses: actions/checkout@v2
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-            - name: Download sources
-              uses: actions/download-artifact@v2
-              with:
-                  name: build_5
-            - name: Prepare environment
-              run: .github/workflows/build/env.sh
-            - name: Extract sources
-              run: .github/workflows/build/extract.sh
-            - name: Build package
-              run: sudo -u build -H bash -c .github/workflows/build/build.sh
-            - name: Upload sources
-              uses: actions/upload-artifact@v2
-              with:
-                  name: build_6
-                  path: /home/build/build/
-            - name: Upload package
-              uses: actions/upload-artifact@v2
-              with:
-                  name: res
-                  path: /home/build/res
-                  
