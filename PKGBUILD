@@ -8,10 +8,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=88.0.4324.182
+pkgver=89.0.4389.90
 pkgrel=1
 _launcher_ver=7
-_gcc_patchset=3
+_gcc_patchset=7
 _pkgname=$(echo $pkgname | cut -d\- -f1-2)
 _pkgver=$(echo $pkgver | cut -d\. -f1-4)
 # ungoogled chromium variables
@@ -37,19 +37,23 @@ conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$_pkgver.tar.xz
         $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
-        chromium-drirc-disable-10bpc-color-configs.conf
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-glibc-2.33.patch
-        wayland-egl.patch
-        subpixel-anti-aliasing-in-FreeType-2.8.1.patch)
-sha256sums=('30411fc3ec2d33df4c5cad41f21affa3823c80f7dbd394f6d68f9a1e81015b81'
-            '4b0e06af18f084c11b3fea6a084d27e13952e8192f39c066563dfa8890d6e6d8'
+        add-dependency-on-opus-in-webcodecs.patch
+        x11-ozone-fix-two-edge-cases.patch
+        use-oauth2-client-switches-as-default.patch
+        chromium-drirc-disable-10bpc-color-configs.conf
+        wayland-egl.patch)
+sha256sums=('11c6089c5fdd921216aa4eb34b52818a9b091cad655a24aed0982d29e65b279a'
+            'f18996580d89d48e9f140c072343df7259b3b5193eafc4b82877c7e8efb769da'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
-            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
-            'e5a60a4c9d0544d3321cc241b4c7bd4adb0a885f090c6c6c21581eac8e3b4ba9'
+            'f8b1558f6c87b33423da854d42f0f69d47885a96d6bf6ce7f26373e93d47442f'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
-            '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
-            '1e2913e21c491d546e05f9b4edf5a6c7a22d89ed0b36ef692ca6272bcd5faec6')
+            'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
+            '9e4743bdeaf5b668659ad53400e3977006916aac3a7ba045bbc750b7b4cbf274'
+            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
+            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
+            '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -90,17 +94,21 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/*.cc
 
+  # Use the --oauth2-client-id= and --oauth2-client-secret= switches for
+  # setting GOOGLE_DEFAULT_CLIENT_ID and GOOGLE_DEFAULT_CLIENT_SECRET at
+  # runtime -- this allows signing into Chromium without baked-in values
+  patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
+
   # https://crbug.com/1164975
   patch -Np1 -i ../chromium-glibc-2.33.patch
 
   # Upstream fixes
-  patch -Np1 -d third_party/skia <../subpixel-anti-aliasing-in-FreeType-2.8.1.patch
+  patch -Np1 -i ../add-dependency-on-opus-in-webcodecs.patch
+  patch -Np1 -i ../x11-ozone-fix-two-edge-cases.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-87-openscreen-include.patch
-  patch -Np1 -i ../patches/chromium-88-CompositorFrameReporter-dcheck.patch
-  patch -Np1 -i ../patches/chromium-88-ideographicSpaceCharacter.patch
-  patch -Np1 -i ../patches/chromium-88-AXTreeFormatter-include.patch
+  patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
+  patch -Np1 -i ../patches/chromium-89-AXTreeSerializer-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
