@@ -1,4 +1,9 @@
-pkg
+aur
+*.pkg.*
+ungoogled-chromium
 src
+pkg
 *.tar.*
-ungoogled-chromium-archlinux
+*.patch
+*.conf
+PKGBUILD

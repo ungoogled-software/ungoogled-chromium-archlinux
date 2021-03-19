@@ -4,6 +4,13 @@ shopt -s dotglob
 
 cd /home/build
 
+echo "==> Downloading aur..."
+
+git clone https://aur.archlinux.org/ungoogled-chromium.git aur
+git --git-dir=aur/.git checkout $(cat aur-version.git)
+
+cp aur/* . -nr
+
 echo "==> Prepairing sources..."
 makepkg --nobuild --nodeps
 
