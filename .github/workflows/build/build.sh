@@ -8,6 +8,7 @@ git clone https://aur.archlinux.org/ungoogled-chromium.git aur
 git --git-dir=aur/.git checkout $(cat aur-version.git)
 
 cp aur/* . -nr
+rm -rf aur
 
 echo "==> Resuming build..."
 timeout -k 10m -s SIGTERM 310m makepkg --noextract --nodeps
