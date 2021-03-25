@@ -18,6 +18,9 @@ makepkg --nobuild --nodeps
 echo "==> Size of src/ directory"
 du -shc src/
 
+echo "==> Content of src/ directory"
+ls -lah src
+
 echo "==> Creating source archive... "
 tar caf src.tar.zst src/ --remove-file -H posix --atime-preserve
 
