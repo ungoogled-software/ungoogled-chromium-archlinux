@@ -13,6 +13,10 @@ curl -LO https://repo.archlinuxcn.org/x86_64/$patched_glibc
 bsdtar -C / -xvf $patched_glibc
 rm $patched_glibc
 
+echo "==> Removing package caches"
+
+pacman -Scc --clean --noconfirm
+
 echo "==> Copying build files..."
 cp -r * /home/build
 chown -R build /home/build
