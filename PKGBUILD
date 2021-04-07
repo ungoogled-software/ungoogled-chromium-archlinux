@@ -42,7 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         add-dependency-on-opus-in-webcodecs.patch
         use-oauth2-client-switches-as-default.patch
         chromium-drirc-disable-10bpc-color-configs.conf
-        wayland-egl.patch)
+        wayland-egl.patch
+        fix-libva-redef.patch)
 sha256sums=('f2f0abe9697a220a8545df74d832c6c8d85a4fb11845e7e398752d746e72ed00'
             '38bc4f73356caaa23d7f6b9d2961f9241f8e0fb212f3ab11bf88dca1db5ca3ee'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
@@ -51,7 +52,8 @@ sha256sums=('f2f0abe9697a220a8545df74d832c6c8d85a4fb11845e7e398752d746e72ed00'
             'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
-            '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461')
+            '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461'
+            'ec1ade3696481c3db37abbfc876b498fd01a4c6029c380575b27e7c831b84f8f')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -106,6 +108,9 @@ prepare() {
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
   patch -Np1 -i ../patches/chromium-89-AXTreeSerializer-include.patch
+
+  # Fix for latest libva
+  patch -Np1 -i ../fix-libva-redef.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
