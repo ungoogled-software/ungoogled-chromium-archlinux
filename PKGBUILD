@@ -40,7 +40,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-glibc-2.33.patch
         add-dependency-on-opus-in-webcodecs.patch
-        x11-ozone-fix-two-edge-cases.patch
         use-oauth2-client-switches-as-default.patch
         chromium-drirc-disable-10bpc-color-configs.conf
         wayland-egl.patch)
@@ -50,7 +49,6 @@ sha256sums=('f2f0abe9697a220a8545df74d832c6c8d85a4fb11845e7e398752d746e72ed00'
             'f8b1558f6c87b33423da854d42f0f69d47885a96d6bf6ce7f26373e93d47442f'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
             'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
-            '9e4743bdeaf5b668659ad53400e3977006916aac3a7ba045bbc750b7b4cbf274'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461')
@@ -104,7 +102,6 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../add-dependency-on-opus-in-webcodecs.patch
-  patch -Np1 -i ../x11-ozone-fix-two-edge-cases.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
