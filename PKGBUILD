@@ -8,7 +8,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=89.0.4389.90
+pkgver=89.0.4389.114
 pkgrel=1
 _launcher_ver=7
 _gcc_patchset=7
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         chromium-drirc-disable-10bpc-color-configs.conf
         wayland-egl.patch)
-sha256sums=('11c6089c5fdd921216aa4eb34b52818a9b091cad655a24aed0982d29e65b279a'
-            'f18996580d89d48e9f140c072343df7259b3b5193eafc4b82877c7e8efb769da'
+sha256sums=('f2f0abe9697a220a8545df74d832c6c8d85a4fb11845e7e398752d746e72ed00'
+            '38bc4f73356caaa23d7f6b9d2961f9241f8e0fb212f3ab11bf88dca1db5ca3ee'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
             'f8b1558f6c87b33423da854d42f0f69d47885a96d6bf6ce7f26373e93d47442f'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
