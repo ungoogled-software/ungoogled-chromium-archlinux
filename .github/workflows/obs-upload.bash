@@ -62,40 +62,43 @@ generate_obs()
     local UNGOOGLED_CHROMIUM_VERSION="${5}"
     local DEPENDS="${6}"
     local MAKEDEPENDS="${7}"
+    local i
+    local filename
+    local url
+    local protocol
+    local host
+    local path
 
-    cat > "${ROOT}/_service" << EOF
-<services>
-    <service name="download_url">
-        <param name="protocol">https</param>
-        <param name="host">commondatastorage.googleapis.com</param>
-        <param name="path">chromium-browser-official/chromium-${CHROMIUM_VERSION}.tar.xz</param>
-    </service>
-    <service name="download_url">
-        <param name="protocol">https</param>
-        <param name="host">github.com</param>
-        <param name="path">foutrelis/chromium-launcher/archive/v${LAUNCHER_VERSION}.tar.gz</param>
-        <param name="filename">chromium-launcher-${LAUNCHER_VERSION}.tar.gz</param>
-    </service>
-    <service name="tar_scm">
-        <param name="scm">git</param>
-        <param name="url">https://github.com/ungoogled-software/ungoogled-chromium-archlinux.git</param>
-        <param name="submodules">disable</param>
-        <param name="version">_none_</param>
-        <param name="revision">${UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION}</param>
-    </service>
-    <service name="tar_scm">
-        <param name="scm">git</param>
-        <param name="url">https://github.com/Eloston/ungoogled-chromium.git</param>
-        <param name="submodules">disable</param>
-        <param name="version">_none_</param>
-        <param name="revision">${UNGOOGLED_CHROMIUM_VERSION}</param>
-    </service>
-    <service name="recompress">
-        <param name="compression">xz</param>
-        <param name="file">*.tar</param>
-    </service>
-</services>
-EOF
+    echo '<services>' > "${ROOT}/_service"
+    for i in "${source[@]}"
+    do
+        if echo "${i}" | grep -q 'https://'
+        then
+            if echo "${i}" | grep -q '::'
+            then
+                filename="$(echo "${i}" | awk -v FS='::' '{print $1}')"
+                url="$(echo "${i}" | awk -v FS='::' '{print $2}')"
+            else
+                filename=''
+                url="${i}"
+            fi
+            protocol="$(echo "${url}" | cut -d / -f 1 | cut -d : -f 1)"
+            host="$(echo "${url}" | cut -d / -f 3)"
+            path="$(echo "${url}" | cut -d / -f 4-)"
+            printf '%s<service name="download_url">\n' '    ' >> "${ROOT}/_service"
+            printf '%s<param name="protocol">%s</param>\n' '        ' "${protocol}" >> "${ROOT}/_service"
+            printf '%s<param name="host">%s</param>\n' '        ' "${host}" >> "${ROOT}/_service"
+            printf '%s<param name="path">%s</param>\n' '        ' "${path}" >> "${ROOT}/_service"
+            if test -n "${filename}"
+            then
+                printf '%s<param name="filename">%s</param>\n' '        ' "${filename}" >> "${ROOT}/_service"
+            fi
+            printf '%s</service>\n' '    ' >> "${ROOT}/_service"
+        else
+            cp "${BASE}/${i}" "${ROOT}"
+        fi
+    done
+    echo '</services>' >> "${ROOT}/_service"
 
     cat > "${ROOT}/_constraints" << 'EOF'
 <constraints>
@@ -125,7 +128,6 @@ EOF
         -e '/^depends=/,/[)]$/cdepends=('"${DEPENDS}"')' \
         -e '/^depends[+]=/d' \
         -e '/^makedepends=/,/[)]$/cmakedepends=('"${MAKEDEPENDS}"')' \
-        -e '/^source=/,/[)]$/csource=(chromium-${_chromium_version}.tar.xz chromium-launcher-$_launcher_ver.tar.gz ungoogled-chromium-archlinux.tar.xz ungoogled-chromium.tar.xz)'\
         "${ROOT}/PKGBUILD"
 }
 
@@ -136,7 +138,7 @@ upload_obs()
     local ROOT="${3}"
     local TYPE="${4}"
     local REPOSITORY
-    local PACKAGE="ungoogled-chromium"
+    local PACKAGE="ungoogled-chromium-arch"
     local FILE
     local FILENAME
 
@@ -177,7 +179,7 @@ LAUNCHER_VERSION="${_launcher_ver}"
 UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION="${_ungoogled_archlinux_version}"
 UNGOOGLED_CHROMIUM_VERSION="${_ungoogled_version}"
 DEPENDS="${depends[*]}"
-MAKEDEPENDS="${makedepends[*]} jack"
+MAKEDEPENDS="${makedepends[*]} jack jre-openjdk-headless"
 TYPE="$(get_type)"
 
 generate_obs "${TMP}" "${CHROMIUM_VERSION}" "${LAUNCHER_VERSION}" "${UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION}" "${UNGOOGLED_CHROMIUM_VERSION}" "${DEPENDS}" "${MAKEDEPENDS}"
