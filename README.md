@@ -25,7 +25,7 @@ All issues should go to their respective maintainers.
 
 ## Building
 
-You only need to download the PKGBUILD from this repository. After that, run this command:
+You only need to clone this repository. After that, run this command:
 
 ```
 makepkg
