@@ -11,9 +11,30 @@ In the AUR there are multiple ungoogled-chromium flavors:
 
 ### Binary Downloads
 
-You can get pre-built binaries from the following sources, just follow the instructions on each site:
+You can get pre-built binaries from the following sources:
 
-[Contributor Binaries website](//ungoogled-software.github.io/ungoogled-chromium-binaries/) - Binaries contributed by ungoogled chromium users.
+- [Contributor Binaries Source](//ungoogled-software.github.io/ungoogled-chromium-binaries/)
+- [OBS Production Project](//build.opensuse.org/project/show/home:ungoogled_chromium/ungoogled-chromium-arch)
+- [OBS Development Project](//build.opensuse.org/project/show/home:ungoogled_chromium:testing/ungoogled-chromium-arch)
+
+**OBS Repository:**
+
+Use these commands to add the OBS repository:
+```sh
+curl -s 'https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/x86_64/home_ungoogled_chromium_Arch.key' | pacman-key -a -
+cat >> /etc/pacman.conf << 'EOF'
+
+[home_ungoogled_chromium_Arch]
+SigLevel = Required TrustAll
+Server = https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/$arch
+EOF
+pacman -Sy
+```
+
+Use this command to install ungoogled-chromium:
+```sh
+pacman -Sy ungoogled-chromium
+```
 
 **Unofficial Repositories:**
 
