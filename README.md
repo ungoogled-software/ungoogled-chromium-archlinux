@@ -21,19 +21,19 @@ You can get pre-built binaries from the following sources:
 
 Use these commands to add the OBS repository:
 ```sh
-curl -s 'https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/x86_64/home_ungoogled_chromium_Arch.key' | pacman-key -a -
-cat >> /etc/pacman.conf << 'EOF'
+curl -s 'https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/x86_64/home_ungoogled_chromium_Arch.key' | sudo pacman-key -a -
+sudo cat >> /etc/pacman.conf << 'EOF'
 
 [home_ungoogled_chromium_Arch]
 SigLevel = Required TrustAll
 Server = https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/$arch
 EOF
-pacman -Sy
+sudo pacman -Sy
 ```
 
 Use this command to install ungoogled-chromium:
 ```sh
-pacman -Sy ungoogled-chromium
+sudo pacman -Sy ungoogled-chromium
 ```
 
 **Unofficial Repositories:**
