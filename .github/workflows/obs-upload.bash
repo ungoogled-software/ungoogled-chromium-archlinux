@@ -36,6 +36,19 @@ done
 
 PROJECT="${OBS_API_PROJECT:-home:${OBS_API_USERNAME}}"
 
+curl()
+{
+    for i in `seq 1 5`
+    do
+        command curl -sS -K - "${@}" << EOF
+user="${OBS_API_USERNAME}:${OBS_API_PASSWORD}"
+EOF
+        test "${?}" -eq 0 && return 0
+        sleep 30s
+    done
+    return 1
+}
+
 get_type()
 {
     local TAG
@@ -133,10 +146,8 @@ EOF
 
 upload_obs()
 {
-    local USERNAME="${1}"
-    local PASSWORD="${2}"
-    local ROOT="${3}"
-    local TYPE="${4}"
+    local ROOT="${1}"
+    local TYPE="${2}"
     local REPOSITORY
     local PACKAGE="ungoogled-chromium-arch"
     local FILE
@@ -154,19 +165,13 @@ upload_obs()
 
     esac
 
-    curl -sS --retry 5 -K - "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" -F 'cmd=deleteuploadrev' << EOF
-user="${USERNAME}:${PASSWORD}"
-EOF
+    curl "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" -F 'cmd=deleteuploadrev'
 
-    curl -sS --retry 5 -K - "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" > directory.xml << EOF
-user="${USERNAME}:${PASSWORD}"
-EOF
+    curl "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" > directory.xml
 
     xmlstarlet sel -t -v '//entry/@name' < directory.xml | while read FILENAME
     do
-        curl -sS --retry 5 -K - "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}/${FILENAME}?rev=upload" -X DELETE << EOF
-user="${USERNAME}:${PASSWORD}"
-EOF
+        curl "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}/${FILENAME}?rev=upload" -X DELETE
     done
 
     rm -f directory.xml
@@ -196,6 +201,6 @@ MAKEDEPENDS="${makedepends[*]} jack jre-openjdk-headless"
 TYPE="$(get_type)"
 
 generate_obs "${TMP}" "${CHROMIUM_VERSION}" "${LAUNCHER_VERSION}" "${UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION}" "${UNGOOGLED_CHROMIUM_VERSION}" "${DEPENDS}" "${MAKEDEPENDS}"
-upload_obs "${OBS_API_USERNAME}" "${OBS_API_PASSWORD}" "${TMP}" "${TYPE}"
+upload_obs "${TMP}" "${TYPE}"
 
 rm -rf "${TMP}"
