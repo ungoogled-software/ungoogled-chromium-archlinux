@@ -200,7 +200,6 @@ DEPENDS="${depends[*]}"
 MAKEDEPENDS="${makedepends[*]} jack jre-openjdk-headless"
 TYPE="$(get_type)"
 
+trap 'rm -rf "${TMP}"' EXIT INT
 generate_obs "${TMP}" "${CHROMIUM_VERSION}" "${LAUNCHER_VERSION}" "${UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION}" "${UNGOOGLED_CHROMIUM_VERSION}" "${DEPENDS}" "${MAKEDEPENDS}"
 upload_obs "${TMP}" "${TYPE}"
-
-rm -rf "${TMP}"
