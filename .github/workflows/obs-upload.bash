@@ -113,29 +113,6 @@ generate_obs()
     done
     echo '</services>' >> "${ROOT}/_service"
 
-    cat > "${ROOT}/_constraints" << 'EOF'
-<constraints>
-    <hardware>
-        <disk>
-            <size unit="G">16</size>
-        </disk>
-        <memory>
-            <size unit="G">8</size>
-        </memory>
-    </hardware>
-    <overwrite>
-        <conditions>
-            <arch>x86_64</arch>
-        </conditions>
-        <hardware>
-            <memory>
-                <size unit="G">24</size>
-            </memory>
-        </hardware>
-    </overwrite>
-</constraints>
-EOF
-
     cp "${PKGBUILD}" "${ROOT}/PKGBUILD"
     sed -r -i \
         -e '/^depends=/,/[)]$/cdepends=('"${DEPENDS}"')' \
