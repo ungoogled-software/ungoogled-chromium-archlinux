@@ -179,14 +179,10 @@ upload_obs()
     for FILE in "${ROOT}"/*
     do
         FILENAME="${FILE##*/}"
-        curl -sS --retry 5 -K - "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}/${FILENAME}?rev=upload" -T "${FILE}" << EOF
-user="${USERNAME}:${PASSWORD}"
-EOF
+        curl "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}/${FILENAME}?rev=upload" -T "${FILE}"
     done
 
-    curl -sS --retry 5 -K - "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" -F 'cmd=commit' << EOF
-user="${USERNAME}:${PASSWORD}"
-EOF
+    curl "https://api.opensuse.org/source/${REPOSITORY}/${PACKAGE}" -F 'cmd=commit'
 }
 
 . "${PKGBUILD}"
