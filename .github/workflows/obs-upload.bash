@@ -78,9 +78,6 @@ generate_obs()
     local i
     local filename
     local url
-    local protocol
-    local host
-    local path
 
     echo '<services>' > "${ROOT}/_service"
     for i in "${source[@]}"
@@ -95,13 +92,8 @@ generate_obs()
                 filename=''
                 url="${i}"
             fi
-            protocol="$(echo "${url}" | cut -d / -f 1 | cut -d : -f 1)"
-            host="$(echo "${url}" | cut -d / -f 3)"
-            path="$(echo "${url}" | cut -d / -f 4-)"
             printf '%s<service name="download_url">\n' '    ' >> "${ROOT}/_service"
-            printf '%s<param name="protocol">%s</param>\n' '        ' "${protocol}" >> "${ROOT}/_service"
-            printf '%s<param name="host">%s</param>\n' '        ' "${host}" >> "${ROOT}/_service"
-            printf '%s<param name="path">%s</param>\n' '        ' "${path}" >> "${ROOT}/_service"
+            printf '%s<param name="url">%s</param>\n' '        ' "${url}" >> "${ROOT}/_service"
             if test -n "${filename}"
             then
                 printf '%s<param name="filename">%s</param>\n' '        ' "${filename}" >> "${ROOT}/_service"
