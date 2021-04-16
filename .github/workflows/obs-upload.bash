@@ -82,7 +82,7 @@ generate_obs()
     echo '<services>' > "${ROOT}/_service"
     for i in "${source[@]}"
     do
-        if echo "${i}" | grep -q 'https://'
+        if echo "${i}" | grep -q -E 'https?://'
         then
             if echo "${i}" | grep -q '::'
             then
