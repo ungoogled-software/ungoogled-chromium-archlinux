@@ -3,7 +3,7 @@ set -e
 shopt -s dotglob
 
 echo "==> Installing required packages"
-pacman -Syu --noconfirm jq coreutils
+pacman -Syu --noconfirm jq coreutils pipewire
 
 # Work-around the issue with glibc 2.33 on old Docker engines
 # Extract files directly as pacman is also affected by the issue
