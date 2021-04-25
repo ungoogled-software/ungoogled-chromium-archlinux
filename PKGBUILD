@@ -8,10 +8,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=89.0.4389.114
-pkgrel=2
+pkgver=90.0.4430.85
+pkgrel=1
 _launcher_ver=7
-_gcc_patchset=7
+_gcc_patchset=6
 _pkgname=$(echo $pkgname | cut -d\- -f1-2)
 _pkgver=$(echo $pkgver | cut -d\. -f1-4)
 # ungoogled chromium variables
@@ -22,13 +22,11 @@ arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
-         'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils'
+         'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
          'desktop-file-utils' 'hicolor-icon-theme')
-makedepends=('python' 'python2' 'gperf' 'mesa' 'ninja' 'nodejs' 'git' 'libva'
-             'libpipewire02' 'clang' 'lld' 'gn' 'java-runtime-headless'
-             'python2-setuptools')
-optdepends=('libpipewire02: WebRTC desktop sharing under Wayland'
-            'libva: hardware-accelerated video decode [experimental]'
+makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
+             'java-runtime-headless' 'python2' 'python2-setuptools')
+optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: needed for file dialogs in KDE'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
             'kwallet: for storing passwords in KWallet on KDE desktops')
@@ -38,22 +36,20 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
-        chromium-glibc-2.33.patch
-        add-dependency-on-opus-in-webcodecs.patch
-        use-oauth2-client-switches-as-default.patch
+        add-clang-nomerge-attribute-to-CheckError.patch
         chromium-drirc-disable-10bpc-color-configs.conf
+        chromium-glibc-2.33.patch
         wayland-egl.patch
-        fix-libva-redef.patch)
-sha256sums=('f2f0abe9697a220a8545df74d832c6c8d85a4fb11845e7e398752d746e72ed00'
-            '38bc4f73356caaa23d7f6b9d2961f9241f8e0fb212f3ab11bf88dca1db5ca3ee'
+        use-oauth2-client-switches-as-default.patch)
+sha256sums=('01c5594d4b7eaa67e00b4fa16ae0c9d35ec5917467abd387ba1b5cc332d44922'
+            '72c4b5225b88b73bbb5d31e6402313950c1a2b5e046a65a2c523874625dc6376'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
-            'f8b1558f6c87b33423da854d42f0f69d47885a96d6bf6ce7f26373e93d47442f'
-            '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
-            'b86b11de8db438c47f0a84c7956740f648d21035f4ee46bfbd50c3348d369121'
-            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
+            '3eb9580ea35a96789e02815270498226fa33726f4210a5ee36f3868af2ffae1f'
+            '5e22afcb91b5402bc09e80630c5323d61013c3fccb0bbd9b23d1e79a400b00d0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
-            '2f9b76d15ad2538c628e591da433cd826b17184e8448f2e48fd245bdbd424461'
-            'ec1ade3696481c3db37abbfc876b498fd01a4c6029c380575b27e7c831b84f8f')
+            '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
+            '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
+            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -102,15 +98,12 @@ prepare() {
   # https://crbug.com/1164975
   patch -Np1 -i ../chromium-glibc-2.33.patch
 
-  # Upstream fixes
-  patch -Np1 -i ../add-dependency-on-opus-in-webcodecs.patch
+  # Revert addition of [[clang::nomerge]] attribute; not supported by clang 11
+  patch -Rp1 -d base <../add-clang-nomerge-attribute-to-CheckError.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-89-quiche-dcheck.patch
-  patch -Np1 -i ../patches/chromium-89-AXTreeSerializer-include.patch
-
-  # Fix for latest libva
-  patch -Np1 -i ../fix-libva-redef.patch
+  patch -Np1 -i ../patches/chromium-90-quantization_utils-include.patch
+  patch -Np1 -i ../patches/chromium-90-TokenizedOutput-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
@@ -145,7 +138,7 @@ prepare() {
       -delete
   done
 
-  python2 build/linux/unbundle/replace_gn_files.py \
+  ./build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
 }
 
@@ -201,7 +194,7 @@ build() {
   CXXFLAGS+=' -Wno-unknown-warning-option'
 
   msg2 'Configuring Chromium'
-  gn gen out/Release --args="${_flags[*]}" --script-executable=python2
+  gn gen out/Release --args="${_flags[*]}"
   msg2 'Building Chromium'
   ninja -C out/Release chrome chrome_sandbox chromedriver
 }
