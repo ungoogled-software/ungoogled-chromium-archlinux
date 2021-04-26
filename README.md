@@ -14,8 +14,8 @@ In the AUR there are multiple ungoogled-chromium flavors:
 You can get pre-built binaries from the following sources:
 
 - [Contributor Binaries Source](//ungoogled-software.github.io/ungoogled-chromium-binaries/)
-- [OBS Production Project](//build.opensuse.org/project/show/home:ungoogled_chromium/ungoogled-chromium-arch)
-- [OBS Development Project](//build.opensuse.org/project/show/home:ungoogled_chromium:testing/ungoogled-chromium-arch)
+- [OBS Production Project](//build.opensuse.org/package/show/home:ungoogled_chromium/ungoogled-chromium-arch)
+- [OBS Development Project](//build.opensuse.org/package/show/home:ungoogled_chromium:testing/ungoogled-chromium-arch)
 
 **OBS Repository:**
 
