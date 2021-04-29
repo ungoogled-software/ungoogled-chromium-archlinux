@@ -1,0 +1,516 @@
+name: Build ungoogled-chromium-archlinux for testing
+on: [push, pull_request]
+
+jobs:
+    build-container:
+        runs-on: ubuntu-latest
+        container: archlinux
+        steps:
+            - name: Checkout latest commit
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+            - name: Install dependencies
+              run: pacman -Syu --needed --noconfirm docker base-devel
+            - name: Log into registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Build container
+              id: build
+              run: |
+                  # Add non root user to run makepkg with
+                  useradd makepkg --no-create-home
+                  chown -R makepkg .
+
+                  # Generate archive with all required sources for the build
+                  # This either includes local or downloads files using an url
+                  su -c "makepkg --allsource" makepkg
+
+                  CHROMIUM_VERSION="$(compgen -G "*.src.tar.gz" | grep -Po '([\d\.]+-\d*)')"
+
+                  REGISTRY="docker.pkg.github.com/${{ github.repository }}"
+                  NAME="ungoogled-chromium-archlinux-testing"
+
+                  ID="$(echo $REGISTRY/$NAME | tr '[A-Z]' '[a-z]')"
+                  REF="$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')"
+
+                  [[ "${{ github.ref }}" == "refs/tags/"* ]] && REF=$(echo $REF | sed -e 's/^v//')
+
+                  REF_TAG="$ID:$REF"
+                  SHA_TAG="$ID:${{ github.sha }}"
+
+                  echo "CHROMIUM_VERSION=$CHROMIUM_VERSION"
+                  echo "REGISTRY=$REGISTRY"
+                  echo "NAME=$NAME"
+                  echo "ID=$ID"
+                  echo "REF=$REF"
+                  echo "REF_TAG=$REF_TAG"
+                  echo "SHA_TAG=$SHA_TAG"
+
+                  # Build container from source files
+                  docker build . \
+                      --file .github/workflows/build/Dockerfile \
+                      --tag "$REF_TAG" \
+                      --tag "$SHA_TAG"
+
+                  echo "::set-output name=chromium-version::$CHROMIUM_VERSION"
+
+                  echo "::set-output name=ref-tag::$REF_TAG"
+                  echo "::set-output name=sha-tag::$SHA_TAG"
+
+            - name: Push image
+              run: |
+                  docker push "${{ steps.build.outputs.sha-tag }}"
+                  docker push "${{ steps.build.outputs.ref-tag }}"
+        outputs:
+            tag: "${{ steps.build.outputs.sha-tag }}"
+            chromium-version: "${{ steps.build.outputs.chromium-version }}"
+            finished: "no"
+
+    # FIXME: Extract all repeated steps into composite actions
+    # (see https://github.com/actions/runner/issues/646 and https://github.com/actions/runner/pull/612)
+    build-1:
+        runs-on: ubuntu-latest
+        needs: "build-container"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    build-2:
+        runs-on: ubuntu-latest
+        needs: "build-1"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    build-3:
+        runs-on: ubuntu-latest
+        needs: "build-2"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    build-4:
+        runs-on: ubuntu-latest
+        needs: "build-3"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    build-5:
+        runs-on: ubuntu-latest
+        needs: "build-4"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    build-6:
+        runs-on: ubuntu-latest
+        needs: "build-5"
+        steps:
+            - name: Log into registry
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
+            - name: Set up variables
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: variables
+              run: |
+                  NEEDS="$(echo '${{ toJSON(needs) }}' | jq -r "keys[0]")"
+
+                  echo Current jobs needs $NEEDS
+                  echo "::set-output name=needs::$NEEDS"
+            - name: Prepare host
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              run: mkdir input progress output
+            - name: Download progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ steps.variables.outputs.needs }}
+            - name: Prepare progress
+              if: ${{ join(needs.*.outputs.finished) != 'yes' && steps.variables.outputs.needs != 'build-container' }}
+              run: mv progress.tar.zst progress.tar.zst.sum input
+            - name: Run container
+              if: ${{ join(needs.*.outputs.finished) != 'yes' }}
+              id: run
+              run: docker run -e "TIMEOUT=330"
+                  --mount type=bind,source=$(pwd)/input,target=/mnt/input
+                  --mount type=bind,source=$(pwd)/progress,target=/mnt/progress
+                  --mount type=bind,source=$(pwd)/output,target=/mnt/output
+                  "${{ join(needs.*.outputs.tag) }}"
+            - name: Check for package or finished flag
+              id: checks
+              run: |
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=package::yes"
+                  else
+                      echo "::set-output name=package::no"
+                  fi
+
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
+                      echo "::set-output name=finished::yes"
+                  else
+                      echo "::set-output name=finished::no"
+                  fi
+            - name: Upload progress
+              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ github.job }}
+                  path: progress
+                  if-no-files-found: error
+            - name: Upload package
+              if: ${{ steps.checks.outputs.package == 'yes' }}
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+                  path: output
+                  if-no-files-found: warn
+        outputs:
+            tag: "${{ join(needs.*.outputs.tag) }}"
+            chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
+            finished: "${{ steps.checks.outputs.finished }}"
+
+    test-package:
+        runs-on: ubuntu-latest
+        needs: "build-6"
+        container: archlinux
+        steps:
+            - name: Download package
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ join(needs.*.outputs.chromium-version) }}
+            - name: Install package
+              run: pacman -U ungoogled-chromium-*.pkg.*
+            - name: Test package
+              run: chromium --version
+
+    prune-images:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Prune testing images
+              uses: SmartsquareGmbH/delete-old-packages@v0.3.1
+              with:
+                  names: "ungoogled-chromium-archlinux-testing"
+
+                  # FIXME: This is not ideal, the number needs to be high to avoid an image getting deleted that is currently
+                  #        required by a running workflow
+                  #        (see https://github.com/SmartsquareGmbH/delete-old-packages/issues/9)
+                  keep: 50
