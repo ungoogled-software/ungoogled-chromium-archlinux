@@ -35,6 +35,8 @@ jobs:
 
                   [[ "${{ github.ref }}" == "refs/tags/"* ]] && REF=$(echo $REF | sed -e 's/^v//')
 
+                  [ "$REF" == "master" ] && REF=latest
+
                   REF_TAG="$ID:$REF"
                   SHA_TAG="$ID:${{ github.sha }}"
 
