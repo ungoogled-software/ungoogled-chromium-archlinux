@@ -529,16 +529,21 @@ jobs:
     test-package:
         runs-on: ubuntu-latest
         needs: "build-6"
-        container: archlinux
         steps:
+            - name: Log into registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+            - name: Pull image
+              run: docker pull "${{ join(needs.*.outputs.tag) }}"
             - name: Download package
               uses: actions/download-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
-            - name: Install package
-              run: pacman -U ungoogled-chromium-*.pkg.*
-            - name: Test package
-              run: chromium --version
+            - name: Run container
+              run: docker run
+                  --entrypoint /bin/bash
+                  --mount type=bind,source="$(pwd)/${{ join(needs.*.outputs.chromium-version) }}",target=/home/build/${{ join(needs.*.outputs.chromium-version) }}
+                  "${{ join(needs.*.outputs.tag) }}"
+                   -c 'sudo pacman -U /home/build/${{ join(needs.*.outputs.chromium-version) }} --noconfirm && chromium --version'
 
     prune-images:
         runs-on: ubuntu-latest
