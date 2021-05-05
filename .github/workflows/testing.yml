@@ -110,10 +110,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -122,14 +128,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
@@ -180,10 +186,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -192,14 +204,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
@@ -250,10 +262,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -262,14 +280,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
@@ -320,10 +338,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -332,14 +356,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
@@ -390,10 +414,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -402,14 +432,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
@@ -460,10 +490,16 @@ jobs:
             - name: Check for package or finished flag
               id: checks
               run: |
-                  if [[ "$(ls -A output)" ]]; then
-                      echo "::set-output name=package::yes"
+                  if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" ]]; then
+                      echo "::set-output name=finished-last-build::yes"
                   else
-                      echo "::set-output name=package::no"
+                      echo "::set-output name=finished-last-build::no"
+                  fi
+
+                  if [[ "$(ls -A output)" ]]; then
+                      echo "::set-output name=finished-this-build::yes"
+                  else
+                      echo "::set-output name=finished-this-build::no"
                   fi
 
                   if [[ "${{ join(needs.*.outputs.finished) }}" == "yes" || "$(ls -A output)" ]]; then 
@@ -472,14 +508,14 @@ jobs:
                       echo "::set-output name=finished::no"
                   fi
             - name: Upload progress
-              if: ${{ steps.checks.outputs.finished != 'yes' }}
+              if: ${{ steps.checks.outputs.finished-last-build != 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ github.job }}
                   path: progress
                   if-no-files-found: error
             - name: Upload package
-              if: ${{ steps.checks.outputs.package == 'yes' }}
+              if: ${{ steps.checks.outputs.finished-this-build == 'yes' }}
               uses: actions/upload-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
