@@ -184,6 +184,10 @@ build() {
   _ungoogled_repo="$srcdir/$_pkgname-$_uc_ver"
   readarray -t -O ${#_flags[@]} _flags < "${_ungoogled_repo}/flags.gn"
 
+  # See https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/123
+  CFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fno-plt"
+  CXXFLAGS="$CFLAGS"
+
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
