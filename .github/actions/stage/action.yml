@@ -1,0 +1,33 @@
+name: Stage
+description: Build stage progressing or finishing the compilation in a container
+inputs:
+    finished:
+        description: If a previous stage already finished the build, the stage will set all output variables to the input ones and exit
+        required: false
+    progress-name:
+        description: The name of the progress artifact to be used
+        required: false
+    chromium-version:
+        description: The chromium version this stage is compiling
+        required: true
+    use-registry:
+        description: If the image should be retrieved from docker.pkg.github.com or from an artifact called 'image'
+        required: false
+    registry-token:
+        description: The access token for docker.pkg.github.com (required if 'use-registry' is set)
+        required: false
+    image-tag:
+        description: The tag of the container image to use (required if 'use-registry' is set)
+        required: false
+outputs:
+    finished:
+        description: If a previous stage already finished the build, the stage will set all output variables to the input ones and exit
+    chromium-version:
+        description: The chromium version this stage is compiling
+    use-registry:
+        description: If the image should be retrieved from docker.pkg.github.com or from an artifact called 'image'
+    image-tag:
+        description: The tag of the container image to use (required if 'use-registry' is set)
+runs:
+    using: node12
+    main: index.js

@@ -1,3 +1,6 @@
+.github/actions/stage/node_modules
+.github/actions/stage/*.js
+
 pkg
 src
 *.tar.*
