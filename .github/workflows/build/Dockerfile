@@ -8,7 +8,7 @@
 #               that contains a src directory with build process, said src directory will be used to continue the build.
 # - /mnt/output: Contains the built package file after a successfull full build
 # - /mnt/progress: Contains the current build progress in form of a "progress.tar.zst" archive with a corresponding sha256
-#                  checksum, "progress.tar.zst.sum", after a successfull partial build
+#                  checksum, "progress.tar.zst.sum", after a successfull partial or full build
 
 # Partial builds are limited by a timeout which can be set by passing the TIMEOUT enironment variable to the container.
 

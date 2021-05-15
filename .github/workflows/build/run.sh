@@ -66,10 +66,12 @@ if compgen -G "*.pkg.tar.zst" > /dev/null; then
         echo "==> Moving package to output directory..."
         sudo mv *.pkg.tar.zst sum.txt /mnt/output
     else
-        echo "==> Output directory does not exist, exiting"
+        echo "==> Output directory does not exist"
     fi
-elif [[ -d "/mnt/progress" ]]; then
-    echo "==> No package built yet, compressing current build progress"
+fi
+
+if [[ -d "/mnt/progress" ]]; then
+    echo "==> Found progress directory, compressing current build progress"
 
     echo "==> Creating archive of progress..."
     tar caf progress.tar.zst src/ --remove-file -H posix --atime-preserve
@@ -80,5 +82,5 @@ elif [[ -d "/mnt/progress" ]]; then
     echo "==> Moving archive to progress directory..."
     sudo mv progress.tar.zst progress.tar.zst.sum /mnt/progress
 else
-    echo "==> No package built yet and progress directory does not exist, exiting"
+    echo "==> Progress directory does not exist, exiting"
 fi
