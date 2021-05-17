@@ -104,6 +104,7 @@ prepare() {
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-90-quantization_utils-include.patch
   patch -Np1 -i ../patches/chromium-90-TokenizedOutput-include.patch
+  patch -Np1 -i ../patches/chromium-90-ruy-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
