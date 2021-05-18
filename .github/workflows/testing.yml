@@ -56,7 +56,7 @@ jobs:
 
                   # Build container from source files
                   docker build . \
-                      --file .github/workflows/build/Dockerfile \
+                      --file .github/workflows/container/Dockerfile \
                       --tag "$REF_TAG" \
                       --tag "$SHA_TAG"
 

@@ -26,7 +26,7 @@ COPY PKGBUILD /home/build
 # FIXME: Avoid evaluating PKGBUILD as script to extract dependencies
 RUN source /home/build/PKGBUILD && pacman -Syu --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
 
-COPY .github/workflows/build/run.sh /home/build/run.sh
+COPY .github/workflows/container/run.sh /home/build/run.sh
 
 # Expect archive with files required for building created by makepkg --allsource
 COPY *.src.tar.gz /home/build/
