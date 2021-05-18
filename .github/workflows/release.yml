@@ -1,9 +1,9 @@
-name: Build ungoogled-chromium-archlinux for testing
+name: Build ungoogled-chromium-archlinux for a release
 on:
+    workflow_dispatch:
     push:
-        branches:
-            - '**'
-    pull_request:
+        tags:
+            - "*"
 
 jobs:
     build-container:
@@ -36,7 +36,7 @@ jobs:
                   CHROMIUM_VERSION="$(compgen -G "*.src.tar.gz" | grep -Po '([\d\.]+-\d*)')"
 
                   REGISTRY="docker.pkg.github.com/${{ github.repository }}"
-                  NAME="ungoogled-chromium-archlinux-testing"
+                  NAME="ungoogled-chromium-archlinux"
 
                   ID="$(echo $REGISTRY/$NAME | tr '[A-Z]' '[a-z]')"
                   REF="$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')"
@@ -46,7 +46,7 @@ jobs:
                   [ "$REF" == "master" ] && REF=latest
 
                   REF_TAG="$ID:$REF"
-                  SHA_TAG="$ID:${{ github.sha }}"
+                  LATEST_TAG="$ID:latest"
 
                   echo "CHROMIUM_VERSION=$CHROMIUM_VERSION"
                   echo "REGISTRY=$REGISTRY"
@@ -54,7 +54,7 @@ jobs:
                   echo "ID=$ID"
                   echo "REF=$REF"
                   echo "REF_TAG=$REF_TAG"
-                  echo "SHA_TAG=$SHA_TAG"
+                  echo "LATEST_TAG=$LATEST_TAG"
 
                   echo "::group::Building container image..."
 
@@ -62,38 +62,20 @@ jobs:
                   docker build . \
                       --file .github/workflows/container/Dockerfile \
                       --tag "$REF_TAG" \
-                      --tag "$SHA_TAG"
+                      --tag "$LATEST_TAG"
 
                   echo "::endgroup::"
 
                   echo "::set-output name=chromium-version::$CHROMIUM_VERSION"
 
                   echo "::set-output name=ref-tag::$REF_TAG"
-                  echo "::set-output name=sha-tag::$SHA_TAG"
-
-                  if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-                      echo "::set-output name=use-registry::false"
-                  else
-                      echo "::set-output name=use-registry::true"
-                  fi
+                  echo "::set-output name=latest-tag::$LATEST_TAG"
             - name: Push image
-              if: ${{ steps.build.outputs.use-registry == 'true' }}
               run: |
-                  docker push "${{ steps.build.outputs.sha-tag }}"
                   docker push "${{ steps.build.outputs.ref-tag }}"
-            - name: Save image
-              if: ${{ steps.build.outputs.use-registry == 'false' }}
-              run: docker save "${{ steps.build.outputs.sha-tag }}" > image
-            - name: Upload image
-              if: ${{ steps.build.outputs.use-registry == 'false' }}
-              uses: actions/upload-artifact@v2
-              with:
-                  name: image
-                  path: image
-                  if-no-files-found: error
+                  docker push "${{ steps.build.outputs.latest-tag }}"
         outputs:
             chromium-version: "${{ steps.build.outputs.chromium-version }}"
-            use-registry: "${{ steps.build.outputs.use-registry }}"
             image-tag: "${{ steps.build.outputs.sha-tag }}"
 
     build-1:
@@ -109,13 +91,12 @@ jobs:
               uses: ./.github/actions/stage
               with:
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
     build-2:
@@ -133,13 +114,12 @@ jobs:
                   finished: "${{ join(needs.*.outputs.finished) }}"
                   progress-name: build-1
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
     build-3:
@@ -157,13 +137,12 @@ jobs:
                   finished: "${{ join(needs.*.outputs.finished) }}"
                   progress-name: build-2
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
     build-4:
@@ -181,13 +160,12 @@ jobs:
                   finished: "${{ join(needs.*.outputs.finished) }}"
                   progress-name: build-3
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
     build-5:
@@ -205,13 +183,12 @@ jobs:
                   finished: "${{ join(needs.*.outputs.finished) }}"
                   progress-name: build-4
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
     build-6:
@@ -229,55 +206,28 @@ jobs:
                   finished: "${{ join(needs.*.outputs.finished) }}"
                   progress-name: build-5
                   chromium-version: "${{ join(needs.*.outputs.chromium-version) }}"
-                  use-registry: "${{ join(needs.*.outputs.use-registry) }}"
+                  use-registry: true
                   registry-token: "${{ secrets.GITHUB_TOKEN }}"
                   image-tag: "${{ join(needs.*.outputs.image-tag) }}"
         outputs:
             finished: "${{ steps.stage.outputs.finished }}"
             chromium-version: "${{ steps.stage.outputs.chromium-version }}"
-            use-registry: "${{ steps.stage.outputs.use-registry }}"
             image-tag: "${{ steps.stage.outputs.image-tag }}"
 
-    test-package:
+    publish-release:
         runs-on: ubuntu-latest
         needs: build-6
         steps:
-            - name: Log into registry
-              if: ${{ join(needs.*.outputs.use-registry) == 'true' }}
-              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-            - name: Pull image
-              if: ${{ join(needs.*.outputs.use-registry) == 'true' }}
-              run: docker pull "${{ join(needs.*.outputs.image-tag) }}"
-            - name: Download image
-              if: ${{ join(needs.*.outputs.use-registry) == 'false' }}
-              uses: actions/download-artifact@v2
-              with:
-                  name: image
-            - name: Load image
-              if: ${{ join(needs.*.outputs.use-registry) == 'false' }}
-              run: docker load < image
             - name: Download package
               uses: actions/download-artifact@v2
               with:
-                  name: ${{ join(needs.*.outputs.chromium-version) }}
-            - name: Prepare package
-              run: mv *.pkg.* package
-            - name: Run container
-              run: docker run
-                  --entrypoint /bin/bash
-                  --mount type=bind,source="$(pwd)/package",target=/home/build/package
-                  "${{ join(needs.*.outputs.image-tag) }}"
-                  -c 'sudo pacman -U /home/build/package --noconfirm && chromium --version'
-
-    prune-images:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Prune testing images
-              uses: SmartsquareGmbH/delete-old-packages@v0.3.1
+                  name: "${{ join(needs.*.outputs.chromium-version) }}"
+            - name: Publish release
+              uses: softprops/action-gh-release@v1
               with:
-                  names: "ungoogled-chromium-archlinux-testing"
-
-                  # FIXME: This is not ideal, the number needs to be high to avoid an image getting deleted that is currently
-                  #        required by a running workflow
-                  #        (see https://github.com/SmartsquareGmbH/delete-old-packages/issues/9)
-                  keep: 50
+                  name: "${{ join(needs.*.outputs.chromium-version) }}"
+                  files: |
+                      *.pkg.*
+                      sum.txt
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
