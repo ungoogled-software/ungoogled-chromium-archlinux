@@ -39,6 +39,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         add-clang-nomerge-attribute-to-CheckError.patch
         chromium-drirc-disable-10bpc-color-configs.conf
         chromium-glibc-2.33.patch
+        sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch)
 sha256sums=('abe11d0cb1ff21278aad2eec1a1e279d59176b15331804d7df1807446786d59e'
@@ -48,6 +49,7 @@ sha256sums=('abe11d0cb1ff21278aad2eec1a1e279d59176b15331804d7df1807446786d59e'
             '5e22afcb91b5402bc09e80630c5323d61013c3fccb0bbd9b23d1e79a400b00d0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
+            '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711')
 
@@ -100,6 +102,9 @@ prepare() {
 
   # Revert addition of [[clang::nomerge]] attribute; not supported by clang 11
   patch -Rp1 -d base <../add-clang-nomerge-attribute-to-CheckError.patch
+
+  # Fixes building with GCC 11  https://crbug.com/1189788
+  patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-90-quantization_utils-include.patch
