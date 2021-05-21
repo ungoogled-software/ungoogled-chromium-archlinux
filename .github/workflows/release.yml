@@ -64,6 +64,9 @@ jobs:
                       --tag "$REF_TAG" \
                       --tag "$LATEST_TAG"
 
+                  # Reduce worker space used
+                  rm -rf *
+
                   echo "::endgroup::"
 
                   echo "::set-output name=chromium-version::$CHROMIUM_VERSION"

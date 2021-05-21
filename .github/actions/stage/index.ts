@@ -55,6 +55,9 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
 
         await core.group<void>('Stage: Loading image from file...', () =>
             shell('docker load --input image'));
+
+        await core.group<void>('Stage: Removing image file...', () =>
+            shell('rm image'));
     }
 
     await core.group<void>('Stage: Creating input, output and progress directory...', () =>
