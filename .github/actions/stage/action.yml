@@ -11,10 +11,10 @@ inputs:
         description: The chromium version this stage is compiling
         required: true
     use-registry:
-        description: If the image should be retrieved from docker.pkg.github.com or from an artifact called 'image'
+        description: If the image should be retrieved from ghcr.io or from an artifact called 'image'
         required: false
     registry-token:
-        description: The access token for docker.pkg.github.com (required if 'use-registry' is set)
+        description: The access token for ghcr.io (required if 'use-registry' is set)
         required: false
     image-tag:
         description: The tag of the container image to use (required if 'use-registry' is set)
@@ -25,7 +25,7 @@ outputs:
     chromium-version:
         description: The chromium version this stage is compiling
     use-registry:
-        description: If the image should be retrieved from docker.pkg.github.com or from an artifact called 'image'
+        description: If the image should be retrieved from ghcr.io or from an artifact called 'image'
     image-tag:
         description: The tag of the container image to use (required if 'use-registry' is set)
 runs:

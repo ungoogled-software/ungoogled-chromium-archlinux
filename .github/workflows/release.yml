@@ -17,7 +17,7 @@ jobs:
             - name: Install dependencies
               run: pacman -Syu --needed --noconfirm docker base-devel
             - name: Log into registry
-              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             - name: Build container
               id: build
               run: |
@@ -35,7 +35,7 @@ jobs:
 
                   CHROMIUM_VERSION="$(compgen -G "*.src.tar.gz" | grep -Po '([\d\.]+-\d*)')"
 
-                  REGISTRY="docker.pkg.github.com/${{ github.repository }}"
+                  REGISTRY="ghcr.io/${{ github.repository_owner }}"
                   NAME="ungoogled-chromium-archlinux"
 
                   ID="$(echo $REGISTRY/$NAME | tr '[A-Z]' '[a-z]')"

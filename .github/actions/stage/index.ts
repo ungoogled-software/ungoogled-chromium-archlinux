@@ -45,7 +45,7 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
 
     if (input.useRegistry) {
         await core.group<void>('Stage: Logging into docker registry...', () =>
-            shell('docker', ['login', 'docker.pkg.github.com', '-u', github.context.actor, '-p', input.registryToken]));
+            shell('docker', ['login', 'ghcr.io', '-u', github.context.actor, '-p', input.registryToken]));
 
         await core.group<void>('Stage: Pulling image from registry...', () =>
             shell('docker', ['pull', input.imageTag]));
