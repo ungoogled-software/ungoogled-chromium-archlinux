@@ -271,16 +271,3 @@ jobs:
                   --mount type=bind,source="$(pwd)/package",target=/home/build/package
                   "${{ join(needs.*.outputs.image-tag) }}"
                   -c 'sudo pacman -U /home/build/package --noconfirm && chromium --version'
-
-    prune-images:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Prune testing images
-              uses: SmartsquareGmbH/delete-old-packages@v0.3.1
-              with:
-                  names: "ungoogled-chromium-archlinux-testing"
-
-                  # FIXME: This is not ideal, the number needs to be high to avoid an image getting deleted that is currently
-                  #        required by a running workflow
-                  #        (see https://github.com/SmartsquareGmbH/delete-old-packages/issues/9)
-                  keep: 50
