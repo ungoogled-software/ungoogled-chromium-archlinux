@@ -45,7 +45,7 @@ jobs:
 
                   [ "$REF" == "master" ] && REF=latest
 
-                  REF_TAG="$ID:$REF"
+                  VERSION_TAG="$ID:$CHROMIUM_VERSION"
                   LATEST_TAG="$ID:latest"
 
                   echo "CHROMIUM_VERSION=$CHROMIUM_VERSION"
@@ -53,7 +53,7 @@ jobs:
                   echo "NAME=$NAME"
                   echo "ID=$ID"
                   echo "REF=$REF"
-                  echo "REF_TAG=$REF_TAG"
+                  echo "VERSION_TAG=$REF_TAG"
                   echo "LATEST_TAG=$LATEST_TAG"
 
                   echo "::group::Building container image..."
@@ -61,7 +61,7 @@ jobs:
                   # Build container from source files
                   docker build . \
                       --file .github/workflows/container/Dockerfile \
-                      --tag "$REF_TAG" \
+                      --tag "$VERSION_TAG" \
                       --tag "$LATEST_TAG"
 
                   # Reduce worker space used
@@ -71,15 +71,15 @@ jobs:
 
                   echo "::set-output name=chromium-version::$CHROMIUM_VERSION"
 
-                  echo "::set-output name=ref-tag::$REF_TAG"
+                  echo "::set-output name=version-tag::$VERSION_TAG"
                   echo "::set-output name=latest-tag::$LATEST_TAG"
             - name: Push image
               run: |
-                  docker push "${{ steps.build.outputs.ref-tag }}"
+                  docker push "${{ steps.build.outputs.version-tag }}"
                   docker push "${{ steps.build.outputs.latest-tag }}"
         outputs:
             chromium-version: "${{ steps.build.outputs.chromium-version }}"
-            image-tag: "${{ steps.build.outputs.sha-tag }}"
+            image-tag: "${{ steps.build.outputs.version-tag }}"
 
     build-1:
         runs-on: ubuntu-latest
