@@ -8,10 +8,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=90.0.4430.212
+pkgver=91.0.4472.77
 pkgrel=1
 _launcher_ver=7
-_gcc_patchset=6
+_gcc_patchset=5
 _pkgname=$(echo $pkgname | cut -d\- -f1-2)
 _pkgver=$(echo $pkgver | cut -d\. -f1-4)
 # ungoogled chromium variables
@@ -27,9 +27,9 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
 makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
              'java-runtime-headless' 'python2' 'python2-setuptools')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
-            'kdialog: needed for file dialogs in KDE'
+            'kdialog: support for native dialogs in Plasma'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
-            'kwallet: for storing passwords in KWallet on KDE desktops')
+            'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
 conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$_pkgver.tar.xz
@@ -41,17 +41,21 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-glibc-2.33.patch
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
-        use-oauth2-client-switches-as-default.patch)
-sha256sums=('abe11d0cb1ff21278aad2eec1a1e279d59176b15331804d7df1807446786d59e'
-            'b49f989e756bdaa66785905a59779005e9f168c39a235f605bd45df301c44788'
+        use-oauth2-client-switches-as-default.patch
+        unbundle-use-char16_t-as-UCHAR_TYPE.patch
+        unexpire-accelerated-video-decode-flag.patch)
+sha256sums=('45d5a43ef798d20313c78fa8a075be0c22055e39c8481eb53eabda81df901b31'
+            'f93021dab9fd8496beb57a3defc90233258e7128c3141a1a9d9a0c45f29967e1'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
-            '3eb9580ea35a96789e02815270498226fa33726f4210a5ee36f3868af2ffae1f'
-            '5e22afcb91b5402bc09e80630c5323d61013c3fccb0bbd9b23d1e79a400b00d0'
+            '171525009003a9ed1182cfcb6f407d7169d9a731a474304e263029376719f55a'
+            '50133dd196d288ad538bb536aa51dccd6cb4aacfd9a60160f77e8fb16034b460'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
-            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711')
+            'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
+            '59a59a60a08b335fe8647fdf0f9d2288d236ebf2cc9626396d0c4d032fd2b25d'
+            '82a85105fc33b92a84dabb7ed6725ccbb56f1075c11f9f3f43bb8ff724f88847')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -97,18 +101,22 @@ prepare() {
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
+  # https://crbug.com/1207478
+  patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
+
   # https://crbug.com/1164975
   patch -Np1 -i ../chromium-glibc-2.33.patch
 
+  # Upstream fixes
+  patch -Np1 -i ../unbundle-use-char16_t-as-UCHAR_TYPE.patch
+
   # Revert addition of [[clang::nomerge]] attribute; not supported by clang 11
-  patch -Rp1 -d base <../add-clang-nomerge-attribute-to-CheckError.patch
+  patch -Rp1 -i ../add-clang-nomerge-attribute-to-CheckError.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-90-quantization_utils-include.patch
-  patch -Np1 -i ../patches/chromium-90-TokenizedOutput-include.patch
   patch -Np1 -i ../patches/chromium-90-ruy-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
@@ -128,8 +136,10 @@ prepare() {
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
+  # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
+  ln -s /usr/bin/java third_party/jdk/current/bin/
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
