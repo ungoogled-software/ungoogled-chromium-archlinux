@@ -20,6 +20,9 @@ if [[ -d "/mnt/input" && -f "/mnt/input/progress.tar.zst.sum" && -f "/mnt/input/
     echo "==> Deleting source archive..."
     sudo rm /mnt/input/*
 
+    echo "==> Deleting unused archive files..."
+    sudo rm *.tar.*
+
     echo "==> Adjusting ownership of build directory..."
     sudo chown -R build .
 
