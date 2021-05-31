@@ -43,6 +43,13 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
     if (input.finished)
         return output();
 
+    // Taken from https://github.com/easimon/maximize-build-space/blob/master/action.yml
+    await core.group<void>('Stage: Free space on GitHub Runner...', async () => {
+        await shell('sudo rm -rf /usr/share/dotnet');
+        await shell('sudo rm -rf /usr/local/lib/android');
+        await shell('sudo rm -rf /opt/ghc');
+    });
+
     if (input.useRegistry) {
         await core.group<void>('Stage: Logging into docker registry...', () =>
             shell('docker', ['login', 'ghcr.io', '-u', github.context.actor, '-p', input.registryToken]));
