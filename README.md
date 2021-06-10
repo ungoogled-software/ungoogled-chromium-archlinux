@@ -89,7 +89,7 @@ For the latest testing version, run these commands instead:
 mkdir output
 
 # Start the build, the image already contains all nessesarry dependencies 
-docker run --mount type=bind,source=$(pwd)/output,target=/mnt/output ghcr.io/ungoogled-software/ungoogled-chromium-archlinux-testing:latest
+docker run --rm --mount type=bind,source=$(pwd)/output,target=/mnt/output ghcr.io/ungoogled-software/ungoogled-chromium-archlinux-testing:latest
 ```
 
 Now you can install the package using `pacman -U output/ungoogled-chromium-*.pkg.*`, this requires root permission.
