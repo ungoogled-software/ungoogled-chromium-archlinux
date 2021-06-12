@@ -8,7 +8,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=91.0.4472.77
+pkgver=91.0.4472.101
 pkgrel=1
 _launcher_ver=7
 _gcc_patchset=5
@@ -36,7 +36,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
-        add-clang-nomerge-attribute-to-CheckError.patch
         chromium-drirc-disable-10bpc-color-configs.conf
         chromium-glibc-2.33.patch
         sql-VirtualCursor-standard-layout.patch
@@ -44,11 +43,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         unbundle-use-char16_t-as-UCHAR_TYPE.patch
         unexpire-accelerated-video-decode-flag.patch)
-sha256sums=('45d5a43ef798d20313c78fa8a075be0c22055e39c8481eb53eabda81df901b31'
-            'f93021dab9fd8496beb57a3defc90233258e7128c3141a1a9d9a0c45f29967e1'
+sha256sums=('78146192aaae7771d9130c2828e1081d940da32af3aadcb73578521683307eb4'
+            '3826409802280c7a565db1c532d6467976f3b3ec59b9259f432615b67dc046ad'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
             '171525009003a9ed1182cfcb6f407d7169d9a731a474304e263029376719f55a'
-            '50133dd196d288ad538bb536aa51dccd6cb4aacfd9a60160f77e8fb16034b460'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '2fccecdcd4509d4c36af873988ca9dbcba7fdb95122894a9fdf502c33a1d7a4b'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
@@ -109,9 +107,6 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../unbundle-use-char16_t-as-UCHAR_TYPE.patch
-
-  # Revert addition of [[clang::nomerge]] attribute; not supported by clang 11
-  patch -Rp1 -i ../add-clang-nomerge-attribute-to-CheckError.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
