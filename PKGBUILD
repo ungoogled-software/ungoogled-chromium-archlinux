@@ -42,7 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         unbundle-use-char16_t-as-UCHAR_TYPE.patch
-        unexpire-accelerated-video-decode-flag.patch)
+        unexpire-accelerated-video-decode-flag.patch
+        make-dom-distiller-protoc-plugin-call-py2.7.patch)
 sha256sums=('78146192aaae7771d9130c2828e1081d940da32af3aadcb73578521683307eb4'
             '3826409802280c7a565db1c532d6467976f3b3ec59b9259f432615b67dc046ad'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
@@ -53,7 +54,8 @@ sha256sums=('78146192aaae7771d9130c2828e1081d940da32af3aadcb73578521683307eb4'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '59a59a60a08b335fe8647fdf0f9d2288d236ebf2cc9626396d0c4d032fd2b25d'
-            '82a85105fc33b92a84dabb7ed6725ccbb56f1075c11f9f3f43bb8ff724f88847')
+            '82a85105fc33b92a84dabb7ed6725ccbb56f1075c11f9f3f43bb8ff724f88847'
+            '76ceebd14c9a6f1ea6a05b1613e64d1e2aca595e0f0b3e9497e3eeee33ed756c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -107,6 +109,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../unbundle-use-char16_t-as-UCHAR_TYPE.patch
+  patch -Np1 -i ../make-dom-distiller-protoc-plugin-call-py2.7.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
@@ -127,9 +130,6 @@ prepare() {
   msg2 'Applying domain substitution'
   python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" \
     -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
-
-  # Force script incompatible with Python 3 to use /usr/bin/python2
-  sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
