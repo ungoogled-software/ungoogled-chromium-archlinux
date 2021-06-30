@@ -2,6 +2,17 @@
 
 Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chromium).
 
+## A note on reproducibility
+
+[Just as](https://reproducible.archlinux.org/api/v0/pkgs/list?name=chromium) the official archlinux package, binaries compiled
+from this repository are reproducible. Still different build systems will in most cases produce different binaries. This is due to the
+[SOURCE_DATE_EPOCH](https://reproducible-builds.org/docs/source-date-epoch/) variable not being the same.
+
+To check the reproducibility of a binary, [repro](https://github.com/archlinux/archlinux-repro) can be used. It will use a timestamp stored in the package.
+
+Recent docker images built by GitHub Actions will use a predefined timestamp for building, meaning that a given image will always produce
+the same binary.
+
 ## Binary Downloads
 
 You can get pre-built binaries from the following sources:

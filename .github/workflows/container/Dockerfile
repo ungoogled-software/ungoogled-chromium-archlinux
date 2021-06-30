@@ -33,6 +33,8 @@ COPY *.src.tar.gz /home/build/
 RUN chown -R build /home/build
 RUN tar xf /home/build/*.src.tar.gz -C /home/build --strip 1 && rm /home/build/*.src.tar.gz
 
+RUN echo $(date +"%s") > /etc/buildtime
+
 RUN ls -lah /home/build
 
 USER build

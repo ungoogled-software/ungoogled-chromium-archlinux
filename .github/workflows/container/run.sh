@@ -37,7 +37,9 @@ if [[ -d "/mnt/input" && -f "/mnt/input/progress.tar.zst.sum" && -f "/mnt/input/
 fi
 
 echo "==> Building with a timeout of ${TIMEOUT:-"1800 (default)"} minute(s)..."
-timeout -k 10m -s SIGTERM "${TIMEOUT:-"1800"}m" makepkg $BUILD_ARGUMENTS
+echo "==> Using timestamp $(cat /etc/buildtime)"
+
+SOURCE_DATE_EPOCH=$(cat /etc/buildtime) timeout -k 10m -s SIGTERM "${TIMEOUT:-"1800"}m" makepkg $BUILD_ARGUMENTS
 
 EXIT_CODE=$?
 
