@@ -8,7 +8,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=91.0.4472.114
+pkgver=91.0.4472.164
 pkgrel=1
 _launcher_ver=7
 _gcc_patchset=5
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         unbundle-use-char16_t-as-UCHAR_TYPE.patch
         unexpire-accelerated-video-decode-flag.patch
         make-dom-distiller-protoc-plugin-call-py2.7.patch)
-sha256sums=('c1c7fe783f3250978503d4bd53144039bd818de8a6e89de493f27dd5168f7e71'
-            '318b890f0d422c573f285a33b6f74ce8446c7aa16677a2236250827defca66e5'
+sha256sums=('84e56fa2ad96d910cab429c513eeaca7bfa94096fef057bd024be826ce8426bd'
+            'aebc3eaa0b4c96a2e6453cb8a9f123ac253254775b8928e2317777caa3867205'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
             '171525009003a9ed1182cfcb6f407d7169d9a731a474304e263029376719f55a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
