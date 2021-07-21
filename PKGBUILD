@@ -42,7 +42,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         unbundle-use-char16_t-as-UCHAR_TYPE.patch
-        unexpire-accelerated-video-decode-flag.patch
+        extend-enable-accelerated-video-decode-flag.patch
         make-dom-distiller-protoc-plugin-call-py2.7.patch)
 sha256sums=('84e56fa2ad96d910cab429c513eeaca7bfa94096fef057bd024be826ce8426bd'
             'aebc3eaa0b4c96a2e6453cb8a9f123ac253254775b8928e2317777caa3867205'
@@ -54,7 +54,7 @@ sha256sums=('84e56fa2ad96d910cab429c513eeaca7bfa94096fef057bd024be826ce8426bd'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '59a59a60a08b335fe8647fdf0f9d2288d236ebf2cc9626396d0c4d032fd2b25d'
-            '82a85105fc33b92a84dabb7ed6725ccbb56f1075c11f9f3f43bb8ff724f88847'
+            '66db9132d6f5e06aa26e5de0924f814224a76a9bdf4b61afce161fb1d7643b22'
             '76ceebd14c9a6f1ea6a05b1613e64d1e2aca595e0f0b3e9497e3eeee33ed756c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -101,15 +101,13 @@ prepare() {
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
-  # https://crbug.com/1207478
-  patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
-
   # https://crbug.com/1164975
   patch -Np1 -i ../chromium-glibc-2.33.patch
 
   # Upstream fixes
   patch -Np1 -i ../unbundle-use-char16_t-as-UCHAR_TYPE.patch
   patch -Np1 -i ../make-dom-distiller-protoc-plugin-call-py2.7.patch
+  patch -Np0 -i ../extend-enable-accelerated-video-decode-flag.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
