@@ -1,6 +1,8 @@
 # Maintainer: Ungoogled Software Contributors
+# Maintainer: Jakob-Niklas See <git@nwex.de>
 
 # Based on aur/chromium-vaapi, with ungoogled-chromium patches
+# Based on extra/chromium
 
 # Maintainer: Evangelos Foutras <evangelos@foutrelis.com>
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
