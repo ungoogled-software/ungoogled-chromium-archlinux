@@ -17,7 +17,7 @@ _gcc_patchset=7
 _pkgname=$(echo $pkgname | cut -d\- -f1-2)
 _pkgver=$(echo $pkgver | cut -d\. -f1-4)
 # ungoogled chromium variables
-_uc_ver=$pkgver-1
+_uc_ver=update
 _uc_usr=Eloston
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
@@ -35,7 +35,7 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
 provides=('chromium')
 conflicts=('chromium')
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$_pkgver.tar.xz
-        $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
+        $_pkgname-$_uc_ver.tar.gz::https://github.com/Ahrotahn/ungoogled-chromium/archive/refs/heads/update.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
@@ -47,7 +47,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         linux-sandbox-fix-fstatat-crash.patch
         make-GetUsableSize-handle-nullptr-gracefully.patch)
 sha256sums=('6e51ac6512a4e95018eefc9fef1d2e7597f28a1c45c763b3a8eb7dde5f557012'
-            'aebc3eaa0b4c96a2e6453cb8a9f123ac253254775b8928e2317777caa3867205 replace me'
+            '5a72e17a0e7943568e7ac9170baddca27d989656f28a42e6f44251bbf01a2b0e'
             '86859c11cfc8ba106a3826479c0bc759324a62150b271dd35d1a0f96e890f52f'
             '53a2cbb1b58d652d5424ff9040b6a51b9dc6348ce3edc68344cd0d25f1f4beb2'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
