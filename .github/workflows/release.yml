@@ -225,11 +225,16 @@ jobs:
               uses: actions/download-artifact@v2
               with:
                   name: "${{ join(needs.*.outputs.chromium-version) }}"
+            - name: Format release body
+              run: |
+                  echo '```'  >> body.md
+                  cat sum.txt >> body.md
+                  echo '```'  >> body.md
             - name: Publish release
               uses: softprops/action-gh-release@v1
               with:
                   name: "${{ join(needs.*.outputs.chromium-version) }}"
-                  body_path: sum.txt
+                  body_path: body.md
                   files: |
                       *.pkg.*
                       sum.txt
