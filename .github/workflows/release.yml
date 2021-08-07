@@ -1,9 +1,8 @@
 name: Build ungoogled-chromium-archlinux for a release
 on:
-    workflow_dispatch:
     push:
         tags:
-            - "*"
+            - '*'
 
 jobs:
     build-container:
