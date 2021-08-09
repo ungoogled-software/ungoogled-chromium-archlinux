@@ -10,7 +10,7 @@ from this repository are reproducible. Still different build systems will in mos
 
 To check the reproducibility of a binary, [repro](https://github.com/archlinux/archlinux-repro) can be used. It will use a timestamp stored in the package.
 
-Recent docker images built by GitHub Actions will use a predefined timestamp for building, meaning that a given image will always produce
+Docker images built by GitHub Actions since version 92.0.4515.131-1 will use a predefined timestamp for building, meaning that a given image will always produce
 the same binary.
 
 ## Binary Downloads
