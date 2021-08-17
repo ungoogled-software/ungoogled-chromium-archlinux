@@ -10,7 +10,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=92.0.4515.131
+pkgver=92.0.4515.159
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=7
@@ -46,8 +46,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
         linux-sandbox-fix-fstatat-crash.patch
         chromium-freetype-2.11.patch)
-sha256sums=('b6ac840ed5390de69f962e922649bf1df895ff0f5db8e5f656b5191e0cf4ce3a'
-            '417ed82d81895d3cd2773e9a44406dc676810e1faf09947be3084c53afcdaee4'
+sha256sums=('d97d337d0d70e959a75f1f510f5d78d2b57b5bf24573b7ade9fff9f26a7cfd11'
+            '452d52be91d6183ea2f1728b83f5973fc480591b9a3625742c108cfbf6357588'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '53a2cbb1b58d652d5424ff9040b6a51b9dc6348ce3edc68344cd0d25f1f4beb2'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
