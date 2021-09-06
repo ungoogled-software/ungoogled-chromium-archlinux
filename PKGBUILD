@@ -14,11 +14,9 @@ pkgver=92.0.4515.159
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=7
-_pkgname=$(echo $pkgname | cut -d\- -f1-2)
-_pkgver=$(echo $pkgver | cut -d\. -f1-4)
 # ungoogled chromium variables
-_uc_ver=$pkgver-1
 _uc_usr=Eloston
+_uc_ver=92.0.4515.159-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -34,8 +32,8 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
 conflicts=('chromium')
-source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$_pkgver.tar.xz
-        $_pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
+source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
+        $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
@@ -86,7 +84,7 @@ _unwanted_bundled_libs=(
 depends+=(${_system_libs[@]})
 
 prepare() {
-  cd "$srcdir/chromium-$_pkgver"
+  cd "$srcdir/chromium-$pkgver"
 
   # Allow building against system libraries in official builds
   sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
@@ -121,7 +119,7 @@ prepare() {
   patch -Np1 -i ../wayland-egl.patch
 
   # Ungoogled Chromium changes
-  _ungoogled_repo="$srcdir/$_pkgname-$_uc_ver"
+  _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
   _utils="${_ungoogled_repo}/utils"
   msg2 'Pruning binaries'
   python "$_utils/prune_binaries.py" ./ "$_ungoogled_repo/pruning.list"
@@ -156,7 +154,7 @@ prepare() {
 build() {
   make -C chromium-launcher-$_launcher_ver
 
-  cd "$srcdir/chromium-$_pkgver"
+  cd "$srcdir/chromium-$pkgver"
 
   if check_buildoption ccache y; then
     # Avoid falling back to preprocessor mode when sources contain time macros
@@ -192,7 +190,7 @@ build() {
   fi
 
   # Append ungoogled chromium flags to _flags array
-  _ungoogled_repo="$srcdir/$_pkgname-$_uc_ver"
+  _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
   readarray -t -O ${#_flags[@]} _flags < "${_ungoogled_repo}/flags.gn"
 
   # See https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/123
@@ -220,7 +218,7 @@ package() {
   install -Dm644 LICENSE \
     "$pkgdir/usr/share/licenses/chromium/LICENSE.launcher"
 
-  cd "$srcdir/chromium-$_pkgver"
+  cd "$srcdir/chromium-$pkgver"
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
