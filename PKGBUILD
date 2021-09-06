@@ -16,7 +16,7 @@ _launcher_ver=8
 _gcc_patchset=6
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=92.0.4515.159-1
+_uc_ver=35774abd40e6606b97a424ecd463e916689ad594
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -45,7 +45,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         replace-blacklist-with-ignorelist.patch
         chromium-93-ffmpeg-4.4.patch)
 sha256sums=('eaf34fa6c2f24054655fbb2376b6e3ddee4cf4868c1324c921e71a45cfc94853'
-            '452d52be91d6183ea2f1728b83f5973fc480591b9a3625742c108cfbf6357588'
+            '6bdc41f019388ec53a73d8da40e0bb6dc174ec3a8075d1d2944d38fb9abc81b4'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'a44ffd9e25fcbd8b3cc778871890e4da6fe12600ad549c807e1d03f61f0cdf73'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
