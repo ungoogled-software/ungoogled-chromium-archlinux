@@ -10,10 +10,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=92.0.4515.159
+pkgver=93.0.4577.63
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=7
+_gcc_patchset=6
 # ungoogled chromium variables
 _uc_usr=Eloston
 _uc_ver=92.0.4515.159-1
@@ -25,7 +25,7 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
          'desktop-file-utils' 'hicolor-icon-theme')
 makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
-             'java-runtime-headless' 'python2')
+             'java-runtime-headless')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
@@ -40,22 +40,22 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        extend-enable-accelerated-video-decode-flag.patch
         linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
         linux-sandbox-fix-fstatat-crash.patch
-        chromium-freetype-2.11.patch)
-sha256sums=('d97d337d0d70e959a75f1f510f5d78d2b57b5bf24573b7ade9fff9f26a7cfd11'
+        replace-blacklist-with-ignorelist.patch
+        chromium-93-ffmpeg-4.4.patch)
+sha256sums=('eaf34fa6c2f24054655fbb2376b6e3ddee4cf4868c1324c921e71a45cfc94853'
             '452d52be91d6183ea2f1728b83f5973fc480591b9a3625742c108cfbf6357588'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '53a2cbb1b58d652d5424ff9040b6a51b9dc6348ce3edc68344cd0d25f1f4beb2'
+            'a44ffd9e25fcbd8b3cc778871890e4da6fe12600ad549c807e1d03f61f0cdf73'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '66db9132d6f5e06aa26e5de0924f814224a76a9bdf4b61afce161fb1d7643b22'
             '268e18ad56e5970157b51ec9fc8eb58ba93e313ea1e49c842a1ed0820d9c1fa3'
             '253348550d54b8ae317fd250f772f506d2bae49fb5dc75fe15d872ea3d0e04a5'
-            '7ef689cd6b2f85f2b76b2a10ecede003cfa0c2da15acc998ecbc445f2c95ced6')
+            'd3344ba39b8c6ed202334ba7f441c70d81ddf8cdb15af1aa8c16e9a3a75fbb35'
+            '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -101,11 +101,13 @@ prepare() {
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
-  # Fix build with FreeType 2.11 (patch from Gentoo)
-  patch -Np1 -i ../chromium-freetype-2.11.patch
+  # Fix build with older ffmpeg
+  patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
+
+  # Revert transition to -fsanitize-ignorelist (needs newer clang)
+  patch -Rp1 -i ../replace-blacklist-with-ignorelist.patch
 
   # Upstream fixes
-  patch -Np1 -i ../extend-enable-accelerated-video-decode-flag.patch
   patch -Np1 -i ../linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
   patch -Np1 -i ../linux-sandbox-fix-fstatat-crash.patch
 
@@ -113,7 +115,13 @@ prepare() {
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
+  patch -Np1 -i ../patches/chromium-93-pdfium-include.patch
   patch -Np1 -i ../patches/chromium-90-ruy-include.patch
+  patch -Np1 -i ../patches/chromium-93-HashPasswordManager-include.patch
+  patch -Np1 -i ../patches/chromium-93-BluetoothLowEnergyScanFilter-include.patch
+  patch -Np1 -i ../patches/chromium-93-ClassProperty-include.patch
+  patch -Np1 -i ../patches/chromium-93-DevToolsEmbedderMessageDispatcher-include.patch
+  patch -Np1 -i ../patches/chromium-93-ScopedTestDialogAutoConfirm-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
@@ -170,6 +178,7 @@ build() {
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'is_official_build=true' # implies is_cfi=true on x86_64
+    'blink_enable_generated_code_formatting=false'
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'rtc_use_pipewire=true'
