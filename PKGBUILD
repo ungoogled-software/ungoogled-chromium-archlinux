@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=93.0.4577.63
+pkgver=93.0.4577.82
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=6
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=fff1538f74cf3c8d7f0512aa088e72df8b61b972
+_uc_ver=6a36dbacf68dcfb0f5430aef33c2446405433b37
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         linux-sandbox-fix-fstatat-crash.patch
         replace-blacklist-with-ignorelist.patch
         chromium-93-ffmpeg-4.4.patch)
-sha256sums=('eaf34fa6c2f24054655fbb2376b6e3ddee4cf4868c1324c921e71a45cfc94853'
-            '4065f19d38692f2dbea71d2e7505bbadd11fb57caec6561bd9c7b4402e37dd77'
+sha256sums=('5d66214858fcba11a8f733d7a6fab61ed10e13e7df4ed37e63b66a0370fb2853'
+            '44b2b690642712aa1e4eeb7df28757638d8cceca668199cd09ffd57a13a34629'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'a44ffd9e25fcbd8b3cc778871890e4da6fe12600ad549c807e1d03f61f0cdf73'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
