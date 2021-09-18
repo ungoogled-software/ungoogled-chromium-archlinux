@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=93.0.4577.82
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=6
 # ungoogled chromium variables
@@ -43,7 +43,9 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         linux-sandbox-syscall-broker-use-struct-kernel_stat.patch
         linux-sandbox-fix-fstatat-crash.patch
         replace-blacklist-with-ignorelist.patch
-        chromium-93-ffmpeg-4.4.patch)
+        chromium-93-ffmpeg-4.4.patch
+        chromium-harfbuzz-3.0.0.patch
+        skia-harfbuzz-3.0.0.patch)
 sha256sums=('5d66214858fcba11a8f733d7a6fab61ed10e13e7df4ed37e63b66a0370fb2853'
             'ac6ff40201f389ca43a07563f7fefc2b33f956f7867d7fa8ff65312019496640'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -55,7 +57,9 @@ sha256sums=('5d66214858fcba11a8f733d7a6fab61ed10e13e7df4ed37e63b66a0370fb2853'
             '268e18ad56e5970157b51ec9fc8eb58ba93e313ea1e49c842a1ed0820d9c1fa3'
             '253348550d54b8ae317fd250f772f506d2bae49fb5dc75fe15d872ea3d0e04a5'
             'd3344ba39b8c6ed202334ba7f441c70d81ddf8cdb15af1aa8c16e9a3a75fbb35'
-            '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57')
+            '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
+            '7ce947944a139e66774dfc7249bf7c3069f07f83a0f1b2c1a1b14287a7e15928'
+            'dae11dec5088eb1b14045d8c9862801a342609c15701d7c371e1caccf46e1ffd')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -103,6 +107,10 @@ prepare() {
 
   # Fix build with older ffmpeg
   patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
+
+  # Fix build with harfbuzz 3.0.0
+  patch -Np1 -i ../chromium-harfbuzz-3.0.0.patch
+  patch -Np1 -d third_party/skia <../skia-harfbuzz-3.0.0.patch
 
   # Revert transition to -fsanitize-ignorelist (needs newer clang)
   patch -Rp1 -i ../replace-blacklist-with-ignorelist.patch
