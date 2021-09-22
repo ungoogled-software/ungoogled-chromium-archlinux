@@ -16,7 +16,7 @@ _launcher_ver=8
 _gcc_patchset=3
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=93.0.4577.82-1
+_uc_ver=5524999305a4ca245864dc4a83b286b425db4ac7
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -47,7 +47,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         add-a-TODO-about-a-missing-pnacl-flag.patch
         use-ffile-compilation-dir.patch)
 sha256sums=('033d9461e24251b790da17e64471eb22e3dfb09090744d3d0b7b4d0fbd75135d'
-            'ac6ff40201f389ca43a07563f7fefc2b33f956f7867d7fa8ff65312019496640'
+            '47925eaf79d09e1e7b5d7a7743a06dc422f6abe1574e7badba2ad993f9d9e479'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '22692bddaf2761c6ddf9ff0bc4722972bca4d4c5b2fd3e5dbdac7eb60d914320'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
