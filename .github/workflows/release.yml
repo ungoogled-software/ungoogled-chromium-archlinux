@@ -1,4 +1,4 @@
-name: Build ungoogled-chromium-archlinux for a release
+name: Build for a release
 on:
     push:
         tags:

@@ -1,4 +1,4 @@
-name: Build ungoogled-chromium-archlinux for testing
+name: Build for testing
 on:
     push:
         branches:
