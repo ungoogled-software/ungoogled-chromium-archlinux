@@ -61,6 +61,9 @@ In the AUR there are multiple ungoogled-chromium flavors:
 For the latest full version, run the following commands:
 
 ```sh
+# Install required dependencies. Make sure your user has access to sudo
+sudo pacman -S base-devel
+
 # Clone this repository
 git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
 
@@ -71,12 +74,15 @@ cd ungoogled-chromium-archlinux
 git checkout $(git describe --abbrev=0 --tags)
 
 # Start the build, this will download all nessesarry dependencies automatically
-makepkg
+makepkg -s
 ```
 
 For the latest testing version, run these commands instead:
 
 ```sh
+# Install required dependencies. Make sure your user has access to sudo
+sudo pacman -S base-devel
+
 # Clone this repository
 git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
 
@@ -84,7 +90,7 @@ git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
 cd ungoogled-chromium-archlinux
 
 # Start the build, this will download all nessesarry dependencies automatically
-makepkg
+makepkg -s
 ```
 
 If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-chromium-*.pkg.*`. Running the latter requires root permission.
