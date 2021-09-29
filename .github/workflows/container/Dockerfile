@@ -15,7 +15,7 @@
 FROM archlinux
 
 # Install basic dependencies needed by the following commands
-RUN pacman -Syu --needed --noconfirm sudo namcap fakeroot audit grep diffutils base-devel git python-selenium nodejs jq coreutils
+RUN pacman -Syu --needed --noconfirm base-devel
 
 # Create a normal user to be used by makepkg
 RUN useradd --create-home build
@@ -23,8 +23,7 @@ RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 COPY PKGBUILD /home/build
 
-# FIXME: Avoid evaluating PKGBUILD as script to extract dependencies
-RUN source /home/build/PKGBUILD && pacman -Syu --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
+RUN sudo -u build bash -c "cd && makepkg --nobuild --noextract --syncdeps --noconfirm"
 
 COPY .github/workflows/container/run.sh /home/build/run.sh
 
