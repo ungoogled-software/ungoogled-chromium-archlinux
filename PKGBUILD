@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=94.0.4606.61
+pkgver=94.0.4606.71
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=3
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=94.0.4606.61-1
+_uc_ver=94.0.4606.71-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -46,8 +46,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         unexpire-accelerated-video-decode-flag.patch
         add-a-TODO-about-a-missing-pnacl-flag.patch
         use-ffile-compilation-dir.patch)
-sha256sums=('6446db535c02c461c7e5c8d294a0300db03abba791f97f0c70bc52255aedb9bf'
-            '1931ff2120f2615d05597dc9f2429f3a185dd499964b3ca83e7012f629426646'
+sha256sums=('cabbba2e608c5ec110850b14ee5fead2608c44447a52edb80e2ba8261be3dc5b'
+            '04a73a707205ab6461213fbfd25ecade807e6b609b14aa632a1ec777e3903b4b'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '22692bddaf2761c6ddf9ff0bc4722972bca4d4c5b2fd3e5dbdac7eb60d914320'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
