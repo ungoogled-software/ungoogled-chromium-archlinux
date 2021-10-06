@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=94.0.4606.71
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=3
 # ungoogled chromium variables
@@ -45,7 +45,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-94-ffmpeg-roll.patch
         unexpire-accelerated-video-decode-flag.patch
         add-a-TODO-about-a-missing-pnacl-flag.patch
-        use-ffile-compilation-dir.patch)
+        use-ffile-compilation-dir.patch
+        pipewire-do-not-typecheck-the-portal-session_handle.patch)
 sha256sums=('cabbba2e608c5ec110850b14ee5fead2608c44447a52edb80e2ba8261be3dc5b'
             '04a73a707205ab6461213fbfd25ecade807e6b609b14aa632a1ec777e3903b4b'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -59,7 +60,8 @@ sha256sums=('cabbba2e608c5ec110850b14ee5fead2608c44447a52edb80e2ba8261be3dc5b'
             '56acb6e743d2ab1ed9f3eb01700ade02521769978d03ac43226dec94659b3ace'
             '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
             'd53da216538f2e741a6e048ed103964a91a98e9a3c10c27fdfa34d4692fdc455'
-            '921010cd8fab5f30be76c68b68c9b39fac9e21f4c4133bb709879592bbdf606e')
+            '921010cd8fab5f30be76c68b68c9b39fac9e21f4c4133bb709879592bbdf606e'
+            '1889d890ff512a8b82a0f88972e78c78131177d8034750ff53577dfad99b3e3e')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -124,6 +126,9 @@ prepare() {
   # Revert addition of -ffile-compilation-dir= (needs newer clang)
   patch -Rp1 -i ../add-a-TODO-about-a-missing-pnacl-flag.patch
   patch -Rp1 -i ../use-ffile-compilation-dir.patch
+
+  # Fix desktop sharing via Pipewire with xdg-desktop-portal 1.10
+  patch -Np1 -d third_party/webrtc <../pipewire-do-not-typecheck-the-portal-session_handle.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
