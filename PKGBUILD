@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=94.0.4606.71
-pkgrel=2
+pkgver=94.0.4606.81
+pkgrel=1
 _launcher_ver=8
 _gcc_patchset=3
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=94.0.4606.71-1
+_uc_ver=94.0.4606.81-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -47,8 +47,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         add-a-TODO-about-a-missing-pnacl-flag.patch
         use-ffile-compilation-dir.patch
         pipewire-do-not-typecheck-the-portal-session_handle.patch)
-sha256sums=('cabbba2e608c5ec110850b14ee5fead2608c44447a52edb80e2ba8261be3dc5b'
-            '04a73a707205ab6461213fbfd25ecade807e6b609b14aa632a1ec777e3903b4b'
+sha256sums=('7071aa2b2caf48094c2ae816395948b4daec940606f4982ad5bbf68e5d2de598'
+            'dfb162c8824f98095bc5fa8928d44bcb5fb66a19873a5976b8059abe20cad6fe'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '22692bddaf2761c6ddf9ff0bc4722972bca4d4c5b2fd3e5dbdac7eb60d914320'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
