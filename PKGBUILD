@@ -10,10 +10,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=94.0.4606.81
+pkgver=95.0.4638.54
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=3
+_gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
 _uc_ver=94.0.4606.81-1
@@ -46,11 +46,14 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         unexpire-accelerated-video-decode-flag.patch
         add-a-TODO-about-a-missing-pnacl-flag.patch
         use-ffile-compilation-dir.patch
-        pipewire-do-not-typecheck-the-portal-session_handle.patch)
-sha256sums=('7071aa2b2caf48094c2ae816395948b4daec940606f4982ad5bbf68e5d2de598'
+        pipewire-do-not-typecheck-the-portal-session_handle.patch
+        maldoca-depend-on-zlib-instead-of-headers-only.patch
+        chromium-95-harfbuzz-3.patch
+        ozone-x11-fix-VA-API.patch)
+sha256sums=('3eef88d745e6ddaeaf507358f1510482d6f399cf335061bb1226a5f7120061fd'
             'dfb162c8824f98095bc5fa8928d44bcb5fb66a19873a5976b8059abe20cad6fe'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '22692bddaf2761c6ddf9ff0bc4722972bca4d4c5b2fd3e5dbdac7eb60d914320'
+            'bc6373f2470a9e6d947a4deaee0612f730112f69552b933c54bb6e60b82dd6f1'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
@@ -61,7 +64,10 @@ sha256sums=('7071aa2b2caf48094c2ae816395948b4daec940606f4982ad5bbf68e5d2de598'
             '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
             'd53da216538f2e741a6e048ed103964a91a98e9a3c10c27fdfa34d4692fdc455'
             '921010cd8fab5f30be76c68b68c9b39fac9e21f4c4133bb709879592bbdf606e'
-            '1889d890ff512a8b82a0f88972e78c78131177d8034750ff53577dfad99b3e3e')
+            '1889d890ff512a8b82a0f88972e78c78131177d8034750ff53577dfad99b3e3e'
+            '074b32078b9e53fd9b33709ce5785c120eb0346b015a93921897caed4f95f7b6'
+            'd9002f1e33390c3e770637773c81be6731584b18f68f086e955bcc3f66f4510d'
+            '3af6dfe5c4e6ed1be52a292c30bc0c447cc8498bb108f7973adb438239961474')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -120,6 +126,11 @@ prepare() {
   # https://crbug.com/1207478
   patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
 
+  # Upstream fixes
+  patch -Np1 -i ../maldoca-depend-on-zlib-instead-of-headers-only.patch
+  patch -Np1 -i ../ozone-x11-fix-VA-API.patch
+  patch -Np1 -i ../chromium-95-harfbuzz-3.patch
+
   # Revert transition to -fsanitize-ignorelist (needs newer clang)
   patch -Rp1 -i ../replace-blacklist-with-ignorelist.patch
 
@@ -134,8 +145,7 @@ prepare() {
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-90-ruy-include.patch
-  patch -Np1 -i ../patches/chromium-94-CustomSpaces-include.patch
+  patch -Np1 -i ../patches/chromium-95-quiche-include.patch
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
