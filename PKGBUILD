@@ -16,7 +16,7 @@ _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=94.0.4606.81-1
+_uc_ver=a94b65465bf144423d7b717b82c827ab822ae872
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -51,7 +51,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-95-harfbuzz-3.patch
         ozone-x11-fix-VA-API.patch)
 sha256sums=('3eef88d745e6ddaeaf507358f1510482d6f399cf335061bb1226a5f7120061fd'
-            'dfb162c8824f98095bc5fa8928d44bcb5fb66a19873a5976b8059abe20cad6fe'
+            'c5293610473e234ac17354400433d58f3b515f5bd8186ab2679334390fc05939'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'bc6373f2470a9e6d947a4deaee0612f730112f69552b933c54bb6e60b82dd6f1'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
