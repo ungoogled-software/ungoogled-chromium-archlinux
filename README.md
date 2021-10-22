@@ -45,6 +45,7 @@ sudo pacman -Sy ungoogled-chromium
 - [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
 - [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
 - [cachy-repo](https://wiki.cachyos.org/en/home/Repo) - Maintained by ptr1337
+
   All issues should go to their respective maintainers.
 
 ## Building
