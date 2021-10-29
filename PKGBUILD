@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=95.0.4638.54
+pkgver=95.0.4638.69
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=95.0.4638.54-1
+_uc_ver=95.0.4638.69-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -50,8 +50,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         maldoca-depend-on-zlib-instead-of-headers-only.patch
         chromium-95-harfbuzz-3.patch
         ozone-x11-fix-VA-API.patch)
-sha256sums=('3eef88d745e6ddaeaf507358f1510482d6f399cf335061bb1226a5f7120061fd'
-            'fe3a77372668b5f7de71705b768b78a2bb10f74e35bd85a0af9b982a39ff32d3'
+sha256sums=('38a37d737c6c9a7198402ca614746b2dbb7abbb793bb2cb02dc796b62a22efe7'
+            '35debe7f407a4749d4454fc78f52c18955f1d8400750fdc20b179f528106c658'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'bc6373f2470a9e6d947a4deaee0612f730112f69552b933c54bb6e60b82dd6f1'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
