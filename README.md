@@ -73,7 +73,7 @@ cd ungoogled-chromium-archlinux
 # Check out the latest tag
 git checkout $(git describe --abbrev=0 --tags)
 
-# Start the build, this will download all nessesarry dependencies automatically
+# Start the build, this will download all necessary dependencies automatically
 makepkg -s
 ```
 
@@ -89,7 +89,7 @@ git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
 # Navigate into the repository
 cd ungoogled-chromium-archlinux
 
-# Start the build, this will download all nessesarry dependencies automatically
+# Start the build, this will download all necessary dependencies automatically
 makepkg -s
 ```
 
