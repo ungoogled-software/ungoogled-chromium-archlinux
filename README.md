@@ -44,8 +44,9 @@ sudo pacman -Sy ungoogled-chromium
 
 - [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
 - [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
+- [cachy-repo](https://wiki.cachyos.org/en/home/Repo) - Maintained by ptr1337
 
-All issues should go to their respective maintainers.
+  All issues should go to their respective maintainers.
 
 ## Building
 
@@ -103,7 +104,7 @@ For the latest testing version, run these commands instead:
 # Create a directory for the package output
 mkdir output
 
-# Start the build, the image already contains all nessesarry dependencies 
+# Start the build, the image already contains all nessesarry dependencies
 docker run --rm --mount type=bind,source=$(pwd)/output,target=/mnt/output ghcr.io/ungoogled-software/ungoogled-chromium-archlinux-testing:latest
 ```
 
