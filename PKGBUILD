@@ -10,7 +10,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=96.0.4664.110
+pkgver=97.0.4692.71
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
@@ -32,6 +32,7 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
 conflicts=('chromium')
+options=('!lto') # Chromium adds its own flags for ThinLTO
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
@@ -41,21 +42,19 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         chromium-93-ffmpeg-4.4.patch
-        chromium-94-ffmpeg-roll.patch
         unexpire-accelerated-video-decode-flag.patch
-        unbundle-fix-visibility-of-build-config-freetype.patch)
-sha256sums=('36a99d29c2e93a9975be53648f2cd3ffa4ee43730f217a2e7ed88c1901a671e8'
+        unbundle-ffmpeg-av_stream_get_first_dts.patch)
+sha256sums=('8ae189d44b782fe4d4942962260dbf5f753abf141148727d9fe82852778dfd7c'
             '4d851d62d67391b6ab9bb1267a92c9d0a8279fe7f7b86bdbf0c8cff7b9bbdad5'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '090af7eab39aade15a1786273f2497d6b4abfaef24279fbf97ce0dd1c38c69aa'
+            '7af5c0a55a20c0fb496b2f4448d89203a83bb1914754d864460e55e68731ef0b'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
-            '56acb6e743d2ab1ed9f3eb01700ade02521769978d03ac43226dec94659b3ace'
             '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
-            'd0b17162211dd49e3a58c16d1697e7d8c322dcfd3b7890f0c2f920b711f52293')
+            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -94,7 +93,8 @@ prepare() {
   sed -i -e 's/\<xmlMalloc\>/malloc/' -e 's/\<xmlFree\>/free/' \
     third_party/blink/renderer/core/xml/*.cc \
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
-    third_party/libxml/chromium/*.cc
+    third_party/libxml/chromium/*.cc \
+    third_party/maldoca/src/maldoca/ole/oss_utils.h
 
   # Use the --oauth2-client-id= and --oauth2-client-secret= switches for
   # setting GOOGLE_DEFAULT_CLIENT_ID and GOOGLE_DEFAULT_CLIENT_SECRET at
@@ -104,27 +104,21 @@ prepare() {
   # Fix build with older ffmpeg
   patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
 
-  # Revert change to custom function av_stream_get_first_dts; will need to
+  # Substitute the custom function 'av_stream_get_first_dts'; will need to
   # switch to bundled ffmpeg when we're no longer using ffmpeg 4.4 in Arch
   # Upstream commit that made first_dts internal causing Chromium to add a
   # custom function: https://github.com/FFmpeg/FFmpeg/commit/591b88e6787c4
   # https://crbug.com/1251779
-  patch -Rp1 -i ../chromium-94-ffmpeg-roll.patch
+  patch -Np1 -i ../unbundle-ffmpeg-av_stream_get_first_dts.patch
 
   # https://crbug.com/1207478
   patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
-
-  # Upstream fixes
-  patch -Np1 -i ../unbundle-fix-visibility-of-build-config-freetype.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-96-CommandLine-include.patch
-  patch -Np1 -i ../patches/chromium-96-RestrictedCookieManager-tuple.patch
-  patch -Np1 -i ../patches/chromium-96-DrmRenderNodePathFinder-include.patch
-  patch -Np1 -i ../patches/chromium-96-CouponDB-include.patch
+  #patch -Np1 -i ../patches/
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
@@ -218,6 +212,19 @@ build() {
   # Do not warn about unknown warning options
   CFLAGS+='   -Wno-unknown-warning-option'
   CXXFLAGS+=' -Wno-unknown-warning-option'
+
+  # https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/123
+  CFLAGS=${CFLAGS/-fexceptions}
+  CFLAGS=${CFLAGS/-fcf-protection}
+  CXXFLAGS=${CXXFLAGS/-fexceptions}
+  CXXFLAGS=${CXXFLAGS/-fcf-protection}
+
+  # This appears to cause random segfaults
+  CFLAGS=${CFLAGS/-fstack-clash-protection}
+  CXXFLAGS=${CXXFLAGS/-fstack-clash-protection}
+
+  # https://crbug.com/957519#c122
+  CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS}
 
   msg2 'Configuring Chromium'
   gn gen out/Release --args="${_flags[*]}"
