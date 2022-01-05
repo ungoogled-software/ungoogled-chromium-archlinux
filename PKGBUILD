@@ -16,7 +16,7 @@ _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=96.0.4664.110-1
+_uc_ver=97.0.4692.71-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -45,7 +45,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         unexpire-accelerated-video-decode-flag.patch
         unbundle-ffmpeg-av_stream_get_first_dts.patch)
 sha256sums=('8ae189d44b782fe4d4942962260dbf5f753abf141148727d9fe82852778dfd7c'
-            '4d851d62d67391b6ab9bb1267a92c9d0a8279fe7f7b86bdbf0c8cff7b9bbdad5'
+            'd2c6521a1d72a50181a5c1caa97ddd8efd9d5df7c2af6399163da4b853b6499e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '7af5c0a55a20c0fb496b2f4448d89203a83bb1914754d864460e55e68731ef0b'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
