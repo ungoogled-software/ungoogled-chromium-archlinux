@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=97.0.4692.71
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
@@ -43,7 +43,9 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         chromium-93-ffmpeg-4.4.patch
         unexpire-accelerated-video-decode-flag.patch
-        unbundle-ffmpeg-av_stream_get_first_dts.patch)
+        unbundle-ffmpeg-av_stream_get_first_dts.patch
+        fix-tag-dragging-in-KWin.patch
+        fix-tag-dragging-in-Mutter.patch)
 sha256sums=('8ae189d44b782fe4d4942962260dbf5f753abf141148727d9fe82852778dfd7c'
             'd2c6521a1d72a50181a5c1caa97ddd8efd9d5df7c2af6399163da4b853b6499e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -54,7 +56,9 @@ sha256sums=('8ae189d44b782fe4d4942962260dbf5f753abf141148727d9fe82852778dfd7c'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
             '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
-            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c')
+            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c'
+            '8dac06ef6e85ddb205b47bb7f1b8c3f73b67a8252dd2a81ed636964c517114ed'
+            '764dd0c1336881ff37c764f59f25f5830675b5db1388a74da5ddbe9642883692')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -113,6 +117,10 @@ prepare() {
 
   # https://crbug.com/1207478
   patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
+
+  # Upstream fixes
+  patch -Np1 -i ../fix-tag-dragging-in-KWin.patch
+  patch -Np1 -i ../fix-tag-dragging-in-Mutter.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
