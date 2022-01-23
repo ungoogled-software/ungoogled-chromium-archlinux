@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=97.0.4692.99
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
@@ -43,7 +43,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         chromium-93-ffmpeg-4.4.patch
         unexpire-accelerated-video-decode-flag.patch
-        unbundle-ffmpeg-av_stream_get_first_dts.patch)
+        unbundle-ffmpeg-av_stream_get_first_dts.patch
+        wayland-fix-binding-to-wrong-version.patch)
 sha256sums=('c91bae205705b367f2cfc1f72ce1ee99b2ceb5edfc584e15c60a6ab5ff01ecba'
             'e01148a7e94bfd5ee288b5c5cf7df869aaae545cf48951c8d1f47264792cbf44'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -54,7 +55,8 @@ sha256sums=('c91bae205705b367f2cfc1f72ce1ee99b2ceb5edfc584e15c60a6ab5ff01ecba'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
             '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
-            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c')
+            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c'
+            '29541840921302060f712838ba460cd7e988148af3ce3c9dc45437fc78442a67')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -115,6 +117,7 @@ prepare() {
   patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
 
   # Upstream fixes
+  patch -Np1 -i ../wayland-fix-binding-to-wrong-version.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
