@@ -36,6 +36,8 @@ RUN echo $(date +"%s") > /etc/buildtime
 
 RUN ls -lah /home/build
 
+RUN echo 'MAKEFLAGS="-j4"' >> /etc/makepkg.conf
+
 USER build
 
 ENTRYPOINT [ "/bin/bash", "/home/build/run.sh" ]
