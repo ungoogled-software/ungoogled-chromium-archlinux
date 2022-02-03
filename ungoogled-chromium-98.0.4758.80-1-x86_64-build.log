@@ -1,0 +1,10 @@
+make: Entering directory '/build/ungoogled-chromium/src/chromium-launcher-8'
+cc -o chromium -DLAUNCHER_VERSION=\"v8\" -DCHROMIUM_NAME=\"chromium\" -DCHROMIUM_BINARY=\"/usr/lib/chromium/chromium\" -DCHROMIUM_VENDOR="\"Arch Linux\"" -march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fexceptions         -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security         -fstack-clash-protection -fcf-protection -g -fvar-tracking-assignments -fdebug-prefix-map=/build/ungoogled-chromium/src=/usr/src/debug -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-4 -pthread  -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now launcher.c -lglib-2.0 
+make: Leaving directory '/build/ungoogled-chromium/src/chromium-launcher-8'
+[1m[34m  ->(B[m[1m Configuring Chromium(B[m
+Done. Made 16626 targets from 2776 files in 3965ms
+[1m[34m  ->(B[m[1m Building Chromium(B[m
+ninja: Entering directory `out/Release'
+ninja: error: unknown target 'chromedriver.unstripped'
+[1m[31m==> ERROR:(B[m[1m A failure occurred in build().(B[m
+[1m    Aborting...(B[m

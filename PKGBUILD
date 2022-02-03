@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=97.0.4692.99
-pkgrel=2
+pkgver=98.0.4758.80
+pkgrel=1
 _launcher_ver=8
-_gcc_patchset=4
+_gcc_patchset=5
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=97.0.4692.99-1
+_uc_ver=98.0.4758.80-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -32,7 +32,7 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
 conflicts=('chromium')
-options=('!lto') # Chromium adds its own flags for ThinLTO
+options=('debug' '!lto') # Chromium adds its own flags for ThinLTO
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
@@ -42,21 +42,23 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         chromium-93-ffmpeg-4.4.patch
-        unexpire-accelerated-video-decode-flag.patch
         unbundle-ffmpeg-av_stream_get_first_dts.patch
-        wayland-fix-binding-to-wrong-version.patch)
-sha256sums=('c91bae205705b367f2cfc1f72ce1ee99b2ceb5edfc584e15c60a6ab5ff01ecba'
-            'e01148a7e94bfd5ee288b5c5cf7df869aaae545cf48951c8d1f47264792cbf44'
+        downgrade-duplicate-peer-error-to-dvlog.patch
+        fix-build-break-with-system-libdrm.patch
+        use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch)
+sha256sums=('c87266e20f860a32c48affc70a769368d1b876dbad768e3aa93ee3c335944171'
+            '78da43f0f5e0b8f361cd40cbde2e2d04b4245add9e8643964f7dc9f9190f5cb7'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '7af5c0a55a20c0fb496b2f4448d89203a83bb1914754d864460e55e68731ef0b'
+            'f561145514e9d30a696a82f6a6a4eca06e664b58d7cda30dad9afb2cef341a4d'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
-            '2a97b26c3d6821b15ef4ef1369905c6fa3e9c8da4877eb9af4361452a425290b'
             '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c'
-            '29541840921302060f712838ba460cd7e988148af3ce3c9dc45437fc78442a67')
+            '291c6a6ad44c06ae8d1b13433f0c4e37d280c70fb06eaa97a1cc9b0dcc122aaa'
+            'edf4d973ff197409d319bb6fbbaa529e53bc62347d26b0733c45a116a1b23f37'
+            '9c9c280be968f06d269167943680fb72a26fbb05d8c15f60507e316e8a9075d5')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -103,27 +105,32 @@ prepare() {
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
-  # Fix build with older ffmpeg
-  patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
+  # Patches to build with ffmpeg 4.4; remove when ffmpeg 5.0 moves to stable
+  if ! pkg-config --atleast-version 59 libavformat; then
+    # Fix build with older ffmpeg
+    patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
 
-  # Substitute the custom function 'av_stream_get_first_dts'; will need to
-  # switch to bundled ffmpeg when we're no longer using ffmpeg 4.4 in Arch
-  # Upstream commit that made first_dts internal causing Chromium to add a
-  # custom function: https://github.com/FFmpeg/FFmpeg/commit/591b88e6787c4
-  # https://crbug.com/1251779
-  patch -Np1 -i ../unbundle-ffmpeg-av_stream_get_first_dts.patch
-
-  # https://crbug.com/1207478
-  patch -Np0 -i ../unexpire-accelerated-video-decode-flag.patch
+    # Substitute the custom function 'av_stream_get_first_dts' for ffmpeg 4.4;
+    # drop this for ffmpeg 5.0 which is patched to include the above function.
+    # https://crbug.com/1251779
+    patch -Np1 -i ../unbundle-ffmpeg-av_stream_get_first_dts.patch
+  fi
 
   # Upstream fixes
-  patch -Np1 -i ../wayland-fix-binding-to-wrong-version.patch
+  patch -Np1 -F3 -i ../downgrade-duplicate-peer-error-to-dvlog.patch
+  patch -Np1 -i ../fix-build-break-with-system-libdrm.patch
+  patch -Np1 -d third_party/pdfium <../use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
   #patch -Np1 -i ../patches/
+
+  # Link to system tools required by the build
+  mkdir -p third_party/node/linux/node-linux-x64/bin
+  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
+  ln -s /usr/bin/java third_party/jdk/current/bin/
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
@@ -138,11 +145,6 @@ prepare() {
   msg2 'Applying domain substitution'
   python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" \
     -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
-
-  # Link to system tools required by the build
-  mkdir -p third_party/node/linux/node-linux-x64/bin
-  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
-  ln -s /usr/bin/java third_party/jdk/current/bin/
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -180,6 +182,7 @@ build() {
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'is_official_build=true' # implies is_cfi=true on x86_64
+    'symbol_level=0' # sufficient for backtraces on x86(_64)
     'disable_fieldtrial_testing_config=true'
     'blink_enable_generated_code_formatting=false'
     'ffmpeg_branding="Chrome"'
@@ -195,10 +198,6 @@ build() {
 
   if [[ -n ${_system_libs[icu]+set} ]]; then
     _flags+=('icu_use_data_file=false')
-  fi
-
-  if check_option strip y; then
-    _flags+=('symbol_level=0')
   fi
 
   # Append ungoogled chromium flags to _flags array
@@ -218,13 +217,21 @@ build() {
   CFLAGS+='   -Wno-unknown-warning-option'
   CXXFLAGS+=' -Wno-unknown-warning-option'
 
+  # Let Chromium set its own symbol level
+  CFLAGS=${CFLAGS/-g }
+  CXXFLAGS=${CXXFLAGS/-g }
+  # -fvar-tracking-assignments is not recognized by clang
+  CFLAGS=${CFLAGS/-fvar-tracking-assignments}
+  CXXFLAGS=${CXXFLAGS/-fvar-tracking-assignments}
+
   # https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/123
   CFLAGS=${CFLAGS/-fexceptions}
   CFLAGS=${CFLAGS/-fcf-protection}
   CXXFLAGS=${CXXFLAGS/-fexceptions}
   CXXFLAGS=${CXXFLAGS/-fcf-protection}
 
-  # This appears to cause random segfaults
+  # This appears to cause random segfaults when combined with ThinLTO
+  # https://bugs.archlinux.org/task/73518
   CFLAGS=${CFLAGS/-fstack-clash-protection}
   CXXFLAGS=${CXXFLAGS/-fstack-clash-protection}
 
@@ -246,8 +253,8 @@ package() {
   cd "$srcdir/chromium-$pkgver"
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
+  install -D out/Release/chromedriver "$pkgdir/usr/bin/chromedriver"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
 
   install -Dm644 ../chromium-drirc-disable-10bpc-color-configs.conf \
     "$pkgdir/usr/share/drirc.d/10-$pkgname.conf"
@@ -276,7 +283,6 @@ package() {
     chrome_100_percent.pak
     chrome_200_percent.pak
     chrome_crashpad_handler
-    chromedriver
     resources.pak
     v8_context_snapshot.bin
 

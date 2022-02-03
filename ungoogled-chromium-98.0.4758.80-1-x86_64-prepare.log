@@ -1,0 +1,844 @@
+patching file google_apis/google_api_keys.cc
+Hunk #1 succeeded at 170 (offset 16 lines).
+patching file media/filters/ffmpeg_demuxer.cc
+Hunk #1 succeeded at 404 (offset -23 lines).
+Hunk #2 succeeded at 420 (offset -23 lines).
+Hunk #3 succeeded at 481 (offset -23 lines).
+patching file build/linux/unbundle/ffmpeg.gn
+patching file mojo/core/node_controller.cc
+Hunk #1 succeeded at 582 with fuzz 3 (offset -12 lines).
+patching file AUTHORS
+patching file media/gpu/chromeos/BUILD.gn
+Hunk #1 succeeded at 24 (offset -1 lines).
+patching file media/gpu/chromeos/video_decoder_pipeline.cc
+Hunk #1 succeeded at 27 (offset -1 lines).
+patching file core/fxge/cfx_font.cpp
+patching file sql/recover_module/btree.cc
+Hunk #1 succeeded at 136 (offset 1 line).
+patching file sql/recover_module/btree.h
+Hunk #1 succeeded at 103 (offset 1 line).
+Hunk #2 succeeded at 151 (offset 1 line).
+Hunk #3 succeeded at 173 (offset 1 line).
+patching file sql/recover_module/cursor.cc
+Hunk #1 succeeded at 28 (offset 2 lines).
+Hunk #2 succeeded at 38 (offset 2 lines).
+Hunk #3 succeeded at 101 (offset 2 lines).
+Hunk #4 succeeded at 115 (offset 2 lines).
+patching file sql/recover_module/cursor.h
+Hunk #1 succeeded at 130 (offset 1 line).
+patching file sql/recover_module/pager.cc
+patching file sql/recover_module/pager.h
+Hunk #1 succeeded at 5 with fuzz 1.
+Hunk #2 succeeded at 73 (offset 2 lines).
+Hunk #3 succeeded at 140 with fuzz 1 (offset 2 lines).
+patching file ui/gl/gl_image_native_pixmap.cc
+Hunk #1 succeeded at 307 (offset 19 lines).
+patching file gpu/command_buffer/service/error_state.cc
+Hunk #1 succeeded at 117 (offset 2 lines).
+[1m[34m  ->(B[m[1m Pruning binaries(B[m
+[1m[34m  ->(B[m[1m Applying patches(B[m
+INFO: Applying patches from /build/ungoogled-chromium/src/ungoogled-chromium-20a02ccb67d8ab4139b31bcc06b04bd8d950fcac/patches
+INFO: * Applying 0001-fix-building-without-safebrowsing.patch (1/101)
+patching file chrome/browser/BUILD.gn
+patching file chrome/browser/browser_process.h
+patching file chrome/browser/browser_process_impl.cc
+patching file chrome/browser/browser_process_impl.h
+patching file chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/component_updater/file_type_policies_component_installer.cc
+patching file chrome/browser/download/chrome_download_manager_delegate.cc
+patching file chrome/browser/download/download_item_model.cc
+patching file chrome/browser/download/download_prefs.cc
+patching file chrome/browser/download/download_target_determiner.cc
+patching file chrome/browser/extensions/api/downloads/downloads_api.cc
+patching file chrome/browser/extensions/api/downloads/downloads_api.h
+patching file chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_api.cc
+patching file chrome/browser/extensions/api/webstore_private/webstore_private_api.cc
+patching file chrome/browser/extensions/blocklist_state_fetcher.cc
+patching file chrome/browser/extensions/blocklist_state_fetcher.h
+patching file chrome/browser/metrics/chrome_metrics_service_client.cc
+patching file chrome/browser/net/trial_comparison_cert_verifier_controller.cc
+patching file chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
+patching file chrome/browser/profiles/profile_impl.cc
+patching file chrome/browser/profiles/profiles_state.cc
+patching file chrome/browser/safe_browsing/BUILD.gn
+patching file chrome/browser/ssl/security_state_tab_helper.cc
+patching file chrome/browser/ui/BUILD.gn
+patching file chrome/browser/ui/tab_helpers.cc
+patching file chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
+patching file chrome/browser/ui/webui/downloads/downloads_dom_handler.h
+patching file chrome/browser/ui/webui/interstitials/interstitial_ui.cc
+patching file chrome/renderer/chrome_content_renderer_client.cc
+patching file components/security_interstitials/content/cert_report_helper.cc
+INFO: * Applying 0003-disable-autofill-download-manager.patch (2/101)
+patching file components/autofill/core/browser/autofill_download_manager.cc
+INFO: * Applying 0005-disable-default-extensions.patch (3/101)
+patching file chrome/browser/extensions/component_extensions_allowlist/allowlist.cc
+patching file chrome/browser/extensions/component_loader.cc
+patching file chrome/browser/extensions/external_component_loader.cc
+patching file chrome/browser/extensions/webstore_installer.cc
+INFO: * Applying 0007-disable-web-resource-service.patch (4/101)
+patching file components/web_resource/web_resource_service.cc
+INFO: * Applying 0009-disable-google-ipv6-probes.patch (5/101)
+patching file net/dns/host_resolver_manager.cc
+INFO: * Applying 0015-disable-update-pings.patch (6/101)
+patching file chrome/updater/configurator.cc
+INFO: * Applying 0017-disable-new-avatar-menu.patch (7/101)
+patching file components/signin/internal/identity_manager/primary_account_policy_manager_impl.cc
+INFO: * Applying 0021-disable-rlz.patch (8/101)
+patching file BUILD.gn
+patching file rlz/buildflags/buildflags.gni
+INFO: * Applying unrar.patch (9/101)
+patching file chrome/browser/safe_browsing/download_protection/file_analyzer.cc
+patching file chrome/common/safe_browsing/BUILD.gn
+patching file chrome/services/file_util/safe_archive_analyzer.cc
+INFO: * Applying safe_browsing-disable-incident-reporting.patch (10/101)
+patching file chrome/browser/safe_browsing/chrome_safe_browsing_blocking_page_factory.cc
+patching file chrome/browser/safe_browsing/incident_reporting/incident_report_uploader_impl.cc
+patching file chrome/browser/safe_browsing/incident_reporting/incident_reporting_service.cc
+patching file chrome/browser/safe_browsing/safe_browsing_service.cc
+patching file components/security_interstitials/core/safe_browsing_loud_error_ui.cc
+INFO: * Applying safe_browsing-disable-reporting-of-safebrowsing-over.patch (11/101)
+patching file components/safe_browsing/content/browser/client_side_detection_service.cc
+INFO: * Applying all-add-trk-prefixes-to-possibly-evil-connections.patch (12/101)
+patching file ash/components/geolocation/simple_geolocation_provider.cc
+patching file build/apple/tweak_info_plist.py
+patching file chrome/browser/ash/customization/customization_document.cc
+patching file chrome/browser/chromeos/extensions/file_manager/private_api_misc.cc
+patching file chrome/browser/extensions/api/cryptotoken_private/cryptotoken_private_api.cc
+patching file chrome/browser/extensions/install_signer.cc
+patching file chrome/browser/media/webrtc/webrtc_event_log_uploader.cc
+patching file chrome/browser/media/webrtc/webrtc_log_uploader.cc
+patching file chrome/browser/nacl_host/nacl_infobar_delegate.cc
+patching file chrome/browser/profiles/profile_avatar_downloader.cc
+patching file chrome/browser/resources/default_apps/external_extensions.json
+patching file chrome/browser/safe_browsing/download_protection/download_feedback.cc
+patching file chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
+patching file chrome/browser/supervised_user/supervised_user_service.cc
+patching file chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
+patching file chrome/browser/ui/webui/ntp/ntp_resource_cache.cc
+patching file chrome/chrome_cleaner/components/recovery_component.cc
+patching file chrome/chrome_cleaner/crash/crashpad_crash_reporter.cc
+patching file chrome/common/extensions/chrome_extensions_client.cc
+patching file chrome/installer/setup/google_chrome_behaviors.cc
+patching file chromecast/crash/linux/minidump_uploader.cc
+patching file components/cloud_devices/common/cloud_devices_urls.cc
+patching file components/drive/service/drive_api_service.cc
+patching file components/feedback/feedback_uploader.cc
+patching file components/google/core/common/google_util.cc
+patching file components/history/core/browser/web_history_service.cc
+patching file components/metrics/url_constants.cc
+patching file components/safe_browsing/content/browser/client_side_detection_service.cc
+patching file components/safe_search_api/safe_search/safe_search_url_checker_client.cc
+patching file components/safe_search_api/stub_url_checker.cc
+patching file components/translate/core/browser/translate_url_fetcher.cc
+patching file components/translate/core/common/translate_util.cc
+patching file components/variations/variations_url_constants.cc
+patching file content/browser/speech/speech_recognition_engine.cc
+patching file content/browser/webauth/authenticator_common.cc
+patching file content/shell/browser/shell_browser_main_parts.cc
+patching file extensions/common/extension_urls.cc
+patching file google_apis/gaia/gaia_constants.cc
+patching file google_apis/gaia/gaia_urls.cc
+patching file google_apis/gcm/engine/gservices_settings.cc
+patching file jingle/notifier/base/gaia_token_pre_xmpp_auth.cc
+patching file remoting/base/breakpad_mac.mm
+patching file remoting/protocol/jingle_messages.cc
+patching file rlz/lib/lib_values.cc
+patching file third_party/libjingle_xmpp/xmpp/constants.cc
+patching file ui/accessibility/extensions/chromevoxclassic/chromevox/background/prefs.js
+patching file ui/accessibility/extensions/chromevoxclassic/host/chrome/host.js
+patching file ui/views/examples/webview_example.cc
+INFO: * Applying disable-crash-reporter.patch (13/101)
+patching file components/crash/core/app/crashpad_linux.cc
+INFO: * Applying disable-google-host-detection.patch (14/101)
+patching file chrome/common/google_url_loader_throttle.cc
+patching file components/google/core/common/google_util.cc
+patching file components/page_load_metrics/browser/page_load_metrics_util.cc
+patching file components/page_load_metrics/common/page_load_metrics_util.cc
+patching file components/search_engines/template_url.cc
+patching file components/variations/net/variations_http_headers.cc
+patching file net/base/url_util.cc
+INFO: * Applying replace-google-search-engine-with-nosearch.patch (15/101)
+patching file components/search_engines/prepopulated_engines.json
+INFO: * Applying disable-signin.patch (16/101)
+patching file chrome/browser/ui/chrome_pages.cc
+INFO: * Applying toggle-translation-via-switch.patch (17/101)
+patching file chrome/browser/renderer_context_menu/render_view_context_menu.cc
+patching file components/translate/core/browser/translate_language_list.cc
+patching file components/translate/core/browser/translate_manager.cc
+patching file components/translate/core/browser/translate_ranker_impl.cc
+patching file components/translate/core/browser/translate_script.cc
+INFO: * Applying disable-untraceable-urls.patch (18/101)
+patching file chrome/browser/plugins/plugins_resource_service.cc
+patching file rlz/lib/financial_ping.cc
+patching file rlz/lib/lib_values.cc
+patching file rlz/lib/lib_values.h
+INFO: * Applying disable-profile-avatar-downloading.patch (19/101)
+patching file chrome/browser/profiles/profile_avatar_downloader.cc
+INFO: * Applying disable-gcm.patch (20/101)
+patching file components/gcm_driver/gcm_client_impl.cc
+INFO: * Applying disable-domain-reliability.patch (21/101)
+patching file chrome/browser/domain_reliability/service_factory.cc
+patching file components/domain_reliability/BUILD.gn
+patching file components/domain_reliability/bake_in_configs.py
+patching file components/domain_reliability/google_configs.cc
+patching file components/domain_reliability/uploader.cc
+INFO: * Applying block-trk-and-subdomains.patch (22/101)
+patching file chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.cc
+patching file chrome/browser/history/history_utils.cc
+patching file chrome/browser/ui/singleton_tabs.cc
+patching file components/omnibox/browser/autocomplete_input.cc
+patching file components/url_formatter/url_fixer.cc
+patching file content/browser/child_process_security_policy_impl.cc
+patching file net/BUILD.gn
+patching file net/url_request/trk_protocol_handler.cc
+patching file net/url_request/trk_protocol_handler.h
+patching file net/url_request/url_request.cc
+patching file net/url_request/url_request_context_builder.cc
+patching file url/url_constants.cc
+patching file url/url_constants.h
+patching file url/url_util.cc
+INFO: * Applying fix-building-without-one-click-signin.patch (23/101)
+patching file chrome/browser/ui/sync/one_click_signin_links_delegate_impl.cc
+patching file chrome/browser/ui/webui/signin/inline_login_handler_impl.cc
+INFO: * Applying disable-gaia.patch (24/101)
+patching file google_apis/gaia/gaia_auth_fetcher.cc
+INFO: * Applying disable-fonts-googleapis-references.patch (25/101)
+patching file chrome/browser/ash/child_accounts/time_limits/web_time_limit_error_page/resources/web_time_limit_error_page.html
+patching file chrome/browser/resources/chromeos/accessibility/chromevox/options/options.css
+patching file chrome/browser/resources/chromeos/accessibility/select_to_speak/options.css
+patching file chrome/browser/supervised_user/supervised_user_error_page/resources/supervised_user_block_interstitial.html
+patching file components/dom_distiller/content/browser/dom_distiller_viewer_source.cc
+patching file components/dom_distiller/core/html/preview.html
+patching file components/dom_distiller/core/javascript/dom_distiller_viewer.js
+patching file third_party/crashpad/crashpad/doc/support/crashpad_doxygen.css
+patching file tools/md_browser/base.css
+INFO: * Applying disable-webstore-urls.patch (26/101)
+patching file chrome/browser/extensions/chrome_content_browser_client_extensions_part.cc
+patching file chrome/browser/extensions/chrome_content_verifier_delegate.cc
+patching file chrome/browser/extensions/extension_migrator.cc
+patching file chrome/browser/extensions/extension_migrator.h
+patching file extensions/browser/updater/extension_downloader.cc
+INFO: * Applying fix-learn-doubleclick-hsts.patch (27/101)
+patching file net/tools/transport_security_state_generator/transport_security_state_generator.cc
+INFO: * Applying disable-webrtc-log-uploader.patch (28/101)
+patching file chrome/browser/media/webrtc/webrtc_log_uploader.cc
+INFO: * Applying fix-building-with-prunned-binaries.patch (29/101)
+patching file chrome/test/chromedriver/BUILD.gn
+patching file third_party/devtools-frontend/src/BUILD.gn
+INFO: * Applying disable-network-time-tracker.patch (30/101)
+patching file components/network_time/network_time_tracker.cc
+INFO: * Applying disable-mei-preload.patch (31/101)
+patching file chrome/BUILD.gn
+INFO: * Applying fix-building-without-safebrowsing.patch (32/101)
+patching file chrome/browser/BUILD.gn
+patching file chrome/browser/accuracy_tips/accuracy_service_factory.cc
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/chrome_content_browser_client_receiver_bindings.cc
+patching file chrome/browser/component_updater/chrome_client_side_phishing_component_installer.cc
+patching file chrome/browser/download/chrome_download_manager_delegate.cc
+patching file chrome/browser/download/download_stats.cc
+patching file chrome/browser/download/download_target_determiner.cc
+patching file chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc
+patching file chrome/browser/enterprise/connectors/connectors_service.cc
+patching file chrome/browser/enterprise/connectors/connectors_service.h
+patching file chrome/browser/enterprise/connectors/device_trust/signals/decorators/common/common_signals_decorator.cc
+patching file chrome/browser/enterprise/signals/context_info_fetcher.cc
+patching file chrome/browser/enterprise/signals/context_info_fetcher.h
+patching file chrome/browser/enterprise/signals/signals_utils.cc
+patching file chrome/browser/enterprise/signals/signals_utils.h
+patching file chrome/browser/extensions/BUILD.gn
+patching file chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc
+patching file chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc
+patching file chrome/browser/extensions/chrome_extensions_browser_client.cc
+patching file chrome/browser/extensions/extension_service.cc
+patching file chrome/browser/extensions/extension_service.h
+patching file chrome/browser/extensions/extension_system_impl.cc
+patching file chrome/browser/extensions/safe_browsing_verdict_handler.cc
+patching file chrome/browser/file_system_access/chrome_file_system_access_permission_context.cc
+patching file chrome/browser/file_system_access/chrome_file_system_access_permission_context.h
+patching file chrome/browser/media/webrtc/display_media_access_handler.cc
+patching file chrome/browser/notifications/notification_display_service_impl.cc
+patching file chrome/browser/password_manager/chrome_password_manager_client.cc
+patching file chrome/browser/password_manager/chrome_password_manager_client.h
+patching file chrome/browser/permissions/abusive_origin_permission_revocation_request.cc
+patching file chrome/browser/permissions/contextual_notification_permission_ui_selector.cc
+patching file chrome/browser/permissions/prediction_based_permission_ui_selector.cc
+patching file chrome/browser/prefs/browser_prefs.cc
+patching file chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
+patching file chrome/browser/reputation/reputation_service.cc
+patching file chrome/browser/resources/settings/privacy_page/privacy_review/privacy_review_page.ts
+patching file chrome/browser/safe_browsing/metrics/safe_browsing_metrics_provider.cc
+patching file chrome/browser/safe_browsing/url_lookup_service_factory.cc
+patching file chrome/browser/ssl/chrome_security_blocking_page_factory.cc
+patching file chrome/browser/ssl/sct_reporting_service_factory.cc
+patching file chrome/browser/subresource_filter/chrome_content_subresource_filter_web_contents_helper_factory.cc
+patching file chrome/browser/ui/BUILD.gn
+patching file chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.cc
+patching file chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
+patching file chrome/browser/ui/views/download/download_item_view.cc
+patching file chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
+patching file chrome/browser/ui/webui/management/management_ui_handler.cc
+patching file chrome/browser/webshare/share_service_impl.cc
+patching file chrome/test/BUILD.gn
+patching file components/password_manager/content/browser/content_password_manager_driver.cc
+patching file components/password_manager/core/browser/password_manager_client.h
+patching file components/password_manager/core/browser/password_reuse_detection_manager.cc
+patching file components/safe_browsing/content/common/proto/BUILD.gn
+patching file components/safe_browsing/content/common/safe_browsing.mojom
+patching file components/safe_browsing/core/browser/BUILD.gn
+patching file content/browser/file_system_access/safe_move_helper.cc
+patching file content/browser/file_system_access/safe_move_helper.h
+patching file content/public/browser/file_system_access_permission_context.h
+patching file extensions/browser/updater/update_service.cc
+patching file weblayer/BUILD.gn
+INFO: * Applying remove-unused-preferences-fields.patch (33/101)
+patching file android_webview/browser/aw_browser_context.cc
+patching file chrome/app/settings_strings.grdp
+patching file chrome/browser/android/signin/signin_manager_android.cc
+patching file chrome/browser/android/signin/signin_manager_android.h
+patching file chrome/browser/ash/lock_screen_apps/lock_screen_profile_creator_impl.cc
+patching file chrome/browser/ash/lock_screen_apps/lock_screen_profile_creator_impl_unittest.cc
+patching file chrome/browser/ash/login/signin/device_id_browsertest.cc
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/download/download_browsertest.cc
+patching file chrome/browser/download/download_item_model.cc
+patching file chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc
+patching file chrome/browser/enterprise/connectors/connectors_manager.cc
+patching file chrome/browser/enterprise/connectors/connectors_service.cc
+patching file chrome/browser/enterprise/connectors/connectors_service.h
+patching file chrome/browser/enterprise/signals/context_info_fetcher.cc
+patching file chrome/browser/enterprise/signals/context_info_fetcher.h
+patching file chrome/browser/enterprise/signals/signals_utils.cc
+patching file chrome/browser/enterprise/signals/signals_utils.h
+patching file chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc
+patching file chrome/browser/extensions/api/identity/identity_apitest.cc
+patching file chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
+patching file chrome/browser/extensions/api/preference/preference_api.cc
+patching file chrome/browser/extensions/api/preference/preference_apitest.cc
+patching file chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router.cc
+patching file chrome/browser/extensions/api/safe_browsing_private/safe_browsing_private_event_router_unittest.cc
+patching file chrome/browser/extensions/api/settings_private/prefs_util.cc
+patching file chrome/browser/extensions/api/webstore_private/webstore_private_apitest.cc
+patching file chrome/browser/extensions/extension_allowlist.cc
+patching file chrome/browser/extensions/installed_loader.cc
+patching file chrome/browser/net/profile_network_context_service.cc
+patching file chrome/browser/net/trial_comparison_cert_verifier_browsertest.cc
+patching file chrome/browser/net/trial_comparison_cert_verifier_controller.cc
+patching file chrome/browser/net/trial_comparison_cert_verifier_controller.h
+patching file chrome/browser/net/trial_comparison_cert_verifier_controller_unittest.cc
+patching file chrome/browser/password_manager/generated_password_leak_detection_pref.cc
+patching file chrome/browser/permissions/abusive_origin_permission_revocation_request.cc
+patching file chrome/browser/permissions/prediction_based_permission_ui_selector.cc
+patching file chrome/browser/policy/browser_signin_policy_handler.cc
+patching file chrome/browser/policy/configuration_policy_handler_list_factory.cc
+patching file chrome/browser/prefs/browser_prefs.cc
+patching file chrome/browser/prefs/chrome_command_line_pref_store.cc
+patching file chrome/browser/prefs/chrome_pref_service_factory.cc
+patching file chrome/browser/prefs/pref_functional_browsertest.cc
+patching file chrome/browser/profiles/gaia_info_update_service.cc
+patching file chrome/browser/profiles/gaia_info_update_service_unittest.cc
+patching file chrome/browser/profiles/profile_attributes_entry.cc
+patching file chrome/browser/profiles/profile_attributes_storage.cc
+patching file chrome/browser/profiles/profile_impl.cc
+patching file chrome/browser/profiles/profile_manager.cc
+patching file chrome/browser/profiles/profile_window.cc
+patching file chrome/browser/profiles/profiles_state.cc
+patching file chrome/browser/resources/settings/privacy_page/disable_safebrowsing_dialog.html
+patching file chrome/browser/resources/settings/privacy_page/privacy_page.html
+patching file chrome/browser/resources/settings/privacy_page/privacy_page.ts
+patching file chrome/browser/resources/settings/privacy_page/security_page.html
+patching file chrome/browser/resources/settings/privacy_page/security_page.ts
+patching file chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
+patching file chrome/browser/safe_browsing/ad_redirect_trigger_browsertest.cc
+patching file chrome/browser/safe_browsing/advanced_protection_status_manager.cc
+patching file chrome/browser/safe_browsing/advanced_protection_status_manager_unittest.cc
+patching file chrome/browser/safe_browsing/android/services_delegate_android.h
+patching file chrome/browser/safe_browsing/certificate_reporting_service.cc
+patching file chrome/browser/safe_browsing/certificate_reporting_service_browsertest.cc
+patching file chrome/browser/safe_browsing/chrome_cleaner/chrome_cleaner_controller_impl_win.cc
+patching file chrome/browser/safe_browsing/chrome_cleaner/reporter_runner_browsertest_win.cc
+patching file chrome/browser/safe_browsing/chrome_cleaner/srt_client_info_win.cc
+patching file chrome/browser/safe_browsing/chrome_password_protection_service.cc
+patching file chrome/browser/safe_browsing/chrome_password_protection_service.h
+patching file chrome/browser/safe_browsing/chrome_password_protection_service_browsertest.cc
+patching file chrome/browser/safe_browsing/chrome_password_protection_service_sync_browsertest.cc
+patching file chrome/browser/safe_browsing/cloud_content_scanning/binary_upload_service.cc
+patching file chrome/browser/safe_browsing/download_protection/check_client_download_request.cc
+patching file chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
+patching file chrome/browser/safe_browsing/download_protection/download_protection_service_unittest.cc
+patching file chrome/browser/safe_browsing/generated_safe_browsing_pref.cc
+patching file chrome/browser/safe_browsing/incident_reporting/extension_data_collection_unittest.cc
+patching file chrome/browser/safe_browsing/incident_reporting/incident_reporting_service.cc
+patching file chrome/browser/safe_browsing/incident_reporting/incident_reporting_service_unittest.cc
+patching file chrome/browser/safe_browsing/incident_reporting/last_download_finder_unittest.cc
+patching file chrome/browser/safe_browsing/incident_reporting/state_store.cc
+patching file chrome/browser/safe_browsing/incident_reporting/state_store_unittest.cc
+patching file chrome/browser/safe_browsing/metrics/safe_browsing_metrics_provider.cc
+patching file chrome/browser/safe_browsing/safe_browsing_blocking_page_test.cc
+patching file chrome/browser/safe_browsing/safe_browsing_service.cc
+patching file chrome/browser/safe_browsing/safe_browsing_service.h
+patching file chrome/browser/safe_browsing/telemetry/android/android_telemetry_service.cc
+patching file chrome/browser/safe_browsing/telemetry/android/android_telemetry_service_unittest.cc
+patching file chrome/browser/safe_browsing/url_checker_delegate_impl.cc
+patching file chrome/browser/signin/account_consistency_mode_manager.cc
+patching file chrome/browser/signin/account_consistency_mode_manager_unittest.cc
+patching file chrome/browser/signin/chrome_device_id_helper.cc
+patching file chrome/browser/signin/chrome_signin_client.cc
+patching file chrome/browser/signin/chromeos_mirror_account_consistency_browsertest.cc
+patching file chrome/browser/signin/dice_browsertest.cc
+patching file chrome/browser/signin/header_modification_delegate_impl.cc
+patching file chrome/browser/signin/mirror_browsertest.cc
+patching file chrome/browser/signin/signin_manager.cc
+patching file chrome/browser/signin/signin_promo_util.cc
+patching file chrome/browser/signin/signin_ui_util.cc
+patching file chrome/browser/signin/signin_util.cc
+patching file chrome/browser/signin/signin_util_win.cc
+patching file chrome/browser/signin/signin_util_win_browsertest.cc
+patching file chrome/browser/ssl/certificate_reporting_test_utils.cc
+patching file chrome/browser/ssl/sct_reporting_service.cc
+patching file chrome/browser/ssl/ssl_browsertest.cc
+patching file chrome/browser/ssl/ssl_error_controller_client.cc
+patching file chrome/browser/supervised_user/supervised_user_pref_store.cc
+patching file chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
+patching file chrome/browser/ui/browser_command_controller.cc
+patching file chrome/browser/ui/browser_command_controller.h
+patching file chrome/browser/ui/browser_command_controller_unittest.cc
+patching file chrome/browser/ui/chrome_pages.cc
+patching file chrome/browser/ui/hats/trust_safety_sentiment_service.cc
+patching file chrome/browser/ui/views/page_info/page_info_bubble_view_sync_browsertest.cc
+patching file chrome/browser/ui/views/profiles/profile_menu_view.cc
+patching file chrome/browser/ui/views/profiles/profile_menu_view_browsertest.cc
+patching file chrome/browser/ui/views/safe_browsing/password_reuse_modal_warning_dialog.cc
+patching file chrome/browser/ui/views/safe_browsing/password_reuse_modal_warning_dialog.h
+patching file chrome/browser/ui/views/sync/inline_login_ui_browsertest.cc
+patching file chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+patching file chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
+patching file chrome/browser/ui/webui/history/history_ui.cc
+patching file chrome/browser/ui/webui/management/management_ui_handler.cc
+patching file chrome/browser/ui/webui/profile_info_watcher.cc
+patching file chrome/browser/ui/webui/profile_info_watcher.h
+patching file chrome/browser/ui/webui/reset_password/reset_password_ui.cc
+patching file chrome/browser/ui/webui/settings/people_handler.cc
+patching file chrome/browser/ui/webui/settings/safety_check_handler.cc
+patching file chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
+patching file chrome/browser/ui/webui/settings/settings_ui.cc
+patching file chrome/browser/ui/webui/signin/dice_turn_sync_on_helper.cc
+patching file chrome/browser/ui/webui/signin/dice_turn_sync_on_helper_unittest.cc
+patching file chrome/browser/ui/webui/signin/inline_login_handler.cc
+patching file chrome/browser/ui/webui/signin/inline_login_handler_impl.cc
+patching file chrome/browser/ui/webui/signin/signin_error_ui.cc
+patching file chrome/browser/ui/webui/signin/signin_utils_desktop.cc
+patching file chrome/browser/ui/webui/welcome/welcome_ui.cc
+patching file chrome/browser/unified_consent/unified_consent_service_factory.cc
+patching file chrome/common/extensions/api/privacy.json
+patching file components/password_manager/core/browser/leak_detection_delegate.cc
+patching file components/password_manager/core/browser/password_bubble_experiment.cc
+patching file components/password_manager/core/browser/password_reuse_detector.cc
+patching file components/password_manager/core/browser/password_reuse_manager_impl.cc
+patching file components/password_manager/core/browser/password_store.cc
+patching file components/password_manager/core/browser/password_sync_util.cc
+patching file components/password_manager/core/browser/sync_credentials_filter_unittest.cc
+patching file components/safe_browsing/content/browser/base_blocking_page.cc
+patching file components/safe_browsing/content/browser/client_side_detection_service.cc
+patching file components/safe_browsing/content/browser/safe_browsing_navigation_observer_manager.cc
+patching file components/safe_browsing/content/browser/triggers/suspicious_site_trigger_unittest.cc
+patching file components/safe_browsing/content/browser/triggers/trigger_manager.cc
+patching file components/safe_browsing/content/browser/triggers/trigger_throttler.cc
+patching file components/safe_browsing/content/browser/triggers/trigger_throttler_unittest.cc
+patching file components/safe_browsing/content/browser/ui_manager.cc
+patching file components/safe_browsing/content/browser/ui_manager_unittest.cc
+patching file components/safe_browsing/content/browser/web_ui/safe_browsing_ui.cc
+patching file components/safe_browsing/core/browser/db/hit_report.h
+patching file components/safe_browsing/core/browser/db/util.h
+patching file components/safe_browsing/core/browser/db/v4_local_database_manager.cc
+patching file components/safe_browsing/core/browser/db/v4_local_database_manager.h
+patching file components/safe_browsing/core/browser/db/v4_protocol_manager_util.cc
+patching file components/safe_browsing/core/browser/db/v4_protocol_manager_util.h
+patching file components/safe_browsing/core/browser/db/v4_update_protocol_manager.cc
+patching file components/safe_browsing/core/browser/db/v4_update_protocol_manager.h
+patching file components/safe_browsing/core/browser/password_protection/password_protection_service_base.h
+patching file components/safe_browsing/core/browser/ping_manager.cc
+patching file components/safe_browsing/core/browser/realtime/policy_engine.cc
+patching file components/safe_browsing/core/browser/realtime/url_lookup_service.cc
+patching file components/safe_browsing/core/browser/realtime/url_lookup_service_base.cc
+patching file components/safe_browsing/core/browser/safe_browsing_metrics_collector.cc
+patching file components/safe_browsing/core/common/BUILD.gn
+patching file components/safe_browsing/core/common/safe_browsing_policy_handler.cc
+patching file components/safe_browsing/core/common/safe_browsing_prefs_unittest.cc
+patching file components/safety_check/safety_check.cc
+patching file components/security_interstitials/content/bad_clock_blocking_page.cc
+patching file components/security_interstitials/content/captive_portal_blocking_page.cc
+patching file components/security_interstitials/content/cert_report_helper.cc
+patching file components/security_interstitials/content/mitm_software_blocking_page.cc
+patching file components/security_interstitials/content/security_interstitial_controller_client.cc
+patching file components/security_interstitials/content/security_interstitial_controller_client.h
+patching file components/security_interstitials/content/security_interstitial_page.cc
+patching file components/security_interstitials/content/ssl_blocking_page.cc
+patching file components/security_interstitials/core/controller_client.cc
+patching file components/security_interstitials/core/controller_client.h
+patching file components/signin/core/browser/account_investigator.cc
+patching file components/signin/core/browser/account_investigator_unittest.cc
+patching file components/signin/core/browser/account_reconcilor_unittest.cc
+patching file components/signin/core/browser/dice_account_reconcilor_delegate.cc
+patching file components/signin/core/browser/dice_account_reconcilor_delegate_unittest.cc
+patching file components/signin/core/browser/signin_investigator.cc
+patching file components/signin/core/browser/signin_investigator_unittest.cc
+patching file components/signin/internal/identity_manager/account_tracker_service.cc
+patching file components/signin/internal/identity_manager/account_tracker_service.h
+patching file components/signin/internal/identity_manager/account_tracker_service_unittest.cc
+patching file components/signin/internal/identity_manager/gaia_cookie_manager_service.cc
+patching file components/signin/internal/identity_manager/gaia_cookie_manager_service_unittest.cc
+patching file components/signin/internal/identity_manager/mutable_profile_oauth2_token_service_delegate.cc
+patching file components/signin/internal/identity_manager/mutable_profile_oauth2_token_service_delegate_unittest.cc
+patching file components/signin/internal/identity_manager/primary_account_manager.cc
+patching file components/signin/internal/identity_manager/primary_account_manager_unittest.cc
+patching file components/signin/internal/identity_manager/primary_account_mutator_impl.cc
+patching file components/signin/internal/identity_manager/primary_account_policy_manager_impl.cc
+patching file components/signin/internal/identity_manager/primary_account_policy_manager_impl.h
+patching file components/signin/internal/identity_manager/primary_account_policy_manager_impl_unittest.cc
+patching file components/signin/internal/identity_manager/profile_oauth2_token_service.cc
+patching file components/signin/internal/identity_manager/profile_oauth2_token_service_delegate_chromeos_unittest.cc
+patching file components/signin/public/base/BUILD.gn
+patching file components/signin/public/base/device_id_helper.cc
+patching file components/signin/public/base/device_id_helper_unittest.cc
+patching file components/signin/public/identity_manager/identity_utils.cc
+patching file components/signin/public/identity_manager/identity_utils_unittest.cc
+patching file components/signin/public/identity_manager/primary_account_mutator_unittest.cc
+patching file tools/metrics/histograms/enums.xml
+INFO: * Applying fix-building-without-enabling-reporting.patch (34/101)
+patching file third_party/blink/renderer/core/frame/local_frame.cc
+patching file third_party/blink/renderer/core/frame/local_frame.h
+patching file third_party/blink/renderer/core/frame/reporting_context.cc
+patching file third_party/blink/renderer/core/frame/reporting_context.h
+INFO: * Applying block-requests.patch (35/101)
+patching file chrome/browser/new_tab_page/one_google_bar/one_google_bar_loader_impl.cc
+patching file chrome/browser/new_tab_page/promos/promo_service.cc
+patching file chrome/browser/resources/discards/graph_doc_template.html
+patching file chrome/browser/search/background/ntp_background_service.cc
+patching file chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
+patching file components/assist_ranker/ranker_url_fetcher.cc
+patching file components/update_client/update_checker.cc
+INFO: * Applying disable-floc.patch (36/101)
+patching file chrome/browser/federated_learning/floc_id_provider_factory.cc
+patching file chrome/browser/privacy_sandbox/privacy_sandbox_settings.cc
+patching file components/privacy_sandbox/privacy_sandbox_prefs.cc
+INFO: * Applying disable-privacy-sandbox.patch (37/101)
+patching file chrome/browser/privacy_sandbox/privacy_sandbox_settings.cc
+patching file chrome/browser/resources/settings/privacy_page/privacy_page.html
+patching file components/privacy_sandbox/privacy_sandbox_prefs.cc
+INFO: * Applying doh-changes.patch (38/101)
+patching file chrome/common/chrome_features.cc
+patching file net/dns/public/doh_provider_entry.cc
+patching file services/network/public/cpp/features.cc
+INFO: * Applying disable-fetching-field-trials.patch (39/101)
+patching file chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
+patching file components/variations/service/variations_service.cc
+INFO: * Applying 0006-modify-default-prefs.patch (40/101)
+patching file chrome/browser/background/background_mode_manager.cc
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/net/profile_network_context_service.cc
+patching file chrome/browser/prefetch/prefetch_prefs.h
+patching file chrome/browser/profiles/profile.cc
+patching file chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
+patching file chrome/browser/signin/account_consistency_mode_manager.cc
+patching file chrome/browser/ui/browser_ui_prefs.cc
+patching file chrome/service/cloud_print/connector_settings.cc
+patching file components/autofill/core/common/autofill_prefs.cc
+patching file components/bookmarks/browser/bookmark_utils.cc
+patching file components/bookmarks/browser/features.cc
+patching file components/content_settings/core/browser/cookie_settings.cc
+patching file components/password_manager/core/browser/password_manager.cc
+patching file components/payments/core/payment_prefs.cc
+INFO: * Applying 0008-restore-classic-ntp.patch (41/101)
+patching file chrome/browser/search/search.cc
+patching file components/ntp_snippets/features.cc
+INFO: * Applying 0013-disable-missing-key-warning.patch (42/101)
+patching file chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc
+INFO: * Applying 0016-chromium-sandbox-pie.patch (43/101)
+patching file sandbox/linux/BUILD.gn
+INFO: * Applying 0018-disable-first-run-behaviour.patch (44/101)
+patching file chrome/browser/ui/startup/startup_tab_provider.cc
+INFO: * Applying 0019-disable-battery-status-service.patch (45/101)
+patching file services/device/battery/battery_status_service.cc
+patching file services/device/battery/battery_status_service.h
+INFO: * Applying parallel.patch (46/101)
+patching file tools/gn/bootstrap/bootstrap.py
+INFO: * Applying connection-message.patch (47/101)
+patching file components/error_page_strings.grdp
+INFO: * Applying welcome-page.patch (48/101)
+patching file chrome/browser/profiles/profile_manager.cc
+INFO: * Applying google-api-warning.patch (49/101)
+patching file chrome/browser/ui/startup/infobar_utils.cc
+INFO: * Applying net-cert-increase-default-key-length-for-newly-gener.patch (50/101)
+patching file net/cert/x509_util.cc
+INFO: * Applying mime_util-force-text-x-suse-ymp-to-be-downloaded.patch (51/101)
+patching file third_party/blink/common/mime_util/mime_util.cc
+INFO: * Applying prefs-only-keep-cookies-until-exit.patch (52/101)
+patching file components/content_settings/core/browser/content_settings_registry.cc
+INFO: * Applying prefs-always-prompt-for-download-directory-by-defaul.patch (53/101)
+patching file chrome/browser/download/download_prefs.cc
+INFO: * Applying updater-disable-auto-update.patch (54/101)
+patching file chrome/browser/app_controller_mac.mm
+INFO: * Applying Remove-EV-certificates.patch (55/101)
+patching file net/cert/ev_root_ca_metadata.cc
+INFO: * Applying browser-disable-profile-auto-import-on-first-run.patch (56/101)
+patching file chrome/browser/chrome_browser_main.cc
+INFO: * Applying add-components-ungoogled.patch (57/101)
+patching file components/ungoogled/BUILD.gn
+patching file components/ungoogled/ungoogled_switches.cc
+patching file components/ungoogled/ungoogled_switches.h
+INFO: * Applying add-ungoogled-flag-headers.patch (58/101)
+patching file chrome/browser/about_flags.cc
+patching file chrome/browser/bromite_flag_choices.h
+patching file chrome/browser/bromite_flag_entries.h
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file chrome/browser/ungoogled_platform_flag_choices.h
+patching file chrome/browser/ungoogled_platform_flag_entries.h
+INFO: * Applying disable-formatting-in-omnibox.patch (59/101)
+patching file components/url_formatter/url_formatter.cc
+INFO: * Applying add-ipv6-probing-option.patch (60/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file net/base/features.cc
+patching file net/base/features.h
+patching file net/dns/host_resolver_manager.cc
+INFO: * Applying remove-disable-setuid-sandbox-as-bad-flag.patch (61/101)
+patching file chrome/browser/ui/startup/bad_flags_prompt.cc
+INFO: * Applying disable-intranet-redirect-detector.patch (62/101)
+patching file chrome/browser/intranet_redirect_detector.cc
+INFO: * Applying enable-page-saving-on-more-pages.patch (63/101)
+patching file chrome/browser/ui/browser_commands.cc
+patching file components/offline_pages/core/offline_page_model.cc
+patching file content/common/url_schemes.cc
+patching file content/public/common/url_utils.cc
+INFO: * Applying disable-download-quarantine.patch (64/101)
+patching file components/download/internal/common/base_file.cc
+patching file content/browser/BUILD.gn
+patching file content/browser/file_system_access/safe_move_helper.cc
+patching file content/browser/file_system_access/safe_move_helper.h
+patching file content/browser/renderer_host/pepper/pepper_file_io_host.cc
+patching file content/browser/renderer_host/pepper/pepper_file_io_host.h
+INFO: * Applying fix-building-without-mdns-and-service-discovery.patch (65/101)
+patching file chrome/browser/media/router/discovery/mdns/dns_sd_device_lister.cc
+INFO: * Applying add-flag-to-configure-extension-downloading.patch (66/101)
+patching file chrome/browser/download/download_crx_util.cc
+patching file chrome/browser/download/download_crx_util.h
+patching file chrome/browser/download/download_target_determiner.cc
+patching file chrome/browser/extensions/extension_management.cc
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-for-search-engine-collection.patch (67/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file chrome/renderer/chrome_render_frame_observer.cc
+patching file chrome/renderer/chrome_render_frame_observer.h
+patching file components/search_engines/template_url_service.cc
+patching file components/search_engines/template_url_service.h
+INFO: * Applying add-flag-to-disable-beforeunload.patch (68/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/javascript_dialogs/app_modal_dialog_manager.cc
+INFO: * Applying add-flag-to-force-punycode-hostnames.patch (69/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/url_formatter/url_formatter.cc
+INFO: * Applying disable-webgl-renderer-info.patch (70/101)
+patching file third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
+INFO: * Applying add-flag-to-show-avatar-button.patch (71/101)
+patching file chrome/browser/ui/views/toolbar/toolbar_view.cc
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-suggestions-url-field.patch (72/101)
+patching file chrome/browser/resources/settings/search_engines_page/search_engine_dialog.html
+patching file chrome/browser/resources/settings/search_engines_page/search_engine_dialog.ts
+patching file chrome/browser/resources/settings/search_engines_page/search_engines_browser_proxy.ts
+patching file chrome/browser/ui/search_engines/edit_search_engine_controller.cc
+patching file chrome/browser/ui/search_engines/edit_search_engine_controller.h
+patching file chrome/browser/ui/search_engines/keyword_editor_controller.cc
+patching file chrome/browser/ui/search_engines/keyword_editor_controller.h
+patching file chrome/browser/ui/search_engines/template_url_table_model.cc
+patching file chrome/browser/ui/search_engines/template_url_table_model.h
+patching file chrome/browser/ui/webui/settings/search_engines_handler.cc
+patching file chrome/browser/ui/webui/settings/search_engines_handler.h
+patching file components/search_engines/template_url_service.cc
+patching file components/search_engines/template_url_service.h
+INFO: * Applying add-flag-to-hide-crashed-bubble.patch (73/101)
+patching file chrome/browser/ui/startup/infobar_utils.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-to-scroll-tabs.patch (74/101)
+patching file chrome/browser/ui/views/frame/browser_root_view.cc
+patching file chrome/browser/ui/views/frame/browser_root_view.h
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying enable-paste-and-go-new-tab-button.patch (75/101)
+patching file chrome/browser/ui/views/tabs/new_tab_button.cc
+patching file chrome/browser/ui/views/tabs/tab_strip.cc
+INFO: * Applying add-flag-for-pdf-plugin-name.patch (76/101)
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/pdf/pdf_extension_util.cc
+patching file chrome/browser/plugins/pdf_iframe_navigation_throttle_unittest.cc
+patching file chrome/browser/plugins/plugin_prefs.cc
+patching file chrome/browser/plugins/plugin_prefs_unittest.cc
+patching file chrome/browser/resources/plugin_metadata/plugins_chromeos.json
+patching file chrome/browser/resources/plugin_metadata/plugins_linux.json
+patching file chrome/browser/resources/plugin_metadata/plugins_mac.json
+patching file chrome/browser/resources/plugin_metadata/plugins_win.json
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file chrome/common/BUILD.gn
+patching file chrome/common/chrome_content_client.cc
+patching file chrome/common/chrome_content_client.h
+patching file chrome/common/chrome_content_client_constants.cc
+patching file chrome/renderer/chrome_content_renderer_client.cc
+INFO: * Applying add-flag-for-bookmark-bar-ntp.patch (77/101)
+patching file chrome/browser/ui/bookmarks/bookmark_tab_helper.cc
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying enable-default-prefetch-privacy-changes.patch (78/101)
+patching file third_party/blink/common/features.cc
+INFO: * Applying enable-menu-on-reload-button.patch (79/101)
+patching file chrome/browser/ui/views/toolbar/reload_button.cc
+INFO: * Applying add-flag-for-omnibox-autocomplete-filtering.patch (80/101)
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/omnibox/browser/autocomplete_controller.cc
+patching file components/omnibox/browser/history_url_provider.cc
+patching file components/omnibox/browser/search_provider.cc
+patching file components/url_formatter/url_fixer.cc
+INFO: * Applying disable-dial-repeating-discovery.patch (81/101)
+patching file chrome/browser/media/router/discovery/dial/dial_registry.cc
+INFO: * Applying remove-uneeded-ui.patch (82/101)
+patching file chrome/browser/resources/extensions/item_list.html
+patching file chrome/browser/resources/extensions/sidebar.html
+patching file chrome/browser/resources/history/side_bar.html
+patching file chrome/browser/resources/ntp4/incognito_tab.html
+patching file chrome/browser/resources/settings/a11y_page/a11y_page.html
+patching file chrome/browser/resources/settings/about_page/about_page.html
+patching file chrome/browser/resources/settings/appearance_page/appearance_page.html
+patching file chrome/browser/resources/settings/autofill_page/passwords_section.html
+patching file chrome/browser/resources/settings/autofill_page/payments_section.html
+patching file chrome/browser/resources/settings/basic_page/basic_page.html
+patching file chrome/browser/resources/settings/privacy_page/personalization_options.html
+patching file chrome/browser/resources/settings/privacy_page/security_page.html
+patching file chrome/browser/resources/settings/search_page/search_page.html
+patching file chrome/browser/resources/settings/settings_page/settings_subpage.html
+patching file chrome/browser/ui/views/profiles/profile_menu_view.cc
+patching file chrome/browser/ui/views/sad_tab_view.cc
+INFO: * Applying add-flag-to-close-window-with-last-tab.patch (83/101)
+patching file chrome/browser/ui/tabs/tab_strip_model.cc
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-to-convert-popups-to-tabs.patch (84/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file content/renderer/render_view_impl.cc
+patching file ui/base/mojom/window_open_disposition_mojom_traits.h
+INFO: * Applying add-flag-to-disable-local-history-expiration.patch (85/101)
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/history/core/browser/history_backend.cc
+INFO: * Applying add-extra-channel-info.patch (86/101)
+patching file components/version_ui_strings.grdp
+INFO: * Applying prepopulated-search-engines.patch (87/101)
+patching file components/search_engines/template_url_prepopulate_data.cc
+patching file components/search_engines/util.cc
+INFO: * Applying fix-distilled-icons.patch (88/101)
+patching file components/dom_distiller/core/css/distilledpage.css
+INFO: * Applying add-flag-to-clear-data-on-exit.patch (89/101)
+patching file chrome/browser/browsing_data/chrome_browsing_data_lifetime_manager.cc
+patching file chrome/browser/browsing_data/chrome_browsing_data_lifetime_manager_factory.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/browsing_data/core/features.cc
+patching file components/browsing_data/core/features.h
+INFO: * Applying add-flag-for-tabsearch-button.patch (90/101)
+patching file chrome/browser/ui/browser_command_controller.cc
+patching file chrome/browser/ui/views/frame/tab_strip_region_view.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-for-qr-generator.patch (91/101)
+patching file chrome/browser/sharing/features.cc
+patching file chrome/browser/sharing/features.h
+patching file chrome/browser/ui/qrcode_generator/qrcode_generator_bubble_controller.cc
+patching file chrome/browser/ui/views/location_bar/location_bar_view.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-for-grab-handle.patch (92/101)
+patching file chrome/browser/ui/views/frame/tab_strip_region_view.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-for-close-confirmation.patch (93/101)
+patching file chrome/browser/ui/browser.cc
+patching file chrome/browser/ui/browser.h
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying keep-expired-flags.patch (94/101)
+patching file components/flags_ui/flags_state.cc
+INFO: * Applying add-flag-for-custom-ntp.patch (95/101)
+patching file chrome/browser/chrome_content_browser_client.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+patching file components/flags_ui/flags_state.cc
+INFO: * Applying add-flag-for-tab-hover-cards.patch (96/101)
+patching file chrome/browser/ui/views/tabs/tab.cc
+patching file chrome/browser/ui/views/tabs/tab_strip.cc
+patching file chrome/browser/ungoogled_flag_choices.h
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying add-flag-to-hide-tab-close-buttons.patch (97/101)
+patching file chrome/browser/ui/views/tabs/tab.cc
+patching file chrome/browser/ungoogled_flag_entries.h
+INFO: * Applying disable-remote-optimization-guide.patch (98/101)
+patching file components/optimization_guide/core/optimization_guide_features.cc
+INFO: * Applying fingerprinting-flags-client-rects-and-measuretext.patch (99/101)
+patching file chrome/browser/BUILD.gn
+patching file chrome/browser/about_flags.cc
+patching file chrome/browser/bromite_flag_entries.h
+patching file content/browser/BUILD.gn
+patching file content/browser/renderer_host/render_process_host_impl.cc
+patching file content/child/BUILD.gn
+patching file content/child/runtime_features.cc
+patching file third_party/blink/public/platform/web_runtime_features.h
+patching file third_party/blink/renderer/core/dom/document.cc
+patching file third_party/blink/renderer/core/dom/document.h
+patching file third_party/blink/renderer/core/dom/element.cc
+patching file third_party/blink/renderer/core/dom/range.cc
+patching file third_party/blink/renderer/core/html/canvas/text_metrics.cc
+patching file third_party/blink/renderer/core/html/canvas/text_metrics.h
+patching file third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
+patching file third_party/blink/renderer/platform/BUILD.gn
+patching file third_party/blink/renderer/platform/exported/web_runtime_features.cc
+patching file third_party/blink/renderer/platform/runtime_enabled_features.json5
+INFO: * Applying flag-max-connections-per-host.patch (100/101)
+patching file chrome/browser/BUILD.gn
+patching file chrome/browser/bromite_flag_choices.h
+patching file chrome/browser/bromite_flag_entries.h
+patching file chrome/browser/browser_process_impl.cc
+patching file chrome/browser/flag_descriptions.cc
+patching file chrome/browser/flag_descriptions.h
+patching file components/network_session_configurator/common/network_features.cc
+patching file components/network_session_configurator/common/network_features.h
+patching file components/network_session_configurator/common/network_switch_list.h
+INFO: * Applying flag-fingerprinting-canvas-image-data-noise.patch (101/101)
+patching file chrome/browser/bromite_flag_entries.h
+patching file content/browser/renderer_host/render_process_host_impl.cc
+patching file content/child/runtime_features.cc
+patching file third_party/blink/public/platform/web_runtime_features.h
+patching file third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
+patching file third_party/blink/renderer/platform/BUILD.gn
+patching file third_party/blink/renderer/platform/exported/web_runtime_features.cc
+patching file third_party/blink/renderer/platform/graphics/image_data_buffer.cc
+patching file third_party/blink/renderer/platform/graphics/static_bitmap_image.cc
+patching file third_party/blink/renderer/platform/graphics/static_bitmap_image.h
+patching file third_party/blink/renderer/platform/runtime_enabled_features.json5
+[1m[34m  ->(B[m[1m Applying domain substitution(B[m
+INFO: Path has no substitutions: chrome/browser/ash/child_accounts/time_limits/web_time_limit_error_page/resources/web_time_limit_error_page.html
+INFO: Path has no substitutions: chrome/browser/plugins/plugins_resource_service.cc
+INFO: Path has no substitutions: chrome/browser/resources/chromeos/accessibility/chromevox/options/options.css
+INFO: Path has no substitutions: chrome/browser/resources/chromeos/accessibility/select_to_speak/options.css
+INFO: Path has no substitutions: chrome/browser/resources/discards/graph_doc_template.html
+INFO: Path has no substitutions: chrome/browser/supervised_user/supervised_user_error_page/resources/supervised_user_block_interstitial.html
+INFO: Path has no substitutions: chrome/common/google_url_loader_throttle.cc
+INFO: Path has no substitutions: components/dom_distiller/content/browser/dom_distiller_viewer_source.cc
+INFO: Path has no substitutions: components/dom_distiller/core/html/preview.html
+INFO: Path has no substitutions: components/domain_reliability/google_configs.cc
+INFO: Path has no substitutions: components/page_load_metrics/common/page_load_metrics_util.cc
+INFO: Path has no substitutions: net/base/url_util.cc
+INFO: Path has no substitutions: net/dns/public/doh_provider_entry.cc
+INFO: Path has no substitutions: net/tools/transport_security_state_generator/transport_security_state_generator.cc
+INFO: Path has no substitutions: rlz/lib/lib_values.cc
+INFO: Path has no substitutions: third_party/crashpad/crashpad/doc/support/crashpad_doxygen.css
+INFO: Path has no substitutions: tools/md_browser/base.css
+/build/ungoogled-chromium/src/chromium-98.0.4758.80/third_party/android_rust_toolchain/toolchain/lib/rustlib/src/rust/library/stdarch/crates/stdarch-verify/arm-intrinsics.html cannot be opened for writing! Adding write permission...
+/build/ungoogled-chromium/src/chromium-98.0.4758.80/third_party/android_rust_toolchain/toolchain/manifest_7877451.xml cannot be opened for writing! Adding write permission...
