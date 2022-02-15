@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=98.0.4758.80
+pkgver=98.0.4758.102
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=5
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=98.0.4758.80-1
+_uc_ver=98.0.4758.102-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -45,9 +45,11 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         unbundle-ffmpeg-av_stream_get_first_dts.patch
         downgrade-duplicate-peer-error-to-dvlog.patch
         fix-build-break-with-system-libdrm.patch
-        use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch)
-sha256sums=('c87266e20f860a32c48affc70a769368d1b876dbad768e3aa93ee3c335944171'
-            '78da43f0f5e0b8f361cd40cbde2e2d04b4245add9e8643964f7dc9f9190f5cb7'
+        use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
+        sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
+        breakpad-fix-for-non-constant-SIGSTKSZ.patch)
+sha256sums=('415b47e912766cd07f9f52e95bc6470b835acf1d6f566ae32e66ba8be608f33e'
+            '48063bb9dbc62326ce66c3e274f38daa70f201d41732825aba8ff28953cc4048'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'f561145514e9d30a696a82f6a6a4eca06e664b58d7cda30dad9afb2cef341a4d'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -58,7 +60,9 @@ sha256sums=('c87266e20f860a32c48affc70a769368d1b876dbad768e3aa93ee3c335944171'
             '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c'
             '291c6a6ad44c06ae8d1b13433f0c4e37d280c70fb06eaa97a1cc9b0dcc122aaa'
             'edf4d973ff197409d319bb6fbbaa529e53bc62347d26b0733c45a116a1b23f37'
-            '9c9c280be968f06d269167943680fb72a26fbb05d8c15f60507e316e8a9075d5')
+            '9c9c280be968f06d269167943680fb72a26fbb05d8c15f60507e316e8a9075d5'
+            'f910be9370c880de6e1d61cc30383c069e421d7acf406166e4fbfad324fc7d61'
+            'b4d28867c1fabde6c50a2cfa3f784730446c4d86e5191e0f0000fbf7b0f91ecf')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -119,6 +123,8 @@ prepare() {
   # Upstream fixes
   patch -Np1 -F3 -i ../downgrade-duplicate-peer-error-to-dvlog.patch
   patch -Np1 -i ../fix-build-break-with-system-libdrm.patch
+  patch -Np1 -i ../sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
+  patch -Np1 -d third_party//breakpad/breakpad <../breakpad-fix-for-non-constant-SIGSTKSZ.patch
   patch -Np1 -d third_party/pdfium <../use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
