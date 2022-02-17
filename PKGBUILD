@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=98.0.4758.102
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=5
 # ungoogled chromium variables
@@ -41,8 +41,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        chromium-93-ffmpeg-4.4.patch
-        unbundle-ffmpeg-av_stream_get_first_dts.patch
         downgrade-duplicate-peer-error-to-dvlog.patch
         fix-build-break-with-system-libdrm.patch
         use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
@@ -56,8 +54,6 @@ sha256sums=('415b47e912766cd07f9f52e95bc6470b835acf1d6f566ae32e66ba8be608f33e'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '1a9e074f417f8ffd78bcd6874d8e2e74a239905bf662f76a7755fa40dc476b57'
-            '1f0c1a7a1eb67d91765c9f28df815f58e1c6dc7b37d0acd4d68cac8e5515786c'
             '291c6a6ad44c06ae8d1b13433f0c4e37d280c70fb06eaa97a1cc9b0dcc122aaa'
             'edf4d973ff197409d319bb6fbbaa529e53bc62347d26b0733c45a116a1b23f37'
             '9c9c280be968f06d269167943680fb72a26fbb05d8c15f60507e316e8a9075d5'
@@ -108,17 +104,6 @@ prepare() {
   # setting GOOGLE_DEFAULT_CLIENT_ID and GOOGLE_DEFAULT_CLIENT_SECRET at
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
-
-  # Patches to build with ffmpeg 4.4; remove when ffmpeg 5.0 moves to stable
-  if ! pkg-config --atleast-version 59 libavformat; then
-    # Fix build with older ffmpeg
-    patch -Np1 -i ../chromium-93-ffmpeg-4.4.patch
-
-    # Substitute the custom function 'av_stream_get_first_dts' for ffmpeg 4.4;
-    # drop this for ffmpeg 5.0 which is patched to include the above function.
-    # https://crbug.com/1251779
-    patch -Np1 -i ../unbundle-ffmpeg-av_stream_get_first_dts.patch
-  fi
 
   # Upstream fixes
   patch -Np1 -F3 -i ../downgrade-duplicate-peer-error-to-dvlog.patch
