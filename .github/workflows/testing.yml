@@ -265,11 +265,9 @@ jobs:
               uses: actions/download-artifact@v2
               with:
                   name: ${{ join(needs.*.outputs.chromium-version) }}
-            - name: Prepare package
-              run: mv *.pkg.* package
             - name: Run container
               run: docker run
                   --entrypoint /bin/bash
                   --mount type=bind,source="$(pwd)/package",target=/home/build/package
                   "${{ join(needs.*.outputs.image-tag) }}"
-                  -c 'sudo pacman -U /home/build/package --noconfirm && chromium --version'
+                  -c 'sudo pacman -U /home/build/*.pkg.* --noconfirm && chromium --version'
