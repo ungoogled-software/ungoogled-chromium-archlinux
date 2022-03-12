@@ -51,19 +51,11 @@ EOF
 
 get_type()
 {
-    local TAG
-    local TYPE
-
-    TAG="$(git describe --tags --exact-match 2> /dev/null || true)"
-
-    if test -z "${TAG}"
-    then
-        TYPE='development'
+    if [ "$OBS_REPOSITORY_TYPE" = "" ]; then
+        echo "production"
     else
-        TYPE='production'
+        echo "${OBS_REPOSITORY_TYPE}"
     fi
-
-    echo "${TYPE}"
 }
 
 generate_obs()
