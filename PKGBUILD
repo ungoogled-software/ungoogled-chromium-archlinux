@@ -44,7 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         fix-build-break-with-system-libdrm.patch
         use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
         sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
-        webcodecs-stop-using-AudioOpusEncoder.patch)
+        webcodecs-stop-using-AudioOpusEncoder.patch
+        ozone-add-va-api-support-to-wayland.patch)
 sha256sums=('97c52e57eca0dc8b752d274047f38c88aaa86036c0587b26b056efbd3fb2bae3'
             '8aa65f6d96cb1400b83092adab9a64e0d81a7f12bd6ee5e2b090d2d9407e645d'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -56,7 +57,8 @@ sha256sums=('97c52e57eca0dc8b752d274047f38c88aaa86036c0587b26b056efbd3fb2bae3'
             'edf4d973ff197409d319bb6fbbaa529e53bc62347d26b0733c45a116a1b23f37'
             '34bcb151c0bc51ada5aa7beda6e87356e0eaafa83a621e11e5803717adc39ffc'
             'f910be9370c880de6e1d61cc30383c069e421d7acf406166e4fbfad324fc7d61'
-            '064daaa2b9d95b96ec04d8ddebf4af441f92263d123365b58fe73966866080af')
+            '064daaa2b9d95b96ec04d8ddebf4af441f92263d123365b58fe73966866080af'
+            '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -122,6 +124,9 @@ prepare() {
 
   # Wayland/EGL regression (crbug #1071528 #1071550)
   patch -Np1 -i ../wayland-egl.patch
+
+  # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
+  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
