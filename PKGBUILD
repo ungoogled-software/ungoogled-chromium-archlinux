@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=99.0.4844.74
+pkgver=99.0.4844.82
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=3
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=99.0.4844.74-1
+_uc_ver=99.0.4844.82-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -46,8 +46,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
         webcodecs-stop-using-AudioOpusEncoder.patch
         ozone-add-va-api-support-to-wayland.patch)
-sha256sums=('2d5f464730fde0260d1b00db1b38210344952ec91a5b3c544c99c43e76ffbb98'
-            '1f885f41ea316dbec1eba1ae20409e20a5f88e5fce1889a552b69b718fb924ca'
+sha256sums=('b8bb0bc1410de8b9d98889c79410726a4e78801d4e54ea23b23b7b4015c7d25c'
+            '7910998d3729b890ebc4bccc2900b700c5d711a98fe8f1eb1c229d3c41fed33e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '9cd2570e92e9bfeff3faf0d5b56334535cb2313f99ab0d9019b74d18ae1c7d0a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
