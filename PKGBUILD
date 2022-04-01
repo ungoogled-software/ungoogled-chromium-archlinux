@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=99.0.4844.84
+pkgver=100.0.4896.60
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=3
+_gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=99.0.4844.84-1
+_uc_ver=100.0.4896.60-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -41,22 +41,16 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        fix-build-break-with-system-libdrm.patch
-        use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
-        sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
         webcodecs-stop-using-AudioOpusEncoder.patch
         ozone-add-va-api-support-to-wayland.patch)
-sha256sums=('20ec184ed34bdc7e660ccf6c007b2db37007de423b3a5a51698a96aa29527515'
-            'ac0a9d041e70779e624a521387976ad9f5d825085583aa88a980bd57339c81a6'
+sha256sums=('0e5ea5f3061ad090cf6bd57ca037496d95ea8956de021aff902f7d0ded7bffdc'
+            '4de1a8ba276ae91d52bc08b1e60250ee060fe1bf3fa2ccddeb22ec2e77aa8cf4'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '9cd2570e92e9bfeff3faf0d5b56334535cb2313f99ab0d9019b74d18ae1c7d0a'
+            'a6120e7d4eb5e131b87b6ab3b922e0c6cd78e15501e54cfb2019875173688d80'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            'edf4d973ff197409d319bb6fbbaa529e53bc62347d26b0733c45a116a1b23f37'
-            '34bcb151c0bc51ada5aa7beda6e87356e0eaafa83a621e11e5803717adc39ffc'
-            'f910be9370c880de6e1d61cc30383c069e421d7acf406166e4fbfad324fc7d61'
             '064daaa2b9d95b96ec04d8ddebf4af441f92263d123365b58fe73966866080af'
             '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d')
 
@@ -106,10 +100,7 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../fix-build-break-with-system-libdrm.patch
-  patch -Np1 -i ../sandbox-build-if-glibc-2.34-dynamic-stack-size-is-en.patch
   patch -Np1 -i ../webcodecs-stop-using-AudioOpusEncoder.patch
-  patch -Np1 -d third_party/pdfium <../use-FT_Done_MM_Var-in-CFX_Font-AdjustMMParams.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
