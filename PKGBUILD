@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=100.0.4896.60
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
@@ -42,7 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         webcodecs-stop-using-AudioOpusEncoder.patch
-        ozone-add-va-api-support-to-wayland.patch)
+        ozone-add-va-api-support-to-wayland.patch
+        webrtc-check-existence-of-cursor-metadata.patch)
 sha256sums=('0e5ea5f3061ad090cf6bd57ca037496d95ea8956de021aff902f7d0ded7bffdc'
             '4de1a8ba276ae91d52bc08b1e60250ee060fe1bf3fa2ccddeb22ec2e77aa8cf4'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -52,7 +53,8 @@ sha256sums=('0e5ea5f3061ad090cf6bd57ca037496d95ea8956de021aff902f7d0ded7bffdc'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '064daaa2b9d95b96ec04d8ddebf4af441f92263d123365b58fe73966866080af'
-            '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d')
+            '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d'
+            '88b2c8d9c6c1917f6632453f18aad7a3fd94d605eecb6c77ae2394ac5856ba95')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -101,6 +103,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../webcodecs-stop-using-AudioOpusEncoder.patch
+  patch -Np1 -d third_party/webrtc <../webrtc-check-existence-of-cursor-metadata.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
