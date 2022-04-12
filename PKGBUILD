@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=100.0.4896.75
+pkgver=100.0.4896.88
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=100.0.4896.75-1
+_uc_ver=100.0.4896.88-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         webcodecs-stop-using-AudioOpusEncoder.patch
         ozone-add-va-api-support-to-wayland.patch
         webrtc-check-existence-of-cursor-metadata.patch)
-sha256sums=('244ed352dfaa1ab6b1f0877c4884fd17aa7d7133fa52f129a9fb01325ea0c0c0'
-            '69980eca2895b8f02d9475e4e0100e818bf46977ddce54a5645568241b0e9c2a'
+sha256sums=('c5a5708678f30679a1181f89401c966cb335799926a5e4dc7f52e7194847c250'
+            '94c737538b9d1e926f63918b47d7791703b09b36f255ed0daaf0fef04e865891'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'a6120e7d4eb5e131b87b6ab3b922e0c6cd78e15501e54cfb2019875173688d80'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
