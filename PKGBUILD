@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=100.0.4896.127
-pkgrel=2
+pkgrel=3
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
