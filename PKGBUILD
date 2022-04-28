@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=100.0.4896.127
-pkgrel=3
+pkgver=101.0.4951.41
+pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=100.0.4896.127-1
+_uc_ver=101.0.4951.41-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -41,20 +41,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        webcodecs-stop-using-AudioOpusEncoder.patch
-        ozone-add-va-api-support-to-wayland.patch
-        webrtc-check-existence-of-cursor-metadata.patch)
-sha256sums=('4710e3453c972c91e68a21f6b0b76ba73d4d617f299a5208615ed6e41b1af84d'
-            '855e12e68ee767571f9032e1465ba4acd97f500fe8cf0cf67ce15f2bd9573154'
+        # ozone-add-va-api-support-to-wayland.patch
+        chromium-libxml-unbundle.patch)
+sha256sums=('099863882e88b9a035fcb6b63dd5288554f6b27558e0ebce93e0d804465efa37'
+            '8eb73eb41104266e8245292a97be2f85bcff715258ccef9d409cf5e8ddf6adfb'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            'a6120e7d4eb5e131b87b6ab3b922e0c6cd78e15501e54cfb2019875173688d80'
+            '8ed519d21ccd8b382ddd384e9c15306a60d2e3495f48a62dea07c9be9bbffebd'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '064daaa2b9d95b96ec04d8ddebf4af441f92263d123365b58fe73966866080af'
-            '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d'
-            '88b2c8d9c6c1917f6632453f18aad7a3fd94d605eecb6c77ae2394ac5856ba95')
+            # '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d'
+            'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -102,8 +100,9 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../webcodecs-stop-using-AudioOpusEncoder.patch
-  patch -Np1 -d third_party/webrtc <../webrtc-check-existence-of-cursor-metadata.patch
+
+  # https://chromium-review.googlesource.com/c/chromium/src/+/3488058
+  patch -Np1 -i ../chromium-libxml-unbundle.patch
 
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
@@ -120,7 +119,7 @@ prepare() {
   patch -Np1 -i ../wayland-egl.patch
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
-  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
+  # patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
@@ -170,6 +169,7 @@ build() {
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'is_official_build=true' # implies is_cfi=true on x86_64
     'symbol_level=0' # sufficient for backtraces on x86(_64)
+    'chrome_pgo_phase=0' # needs newer clang to read the bundled PGO profile
     'disable_fieldtrial_testing_config=true'
     'blink_enable_generated_code_formatting=false'
     'ffmpeg_branding="Chrome"'
