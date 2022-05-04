@@ -41,7 +41,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        # ozone-add-va-api-support-to-wayland.patch
+        ozone-add-va-api-support-to-wayland.patch
         chromium-libxml-unbundle.patch)
 sha256sums=('c26cc6fd453d9a42a6b5e46fa4f3ee62ed368bb78101512b6816bc5d8f4200b5'
             '8c5da085191a8586bf52ff3bbd0548f1af0fe1792c5db8530d4b158df83a092b'
@@ -51,7 +51,7 @@ sha256sums=('c26cc6fd453d9a42a6b5e46fa4f3ee62ed368bb78101512b6816bc5d8f4200b5'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            # '6ece954bffa9c85946227d76e2458315603b88e3282cdc159ba94210b76c1e5d'
+            '07bdc1b3fc8f0d0a4804d111c46ce3343cd7824de562f2848d429b917ce4bcfd'
             'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -119,7 +119,7 @@ prepare() {
   patch -Np1 -i ../wayland-egl.patch
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
-  # patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
+  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
