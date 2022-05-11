@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=101.0.4951.54
+pkgver=101.0.4951.64
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=101.0.4951.54-1
+_uc_ver=101.0.4951.64-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -42,9 +42,11 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
-        chromium-libxml-unbundle.patch)
-sha256sums=('c26cc6fd453d9a42a6b5e46fa4f3ee62ed368bb78101512b6816bc5d8f4200b5'
-            '8c5da085191a8586bf52ff3bbd0548f1af0fe1792c5db8530d4b158df83a092b'
+        chromium-libxml-unbundle.patch
+        fix-no-member-named-tie-in-namespace-std.patch
+        iwyu-add-utility-for-std-exchange.patch)
+sha256sums=('9c5896e4135563453ac10d15698c18ef61eb5535dc611325b230ece4c5a8d8f7'
+            'eb70d0260f121faa6e2efd8e80a5e258f23474a214ff9f4f112bdcffdaaadd83'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '8ed519d21ccd8b382ddd384e9c15306a60d2e3495f48a62dea07c9be9bbffebd'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -52,7 +54,9 @@ sha256sums=('c26cc6fd453d9a42a6b5e46fa4f3ee62ed368bb78101512b6816bc5d8f4200b5'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '07bdc1b3fc8f0d0a4804d111c46ce3343cd7824de562f2848d429b917ce4bcfd'
-            'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485')
+            'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485'
+            '7ad0106161bbf25e2e603ae1a723ae4217155ebb26eb4778363ad396e8c14156'
+            '6f666ef0acb08704ca58cc0d5e97e7ce64d8fea51042e593adae1ce15a61231c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -100,6 +104,8 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
+  patch -Np1 -i ../fix-no-member-named-tie-in-namespace-std.patch
+  patch -Np1 -i ../iwyu-add-utility-for-std-exchange.patch
 
   # https://chromium-review.googlesource.com/c/chromium/src/+/3488058
   patch -Np1 -i ../chromium-libxml-unbundle.patch
