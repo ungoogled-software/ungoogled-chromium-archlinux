@@ -11,12 +11,12 @@
 
 pkgname=ungoogled-chromium
 pkgver=102.0.5005.61
-pkgrel=2
+pkgrel=3
 _launcher_ver=8
 _gcc_patchset=5
 # ungoogled chromium variables
 _uc_usr=Eloston
-_uc_ver=102.0.5005.61-2
+_uc_ver=102.0.5005.61-3
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/Eloston/ungoogled-chromium"
@@ -47,7 +47,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         roll-src-third_party-ffmpeg.patch
         remove-no-opaque-pointers-flag.patch)
 sha256sums=('1a3797d36901fa3ba63744b9a870b65a8890c9a850442c160196bc64df886b1f'
-            'cef63ffa5e687d7641e52a8f36f230d7f979ac7835df1fd9aa1a94fea28034d4'
+            'f93d69a7cf7a608e6b825dbfe33d7c92197e7caa730c94342e0c2c7e0483dacc'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '53de0f936fd571e578ba2fbf348c8741116cdcceac3ea6fae5008d8f054a7698'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
