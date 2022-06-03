@@ -1,6 +1,6 @@
 # ungoogled-chromium-archlinux
 
-Arch Linux packaging for [ungoogled-chromium](//github.com/Eloston/ungoogled-chromium).
+Arch Linux packaging for [ungoogled-chromium](//github.com/ungoogled-software/ungoogled-chromium).
 
 ## A note on reproducibility
 

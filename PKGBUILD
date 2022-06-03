@@ -15,11 +15,11 @@ pkgrel=3
 _launcher_ver=8
 _gcc_patchset=5
 # ungoogled chromium variables
-_uc_usr=Eloston
+_uc_usr=ungoogled-software
 _uc_ver=102.0.5005.61-3
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
-url="https://github.com/Eloston/ungoogled-chromium"
+url="https://github.com/ungoogled-software/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
