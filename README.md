@@ -4,14 +4,13 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/ungoogled-software/un
 
 ## A note on reproducibility
 
-[Just as](https://reproducible.archlinux.org/api/v0/pkgs/list?name=chromium) the official archlinux package, binaries compiled
-from this repository are reproducible. Still different build systems will in most cases produce different binaries. This is due to the
-[SOURCE_DATE_EPOCH](https://reproducible-builds.org/docs/source-date-epoch/) variable not being the same.
+While [extra/chromium builds are reproducible](https://reproducible.archlinux.org/api/v0/pkgs/list?name=chromium), this repository currently
+doesn't publish reproducible builds:
 
-To check the reproducibility of a binary, [repro](https://github.com/archlinux/archlinux-repro) can be used. It will use a timestamp stored in the package.
+- Due to [limitations of GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits=) it's not possible to continuously run the build process on GitHub-hosted runners. This prevents being able to build in a reproducible way.
+- OBS [does not](https://github.com/openSUSE/obs-build/issues/753) build Arch Linux packages in a reproducible way.
 
-Docker images built by GitHub Actions since version 92.0.4515.131-1 will use a predefined timestamp for building, meaning that a given image will always produce
-the same binary.
+Container images published by this repository will (since version `92.0.4515.131-1`) always produce the same output, this however is not compatible by tools like [repro](https://github.com/archlinux/archlinux-repro)
 
 ## Binary Downloads
 
