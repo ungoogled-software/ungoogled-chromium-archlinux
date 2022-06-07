@@ -7,7 +7,7 @@ Arch Linux packaging for [ungoogled-chromium](//github.com/ungoogled-software/un
 While [extra/chromium builds are reproducible](https://reproducible.archlinux.org/api/v0/pkgs/list?name=chromium), this repository currently
 doesn't publish reproducible builds:
 
-- Due to [limitations of GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits=) it's not possible to continuously run the build process on GitHub-hosted runners. This prevents being able to build in a reproducible way.
+- Due to [limitations of GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits) it's not possible to continuously run the build process on GitHub-hosted runners. This prevents being able to build in a reproducible way.
 - OBS [does not](https://github.com/openSUSE/obs-build/issues/753) build Arch Linux packages in a reproducible way.
 
 Container images published by this repository will (since version `92.0.4515.131-1`) always produce the same output, this however is not compatible by tools like [repro](https://github.com/archlinux/archlinux-repro)
