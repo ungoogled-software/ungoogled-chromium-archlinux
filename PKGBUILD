@@ -11,7 +11,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=102.0.5005.115
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=5
 # ungoogled chromium variables
@@ -45,7 +45,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-libxml-unbundle.patch
         iwyu-add-utility-for-std-exchange.patch
         roll-src-third_party-ffmpeg.patch
-        remove-no-opaque-pointers-flag.patch)
+        remove-no-opaque-pointers-flag.patch
+        enable-GlobalMediaControlsCastStartStop.patch)
 sha256sums=('301d40e5373b6dad9bc6aeb6898116d1f7dd2d0589ed18e108c56e2290df47e6'
             '6e75abebf768bc2996782766ef9340e0f53df8e7284188285841ed80a9bec5bc'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -58,7 +59,8 @@ sha256sums=('301d40e5373b6dad9bc6aeb6898116d1f7dd2d0589ed18e108c56e2290df47e6'
             'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485'
             '6f666ef0acb08704ca58cc0d5e97e7ce64d8fea51042e593adae1ce15a61231c'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
-            '00c16ce83ea4ca924a50fa0cfc2b2a4d744c722f363b065323e6ba0fcbac45a5')
+            '00c16ce83ea4ca924a50fa0cfc2b2a4d744c722f363b065323e6ba0fcbac45a5'
+            '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -110,6 +112,10 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../iwyu-add-utility-for-std-exchange.patch
+
+  # Revert kGlobalMediaControlsCastStartStop enabled by default
+  # https://crbug.com/1314342
+  patch -Rp1 -F3 -i ../enable-GlobalMediaControlsCastStartStop.patch
 
   # Revert ffmpeg roll requiring new channel layout API support
   # https://crbug.com/1325301
