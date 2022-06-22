@@ -10,13 +10,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=102.0.5005.115
-pkgrel=2
+pkgver=103.0.5060.53
+pkgrel=1
 _launcher_ver=8
-_gcc_patchset=5
+_gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=102.0.5005.115-1
+_uc_ver=103.0.5060.53-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -41,23 +41,19 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        ozone-add-va-api-support-to-wayland.patch
-        chromium-libxml-unbundle.patch
-        iwyu-add-utility-for-std-exchange.patch
+        # ozone-add-va-api-support-to-wayland.patch
         roll-src-third_party-ffmpeg.patch
         remove-no-opaque-pointers-flag.patch
         enable-GlobalMediaControlsCastStartStop.patch)
-sha256sums=('301d40e5373b6dad9bc6aeb6898116d1f7dd2d0589ed18e108c56e2290df47e6'
-            '6e75abebf768bc2996782766ef9340e0f53df8e7284188285841ed80a9bec5bc'
+sha256sums=('0ecbae14670506da90c8bf744f83f52a64a5fff0765c2e2e066b0e68b805b101'
+            '96c7adbe1d9ec6fe77bb3d299a4bbcc63bcdbec04f736a73f218949a0ea5a83e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '53de0f936fd571e578ba2fbf348c8741116cdcceac3ea6fae5008d8f054a7698'
+            'fed11a8987d9f9baa04457fb114f8f7fdb800300a3780927020865bcc43e4f52'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '07bdc1b3fc8f0d0a4804d111c46ce3343cd7824de562f2848d429b917ce4bcfd'
-            'fd3bf124aacc45f2d0a4f1dd86303fa7f2a3d4f4eeaf33854631d6cb39e12485'
-            '6f666ef0acb08704ca58cc0d5e97e7ce64d8fea51042e593adae1ce15a61231c'
+            # '07bdc1b3fc8f0d0a4804d111c46ce3343cd7824de562f2848d429b917ce4bcfd'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '00c16ce83ea4ca924a50fa0cfc2b2a4d744c722f363b065323e6ba0fcbac45a5'
             '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6')
@@ -110,9 +106,6 @@ prepare() {
   # Remove '-Xclang -no-opaque-pointers' flag not supported by our clang
   patch -Np1 -i ../remove-no-opaque-pointers-flag.patch
 
-  # Upstream fixes
-  patch -Np1 -i ../iwyu-add-utility-for-std-exchange.patch
-
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
   patch -Rp1 -F3 -i ../enable-GlobalMediaControlsCastStartStop.patch
@@ -121,15 +114,11 @@ prepare() {
   # https://crbug.com/1325301
   patch -Rp1 -i ../roll-src-third_party-ffmpeg.patch
 
-  # https://chromium-review.googlesource.com/c/chromium/src/+/3488058
-  patch -Np1 -i ../chromium-libxml-unbundle.patch
-
   # Fixes building with GCC 11  https://crbug.com/1189788
   patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-102-fenced_frame_utils-include.patch
-  patch -Np1 -i ../patches/chromium-102-regex_pattern-array.patch
+  #patch -Np1 -i ../patches/
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
@@ -140,7 +129,7 @@ prepare() {
   patch -Np1 -i ../wayland-egl.patch
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
-  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
+  # patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
