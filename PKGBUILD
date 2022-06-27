@@ -1,8 +1,7 @@
 # Maintainer: Ungoogled Software Contributors
 # Maintainer: Jakob-Niklas See <git@nwex.de>
 
-# Based on aur/chromium-vaapi, with ungoogled-chromium patches
-# Based on extra/chromium
+# Based on extra/chromium, with ungoogled-chromium patches
 
 # Maintainer: Evangelos Foutras <evangelos@foutrelis.com>
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
@@ -11,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=103.0.5060.53
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
@@ -41,7 +40,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
-        # ozone-add-va-api-support-to-wayland.patch
+        ozone-add-va-api-support-to-wayland.patch
         roll-src-third_party-ffmpeg.patch
         remove-no-opaque-pointers-flag.patch
         enable-GlobalMediaControlsCastStartStop.patch)
@@ -53,7 +52,7 @@ sha256sums=('0ecbae14670506da90c8bf744f83f52a64a5fff0765c2e2e066b0e68b805b101'
             '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            # '07bdc1b3fc8f0d0a4804d111c46ce3343cd7824de562f2848d429b917ce4bcfd'
+            'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '00c16ce83ea4ca924a50fa0cfc2b2a4d744c722f363b065323e6ba0fcbac45a5'
             '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6')
@@ -129,7 +128,7 @@ prepare() {
   patch -Np1 -i ../wayland-egl.patch
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
-  # patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
+  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"

@@ -1,4 +1,3 @@
-From ddb186d8904d6ec80d1084a1cc495b824381a565 Mon Sep 17 00:00:00 2001
 From: Maksim Sisov <msisov@igalia.com>
 Date: Wed, 20 Jan 2021 09:50:22 +0200
 Subject: [PATCH] ozone/wayland: add VA-API support.
@@ -16,18 +15,9 @@ The patch is based on the old va-api path. ChromeOS
 team is working on the new path, which will be also employed
 by Wayland later.
 
-Signed-off-by: Maksim Sisov <msisov@igalia.com>
 ---
- media/gpu/vaapi/vaapi_picture_factory.cc        |  2 +-
- media/gpu/vaapi/vaapi_picture_native_pixmap.cc  | 17 ++++++++++++++++-
- .../gpu/vaapi/vaapi_video_decode_accelerator.cc |  4 ++--
- .../platform/wayland/gpu/gbm_pixmap_wayland.cc  | 14 ++++++++++++--
- .../platform/wayland/gpu/gbm_pixmap_wayland.h   |  3 +++
- .../platform/wayland/ozone_platform_wayland.cc  |  3 +++
- 6 files changed, 37 insertions(+), 6 deletions(-)
-
 diff --git a/media/gpu/vaapi/vaapi_picture_factory.cc b/media/gpu/vaapi/vaapi_picture_factory.cc
-index 62e3a429239eb..df4905a10f68b 100644
+index 62e3a42..bde9c2d 100644
 --- a/media/gpu/vaapi/vaapi_picture_factory.cc
 +++ b/media/gpu/vaapi/vaapi_picture_factory.cc
 @@ -105,7 +105,7 @@ uint32_t VaapiPictureFactory::GetGLTextureTarget() {
@@ -35,12 +25,12 @@ index 62e3a429239eb..df4905a10f68b 100644
  
  gfx::BufferFormat VaapiPictureFactory::GetBufferFormat() {
 -#if BUILDFLAG(USE_VAAPI_X11)
-+#if defined(OS_LINUX)
++#if BUILDFLAG(IS_LINUX)
    return gfx::BufferFormat::RGBX_8888;
  #else
    return gfx::BufferFormat::YUV_420_BIPLANAR;
 diff --git a/media/gpu/vaapi/vaapi_picture_native_pixmap.cc b/media/gpu/vaapi/vaapi_picture_native_pixmap.cc
-index 941f24cc59590..a9c80356e7109 100644
+index 941f24c..a9c8035 100644
 --- a/media/gpu/vaapi/vaapi_picture_native_pixmap.cc
 +++ b/media/gpu/vaapi/vaapi_picture_native_pixmap.cc
 @@ -4,6 +4,7 @@
@@ -75,10 +65,10 @@ index 941f24cc59590..a9c80356e7109 100644
  
  bool VaapiPictureNativePixmap::AllowOverlay() const {
 diff --git a/media/gpu/vaapi/vaapi_video_decode_accelerator.cc b/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
-index baaf2ae468d36..4d6933d869933 100644
+index 3a07fa2..306313d 100644
 --- a/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
 +++ b/media/gpu/vaapi/vaapi_video_decode_accelerator.cc
-@@ -562,12 +562,12 @@ void VaapiVideoDecodeAccelerator::InitiateSurfaceSetChange(
+@@ -561,12 +561,12 @@ void VaapiVideoDecodeAccelerator::InitiateSurfaceSetChange(
    requested_visible_rect_ = visible_rect;
    if (buffer_allocation_mode_ == BufferAllocationMode::kSuperReduced) {
      // Add one to the reference frames for the one being currently egressed.
@@ -93,3 +83,46 @@ index baaf2ae468d36..4d6933d869933 100644
      requested_num_pics_ = num_pics - num_reference_frames + 1;
    } else {
      requested_num_reference_frames_ = 0;
+diff --git a/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.cc b/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.cc
+index 35378d1..68969d2 100644
+--- a/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.cc
++++ b/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.cc
+@@ -32,7 +32,9 @@ GbmPixmapWayland::GbmPixmapWayland(WaylandBufferManagerGpu* buffer_manager)
+       buffer_id_(buffer_manager->AllocateBufferID()) {}
+ 
+ GbmPixmapWayland::~GbmPixmapWayland() {
+-  if (created_wl_buffer_)
++  // gfx::BufferUsage::SCANOUT_VDA_WRITE doesn't result in creation of
++  // wl_buffers.
++  if (created_wl_buffer_ && usage_ != gfx::BufferUsage::SCANOUT_VDA_WRITE)
+     buffer_manager_->DestroyBuffer(buffer_id_);
+ }
+ 
+diff --git a/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.h b/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.h
+index 06d0290..c217e91 100644
+--- a/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.h
++++ b/ui/ozone/platform/wayland/gpu/gbm_pixmap_wayland.h
+@@ -91,6 +91,9 @@ class GbmPixmapWayland : public gfx::NativePixmap {
+ 
+   // Says a wl_buffer has been created and must removed.
+   bool created_wl_buffer_ = false;
++
++  // Tells the usage of this pixmap.
++  gfx::BufferUsage usage_ = gfx::BufferUsage::SCANOUT;
+ };
+ 
+ }  // namespace ui
+diff --git a/ui/ozone/platform/wayland/ozone_platform_wayland.cc b/ui/ozone/platform/wayland/ozone_platform_wayland.cc
+index 8d8621b..a1ca29c 100644
+--- a/ui/ozone/platform/wayland/ozone_platform_wayland.cc
++++ b/ui/ozone/platform/wayland/ozone_platform_wayland.cc
+@@ -289,6 +289,9 @@ class OzonePlatformWayland : public OzonePlatform,
+       // arbitrary position.
+       properties->supports_global_screen_coordinates = false;
+ 
++      // Let the media know this platform supports va-api.
++      properties->supports_vaapi = true;
++
+       initialised = true;
+     }
+ 
