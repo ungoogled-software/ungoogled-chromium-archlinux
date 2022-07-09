@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=103.0.5060.53
-pkgrel=2
+pkgver=103.0.5060.114
+pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=103.0.5060.53-1
+_uc_ver=103.0.5060.114-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         roll-src-third_party-ffmpeg.patch
         remove-no-opaque-pointers-flag.patch
         enable-GlobalMediaControlsCastStartStop.patch)
-sha256sums=('0ecbae14670506da90c8bf744f83f52a64a5fff0765c2e2e066b0e68b805b101'
-            '96c7adbe1d9ec6fe77bb3d299a4bbcc63bcdbec04f736a73f218949a0ea5a83e'
+sha256sums=('77683510f03b947332461b03954488474d95e49992efc11908f4bd8045635965'
+            '508ca695911a782e79f6147afdf34bfc3d9936b0e3596b5991003280162eab9e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'fed11a8987d9f9baa04457fb114f8f7fdb800300a3780927020865bcc43e4f52'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
