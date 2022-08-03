@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=103.0.5060.134
+pkgver=104.0.5112.79
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=4
+_gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=103.0.5060.134-1
+_uc_ver=104.0.5112.81-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -37,25 +37,27 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
         https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
-        sql-VirtualCursor-standard-layout.patch
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         roll-src-third_party-ffmpeg.patch
         remove-no-opaque-pointers-flag.patch
-        enable-GlobalMediaControlsCastStartStop.patch)
-sha256sums=('e48a272481e41b1aae7aba71b55c41fe9e994cf71edd01c8ca1d0b604af0b571'
-            'da6cac43b587a88032760ebebada96b10bb1a170a451e22a507b48aae2e977ec'
+        enable-GlobalMediaControlsCastStartStop.patch
+        x11-ozone-fix-X11-screensaver-suspension.patch
+        chromium-tflite-system-zlib.patch)
+sha256sums=('9cc662f1a84c796521ee17ed2808795ca937fe7f77bc605e788f0304a81dabf3'
+            '75fbb5a8679522cd81520a5623e18d8aa4783d5403d2bc26aacab90d899a7a15'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            'fed11a8987d9f9baa04457fb114f8f7fdb800300a3780927020865bcc43e4f52'
+            'ce702099849465927cf47f7bc3a4a27045d0e35e16b17481ebf35e14506bafa7'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
-            '23d6b14530acb66762c5d8b895c100203a824549e0d9aa815958dfd2513e6a7a'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
-            '00c16ce83ea4ca924a50fa0cfc2b2a4d744c722f363b065323e6ba0fcbac45a5'
-            '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6')
+            'ab46b2c26a4dfe86486fd7e31bfc7211c515994a61a8c0cbd742f9c9e3c91873'
+            '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6'
+            '9956a843bc8a765c130080616ccd3ebc46ea95c3a2324c4b403bc293a8705eb2'
+            '588c166bf748793758a7df438cfa665b32e09ca8fbd6380be28bc5984a33523c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -105,6 +107,12 @@ prepare() {
   # Remove '-Xclang -no-opaque-pointers' flag not supported by our clang
   patch -Np1 -i ../remove-no-opaque-pointers-flag.patch
 
+  # Fix build with unbundled zlip (patch from Gentoo)
+  patch -Np1 -i ../chromium-tflite-system-zlib.patch
+
+  # Upstream fixes
+  patch -Np1 -i ../x11-ozone-fix-X11-screensaver-suspension.patch
+
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
   patch -Rp1 -F3 -i ../enable-GlobalMediaControlsCastStartStop.patch
@@ -113,11 +121,8 @@ prepare() {
   # https://crbug.com/1325301
   patch -Rp1 -i ../roll-src-third_party-ffmpeg.patch
 
-  # Fixes building with GCC 11  https://crbug.com/1189788
-  patch -Np1 -i ../sql-VirtualCursor-standard-layout.patch
-
   # Fixes for building with libstdc++ instead of libc++
-  #patch -Np1 -i ../patches/
+  patch -Np1 -i ../patches/chromium-103-VirtualCursor-std-layout.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
