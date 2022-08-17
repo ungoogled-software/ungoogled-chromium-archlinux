@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=104.0.5112.79
+pkgver=104.0.5112.101
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=104.0.5112.81-1
+_uc_ver=104.0.5112.101-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -45,8 +45,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         enable-GlobalMediaControlsCastStartStop.patch
         x11-ozone-fix-X11-screensaver-suspension.patch
         chromium-tflite-system-zlib.patch)
-sha256sums=('9cc662f1a84c796521ee17ed2808795ca937fe7f77bc605e788f0304a81dabf3'
-            '75fbb5a8679522cd81520a5623e18d8aa4783d5403d2bc26aacab90d899a7a15'
+sha256sums=('60f015e1559de4044cdfa3bdc1f8fde535927c8ab15b0959ccc9b6feec832f5b'
+            '8132f5506356533eb1296433206632811c8612df549a721c691111c7cbca92dc'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'ce702099849465927cf47f7bc3a4a27045d0e35e16b17481ebf35e14506bafa7'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
