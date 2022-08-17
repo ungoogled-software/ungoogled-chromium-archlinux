@@ -1,5 +1,5 @@
 # Maintainer: Ungoogled Software Contributors
-# Maintainer: Jakob-Niklas See <git@nwex.de>
+# Maintainer: networkException <git@nwex.de>
 
 # Based on extra/chromium, with ungoogled-chromium patches
 
