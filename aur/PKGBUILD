@@ -1,7 +1,4 @@
-# Maintainer: Jakob-Niklas See <git@nwex.de>
-
-# Based on aur/chromium-vaapi, with ungoogled-chromium patches
-# Based on extra/chromium
+# Maintainer: networkException <git@nwex.de>
 
 pkgname=ungoogled-chromium-bin
 pkgver=--pkgver--
