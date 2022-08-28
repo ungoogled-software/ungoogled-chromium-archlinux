@@ -224,17 +224,6 @@ jobs:
               uses: actions/download-artifact@v2
               with:
                   name: "${{ join(needs.*.outputs.chromium-version) }}"
-            - name: Create AUR archive
-              id: aur-archive
-              run: |
-                  tar -I zstd -xf $(echo *.pkg.* | xargs -n1 | grep -v debug)
-                  tar -I zstd -cf aur.tar.zst usr
-
-                  sha256sum aur.tar.zst >> sum.txt
-
-                  CHECKSUM=($(sha256sum aur.tar.zst))
-
-                  echo "::set-output name=checksum::$CHECKSUM"
             - name: Format GitHub release body
               run: |
                   echo '```'  >> body.md
@@ -247,7 +236,6 @@ jobs:
                   body_path: body.md
                   files: |
                       *.pkg.*
-                      aur.tar.zst
                       sum.txt
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -265,6 +253,8 @@ jobs:
                   git clone ssh://aur@aur.archlinux.org/ungoogled-chromium-bin.git aur-upstream
 
                   source PKGBUILD
+
+                  CHECKSUM=($(sha256sum ungoogled-chromium-$pkgver-$pkgrel-x86_64.pkg.tar.zst))
 
                   sed -i "s/--pkgver--/$pkgver/g" aur/PKGBUILD
                   sed -i "s/--pkgrel--/$pkgrel/g" aur/PKGBUILD
