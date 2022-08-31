@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=104.0.5112.101
+pkgver=105.0.5195.52
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=2
+_gcc_patchset=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=104.0.5112.101-1
+_uc_ver=105.0.5195.52-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -41,33 +41,36 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         roll-src-third_party-ffmpeg.patch
-        remove-no-opaque-pointers-flag.patch
         enable-GlobalMediaControlsCastStartStop.patch
-        x11-ozone-fix-X11-screensaver-suspension.patch
-        chromium-tflite-system-zlib.patch)
-sha256sums=('60f015e1559de4044cdfa3bdc1f8fde535927c8ab15b0959ccc9b6feec832f5b'
-            '8132f5506356533eb1296433206632811c8612df549a721c691111c7cbca92dc'
+        fix-TFLite-build-on-linux-with-system-zlib.patch
+        angle-wayland-include-protocol.patch)
+sha256sums=('dc71b2be9c30c2a7a250b3dbfb26f9b0d1aa2df7335b53ed44a203ff69947c42'
+            '9840ecc01cbc92205707161003702bfce8809c7ef41775e01de64fbe3f5d61b8'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            'ce702099849465927cf47f7bc3a4a27045d0e35e16b17481ebf35e14506bafa7'
+            'f0c437c02cab7a6efc958f82fbb4ea35d5440f73d65731bad7c0dcaecb932121'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
-            'ab46b2c26a4dfe86486fd7e31bfc7211c515994a61a8c0cbd742f9c9e3c91873'
             '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6'
-            '9956a843bc8a765c130080616ccd3ebc46ea95c3a2324c4b403bc293a8705eb2'
-            '588c166bf748793758a7df438cfa665b32e09ca8fbd6380be28bc5984a33523c')
+            '5db1fae8a452774b5b177e493a2d1a435b980137b16ed74616d1fb86fe342ec7'
+            'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
 declare -gA _system_libs=(
+  [brotli]=brotli
+  [dav1d]=dav1d
   [ffmpeg]=ffmpeg
   [flac]=flac
   [fontconfig]=fontconfig
   [freetype]=freetype2
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
+  [jsoncpp]=jsoncpp
+  [libaom]=aom
+  [libavif]=libavif
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng
@@ -78,6 +81,7 @@ declare -gA _system_libs=(
   [opus]=opus
   [re2]=re2
   [snappy]=snappy
+  [woff2]=woff2
   [zlib]=minizip
 )
 _unwanted_bundled_libs=(
@@ -104,14 +108,8 @@ prepare() {
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
-  # Remove '-Xclang -no-opaque-pointers' flag not supported by our clang
-  patch -Np1 -i ../remove-no-opaque-pointers-flag.patch
-
-  # Fix build with unbundled zlip (patch from Gentoo)
-  patch -Np1 -i ../chromium-tflite-system-zlib.patch
-
   # Upstream fixes
-  patch -Np1 -i ../x11-ozone-fix-X11-screensaver-suspension.patch
+  patch -Np1 -i ../fix-TFLite-build-on-linux-with-system-zlib.patch
 
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
@@ -121,8 +119,14 @@ prepare() {
   # https://crbug.com/1325301
   patch -Rp1 -i ../roll-src-third_party-ffmpeg.patch
 
+  # https://crbug.com/angleproject/7582
+  patch -Np0 -i ../angle-wayland-include-protocol.patch
+
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-103-VirtualCursor-std-layout.patch
+  patch -Np1 -i ../patches/chromium-105-Bitmap-include.patch
+  patch -Np1 -i ../patches/chromium-105-browser_finder-include.patch
+  patch -Np1 -i ../patches/chromium-105-AdjustMaskLayerGeometry-ceilf.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
