@@ -243,6 +243,7 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
+                  path: packaging
             - name: Publish AUR package
               run: |
                   mkdir -p ~/.ssh/
@@ -252,15 +253,15 @@ jobs:
 
                   git clone ssh://aur@aur.archlinux.org/ungoogled-chromium-bin.git aur-upstream
 
-                  source PKGBUILD
+                  source packaging/PKGBUILD
 
-                  CHECKSUM=($(sha256sum ungoogled-chromium-$pkgver-$pkgrel-x86_64.pkg.tar.zst))
+                  CHECKSUM=($(sha256sum ungoogled-chromium-$pkgver-$pkgrel-x86_64.pkg.tar.zst | head -c 64))
 
-                  sed -i "s/--pkgver--/$pkgver/g" aur/PKGBUILD
-                  sed -i "s/--pkgrel--/$pkgrel/g" aur/PKGBUILD
-                  sed -i "s/--checksum--/$CHECKSUM/g" aur/PKGBUILD
+                  sed -i "s/--pkgver--/$pkgver/g" packaging/aur/PKGBUILD
+                  sed -i "s/--pkgrel--/$pkgrel/g" packaging/aur/PKGBUILD
+                  sed -i "s/--checksum--/$CHECKSUM/g" packaging/aur/PKGBUILD
 
-                  mv aur/PKGBUILD aur-upstream/PKGBUILD
+                  mv packaging/aur/PKGBUILD aur-upstream/PKGBUILD
 
                   cd aur-upstream
 
