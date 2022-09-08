@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=105.0.5195.102
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=1
 # ungoogled chromium variables
@@ -43,7 +43,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         roll-src-third_party-ffmpeg.patch
         enable-GlobalMediaControlsCastStartStop.patch
         fix-TFLite-build-on-linux-with-system-zlib.patch
-        angle-wayland-include-protocol.patch)
+        angle-wayland-include-protocol.patch
+        fix-debug-crash-and-log-spam-with-GTK3-Wayland.patch)
 sha256sums=('1cba0527c951e3c506ade96cf6ec2507ee9d43661764731ed896348182369262'
             '7f6b3397aee0b659c5964a6419f2cdf28e2b19e16700da4613f3aa9c7dde876d'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -55,7 +56,8 @@ sha256sums=('1cba0527c951e3c506ade96cf6ec2507ee9d43661764731ed896348182369262'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6'
             '5db1fae8a452774b5b177e493a2d1a435b980137b16ed74616d1fb86fe342ec7'
-            'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572')
+            'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572'
+            'a9a30d16ad6b0689c2c4a85a3c508f49254fc8e69e791a45302673812461eb58')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -110,6 +112,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../fix-TFLite-build-on-linux-with-system-zlib.patch
+  patch -Np1 -i ../fix-debug-crash-and-log-spam-with-GTK3-Wayland.patch
 
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
