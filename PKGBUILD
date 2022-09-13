@@ -59,7 +59,7 @@ sha256sums=('1cba0527c951e3c506ade96cf6ec2507ee9d43661764731ed896348182369262'
             '5db1fae8a452774b5b177e493a2d1a435b980137b16ed74616d1fb86fe342ec7'
             'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572'
             'a9a30d16ad6b0689c2c4a85a3c508f49254fc8e69e791a45302673812461eb58'
-            'dc9323223c8de0d70413725c3744f91835064feb890c415f846a995073fee20b')
+            '01ba9fd3f791960aa3e803de4a101084c674ce8bfbaf389953aacc6beedd66dc')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -144,7 +144,7 @@ prepare() {
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
   patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
-  # Enable HEVC decoding
+  # Remove HEVC profile limits
   patch -Np1 -i ../remove-main-main10-profile-limit.patch
 
   # Ungoogled Chromium changes
