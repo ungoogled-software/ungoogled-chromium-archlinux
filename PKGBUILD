@@ -45,7 +45,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         fix-TFLite-build-on-linux-with-system-zlib.patch
         angle-wayland-include-protocol.patch
         fix-debug-crash-and-log-spam-with-GTK3-Wayland.patch
-        remove-main-main10-profile-limit.patch)
+        remove-main-main10-profile-limit.patch
+        revert-mutter-wayland-regression.patch)
 sha256sums=('201b5c44668a415e3e05c0a806ab43a0904024340531332fc3ce39eb0cf10a66'
             '1b5ae7912099d9a2a9aed97f3978e9c09bedb603313cb18204e2d64ecbe25d1f'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -59,7 +60,8 @@ sha256sums=('201b5c44668a415e3e05c0a806ab43a0904024340531332fc3ce39eb0cf10a66'
             '5db1fae8a452774b5b177e493a2d1a435b980137b16ed74616d1fb86fe342ec7'
             'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572'
             'a9a30d16ad6b0689c2c4a85a3c508f49254fc8e69e791a45302673812461eb58'
-            '01ba9fd3f791960aa3e803de4a101084c674ce8bfbaf389953aacc6beedd66dc')
+            '01ba9fd3f791960aa3e803de4a101084c674ce8bfbaf389953aacc6beedd66dc'
+            '69522909a180a4dfcdde5ced5e43cd1c8055ca2d825da0c0ea9cad57030b3cfb')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -146,6 +148,9 @@ prepare() {
 
   # Remove HEVC profile limits
   patch -Np1 -i ../remove-main-main10-profile-limit.patch
+
+  # Revert wayland commit surface after configure with same size
+  patch -Np1 -i ../revert-mutter-wayland-regression.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
