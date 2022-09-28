@@ -154,7 +154,7 @@ LAUNCHER_VERSION="${_launcher_ver}"
 UNGOOGLED_CHROMIUM_ARCHLINUX_VERSION="${_ungoogled_archlinux_version}"
 UNGOOGLED_CHROMIUM_VERSION="${_ungoogled_version}"
 DEPENDS="${depends[*]}"
-MAKEDEPENDS="${makedepends[*]} jack2 jre-openjdk-headless curl mesa"
+MAKEDEPENDS="${makedepends[*]} jack2 jre-openjdk-headless curl mesa at-spi2-core"
 TYPE="$(get_type)"
 
 trap 'rm -rf "${TMP}"' EXIT INT
