@@ -16,6 +16,7 @@ Container images published by this repository will (since version `92.0.4515.131
 
 You can get pre-built binaries from the following sources:
 
+- [AUR ungoogled-chromium-bin](https://aur.archlinux.org/packages/ungoogled-chromium-bin)
 - [Contributor Binaries Source](//ungoogled-software.github.io/ungoogled-chromium-binaries/)
 - [OBS Production Project](//build.opensuse.org/package/show/home:ungoogled_chromium/ungoogled-chromium-arch)
 - [OBS Development Project](//build.opensuse.org/package/show/home:ungoogled_chromium:testing/ungoogled-chromium-arch)
