@@ -9,20 +9,20 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=106.0.5249.119
-pkgrel=3
+pkgver=107.0.5304.68
+pkgrel=1
 _launcher_ver=8
-_gcc_patchset=2
+_gcc_patchset=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=106.0.5249.119-1
+_uc_ver=107.0.5304.68-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
-         'desktop-file-utils' 'hicolor-icon-theme')
+         'wayland' 'desktop-file-utils' 'hicolor-icon-theme')
 makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
              'java-runtime-headless' 'git')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
@@ -41,25 +41,25 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         angle-wayland-include-protocol.patch
-        remove-main-main10-profile-limit.patch
         REVERT-enable-GlobalMediaControlsCastStartStop.patch
         REVERT-roll-src-third_party-ffmpeg-m102.patch
         REVERT-roll-src-third_party-ffmpeg-m106.patch
-        unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch)
-sha256sums=('0f091b4950e120d5c3e23ab391bacfdb6ce8eb8d0acab55e9dae1a8c247dd192'
-            '033ee30553302d606ae4449792dbbe2af5e0fd34bccb73f029b6e9882676ea2b'
+        unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
+        chromium-system-zlib.patch)
+sha256sums=('aac4f19b2e12e3ec3fd8179de26b306a4e209ec2a39b24e9e04fcce057cdb84c'
+            '5ef8c415a4c9828b85b71d27a55321870a5fee426ce44561c97160f74c2d7d94'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '2ad419439379d17385b7fd99039aca875ba36ca31b591b9cd4ccef84273be121'
+            '2b26c16f8326803ef287fb443a17bc139a440673955c5a6a38e9368bcaeed7c4'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572'
-            '01ba9fd3f791960aa3e803de4a101084c674ce8bfbaf389953aacc6beedd66dc'
             '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '4c12d31d020799d31355faa7d1fe2a5a807f7458e7f0c374adf55edb37032152'
-            'b908f37c5a886e855953f69e4dd6b90baa35e79f5c74673f7425f2cdb642eb00')
+            'b908f37c5a886e855953f69e4dd6b90baa35e79f5c74673f7425f2cdb642eb00'
+            '59b5eb171ea5e7b8c65ee405fd2cba08215f25b42d1cc2c5f685b9150e4e2bae')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -115,6 +115,9 @@ prepare() {
   # Upstream fixes
   patch -Np1 -i ../unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
 
+  # Fix build with unbundled zlip (patch from Gentoo)
+  patch -Np1 -i ../chromium-system-zlib.patch
+
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
   patch -Rp1 -F3 -i ../REVERT-enable-GlobalMediaControlsCastStartStop.patch
@@ -130,7 +133,6 @@ prepare() {
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-103-VirtualCursor-std-layout.patch
-  patch -Np1 -i ../patches/chromium-106-AutofillPopupControllerImpl-namespace.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
@@ -142,9 +144,6 @@ prepare() {
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
   patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
-
-  # Remove HEVC profile limits
-  patch -Np1 -i ../remove-main-main10-profile-limit.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
@@ -192,6 +191,7 @@ build() {
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
+    'clang_base_path="/usr"'
     'is_official_build=true' # implies is_cfi=true on x86_64
     'symbol_level=0' # sufficient for backtraces on x86(_64)
     'chrome_pgo_phase=0' # needs newer clang to read the bundled PGO profile
@@ -201,8 +201,12 @@ build() {
     'proprietary_codecs=true'
     'rtc_use_pipewire=true'
     'link_pulseaudio=true'
+    'use_custom_libcxx=false'
     'use_gnome_keyring=false'
+    'use_qt=false'
     'use_sysroot=false'
+    'use_system_libwayland_server=true'
+    'use_system_wayland_scanner=true'
     'use_custom_libcxx=false'
     'enable_widevine=true'
     'use_vaapi=true'
