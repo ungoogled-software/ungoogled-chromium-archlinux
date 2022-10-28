@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=107.0.5304.68
+pkgver=107.0.5304.87
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=107.0.5304.68-1
+_uc_ver=107.0.5304.87-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -45,9 +45,9 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-roll-src-third_party-ffmpeg-m102.patch
         REVERT-roll-src-third_party-ffmpeg-m106.patch
         unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
-        chromium-system-zlib.patch)
-sha256sums=('aac4f19b2e12e3ec3fd8179de26b306a4e209ec2a39b24e9e04fcce057cdb84c'
-            '5ef8c415a4c9828b85b71d27a55321870a5fee426ce44561c97160f74c2d7d94'
+        re-fix-TFLite-build-error-on-linux-with-system-zlib.patch)
+sha256sums=('6c0e00c186e22a1be29177ea410ba40ff0bf65f3ded67a345eb5b17f76c93c59'
+            'de6f84f9a1c49fb316f4f4ce1c1fde8e0710a6a196f0bf11dd403b9a53f65c12'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '2b26c16f8326803ef287fb443a17bc139a440673955c5a6a38e9368bcaeed7c4'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -59,7 +59,7 @@ sha256sums=('aac4f19b2e12e3ec3fd8179de26b306a4e209ec2a39b24e9e04fcce057cdb84c'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '4c12d31d020799d31355faa7d1fe2a5a807f7458e7f0c374adf55edb37032152'
             'b908f37c5a886e855953f69e4dd6b90baa35e79f5c74673f7425f2cdb642eb00'
-            '59b5eb171ea5e7b8c65ee405fd2cba08215f25b42d1cc2c5f685b9150e4e2bae')
+            '9015b9d6d5b4c1e7248d6477a4b4b6bd6a3ebdc57225d2d8efcd79fc61790716')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -114,9 +114,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
-
-  # Fix build with unbundled zlip (patch from Gentoo)
-  patch -Np1 -i ../chromium-system-zlib.patch
+  patch -Np1 -i ../re-fix-TFLite-build-error-on-linux-with-system-zlib.patch
 
   # Revert kGlobalMediaControlsCastStartStop enabled by default
   # https://crbug.com/1314342
