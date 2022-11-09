@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=107.0.5304.87
+pkgver=107.0.5304.110
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=107.0.5304.87-1
+_uc_ver=107.0.5304.110-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -46,8 +46,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-roll-src-third_party-ffmpeg-m106.patch
         unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
         re-fix-TFLite-build-error-on-linux-with-system-zlib.patch)
-sha256sums=('6c0e00c186e22a1be29177ea410ba40ff0bf65f3ded67a345eb5b17f76c93c59'
-            'de6f84f9a1c49fb316f4f4ce1c1fde8e0710a6a196f0bf11dd403b9a53f65c12'
+sha256sums=('d33548074a62ee63b3b790fc7cfdf5a1935cc43f1b05306b89a89e489696fecc'
+            'c497b0f3256a3c0bb1e48dd14115040b97bd7319b9def1c6501f9155fc56fef6'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '2b26c16f8326803ef287fb443a17bc139a440673955c5a6a38e9368bcaeed7c4'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
