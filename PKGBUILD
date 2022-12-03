@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=107.0.5304.121
+pkgver=108.0.5359.71
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=1
+_gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=107.0.5304.121-1
+_uc_ver=352a8844b01a05a786ba76da599d106487f1533f
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -41,25 +41,23 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         angle-wayland-include-protocol.patch
-        REVERT-enable-GlobalMediaControlsCastStartStop.patch
         REVERT-roll-src-third_party-ffmpeg-m102.patch
         REVERT-roll-src-third_party-ffmpeg-m106.patch
-        unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
-        re-fix-TFLite-build-error-on-linux-with-system-zlib.patch)
-sha256sums=('12b0ab045715a18abaf0c833c98c1001a43da4aae9690bb571b369d61f74e08b'
-            '0c729f29fbfc655fca477862daa7b73b041fc3e3d594b01d07fc709657e79d52'
+        re-fix-TFLite-build-error-on-linux-with-system-zlib.patch
+        disable-GlobalMediaControlsCastStartStop.patch)
+sha256sums=('cb6ca080c492ede34df7bf9c4eca45576e6306865985465bd0319c96bb71ff5d'
+            '6baa0d87599a3eadc31a636e221bea32b126702b9b90d868fd655882b3d3ea4c'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '2b26c16f8326803ef287fb443a17bc139a440673955c5a6a38e9368bcaeed7c4'
+            '40ef8af65e78901bb8554eddbbb5ebc55c0b8e7927f6ca51b2a353d1c7c50652'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             'cd0d9d2a1d6a522d47c3c0891dabe4ad72eabbebc0fe5642b9e22efa3d5ee572'
-            '779fb13f2494209d3a7f1f23a823e59b9dded601866d3ab095937a1a04e19ac6'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '4c12d31d020799d31355faa7d1fe2a5a807f7458e7f0c374adf55edb37032152'
-            'b908f37c5a886e855953f69e4dd6b90baa35e79f5c74673f7425f2cdb642eb00'
-            '9015b9d6d5b4c1e7248d6477a4b4b6bd6a3ebdc57225d2d8efcd79fc61790716')
+            '9015b9d6d5b4c1e7248d6477a4b4b6bd6a3ebdc57225d2d8efcd79fc61790716'
+            '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -74,7 +72,7 @@ declare -gA _system_libs=(
   [icu]=icu
   [jsoncpp]=jsoncpp
   [libaom]=aom
-  #[libavif]=libavif # needs https://github.com/AOMediaCodec/libavif/commit/d22d4de94120
+  [libavif]=libavif
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng
@@ -113,18 +111,17 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../unbundle-jsoncpp-avoid-CFI-faults-with-is_cfi-true.patch
   patch -Np1 -i ../re-fix-TFLite-build-error-on-linux-with-system-zlib.patch
-
-  # Revert kGlobalMediaControlsCastStartStop enabled by default
-  # https://crbug.com/1314342
-  patch -Rp1 -F3 -i ../REVERT-enable-GlobalMediaControlsCastStartStop.patch
 
   # Revert ffmpeg roll requiring new channel layout API support
   # https://crbug.com/1325301
   patch -Rp1 -i ../REVERT-roll-src-third_party-ffmpeg-m102.patch
   # Revert switch from AVFrame::pkt_duration to AVFrame::duration
   patch -Rp1 -i ../REVERT-roll-src-third_party-ffmpeg-m106.patch
+
+  # Disable kGlobalMediaControlsCastStartStop by default
+  # https://crbug.com/1314342
+  patch -Np1 -i ../disable-GlobalMediaControlsCastStartStop.patch
 
   # https://crbug.com/angleproject/7582
   patch -Np0 -i ../angle-wayland-include-protocol.patch
@@ -203,7 +200,7 @@ build() {
     'use_gnome_keyring=false'
     'use_qt=false'
     'use_sysroot=false'
-    'use_system_libwayland_server=true'
+    'use_system_libwayland=true'
     'use_system_wayland_scanner=true'
     'use_custom_libcxx=false'
     'enable_widevine=true'
