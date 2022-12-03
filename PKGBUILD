@@ -10,12 +10,12 @@
 
 pkgname=ungoogled-chromium
 pkgver=108.0.5359.71
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=352a8844b01a05a786ba76da599d106487f1533f
+_uc_ver=108.0.5359.71-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -46,7 +46,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         re-fix-TFLite-build-error-on-linux-with-system-zlib.patch
         disable-GlobalMediaControlsCastStartStop.patch)
 sha256sums=('cb6ca080c492ede34df7bf9c4eca45576e6306865985465bd0319c96bb71ff5d'
-            '6baa0d87599a3eadc31a636e221bea32b126702b9b90d868fd655882b3d3ea4c'
+            'e50a612d4b0b68ee57bf2410c847fe20bfef0c7332fb706a3b5bee36682c5025'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '40ef8af65e78901bb8554eddbbb5ebc55c0b8e7927f6ca51b2a353d1c7c50652'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
