@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=108.0.5359.98
+pkgver=108.0.5359.124
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=108.0.5359.98-1
+_uc_ver=108.0.5359.124-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -24,9 +24,10 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
          'wayland' 'desktop-file-utils' 'hicolor-icon-theme')
 makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
-             'java-runtime-headless' 'git')
+             'qt5-base' 'java-runtime-headless' 'git')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
+            'qt5-base: enable Qt5 with --enable-features=AllowQt'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
@@ -47,8 +48,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         disable-GlobalMediaControlsCastStartStop.patch
         chromium-icu72.patch
         v8-enhance-Date-parser-to-take-Unicode-SPACE.patch)
-sha256sums=('60b6137971e3cb2947477f654491ed4f517ab88ea2807fa3b89fcce34b83561e'
-            '91afcb2ab483b226979b4114ba5ce2aa462658688c10cafd29f78c4be607357e'
+sha256sums=('d48dfac2a61b14a5d7d2f460b09b70ef3ab88e27b82e3173938cb54eaa612a75'
+            'ac71aa130e70bcb5b30fc5f899239851b4bff05938cf4fe6d3f8c2da04e85f70'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '40ef8af65e78901bb8554eddbbb5ebc55c0b8e7927f6ca51b2a353d1c7c50652'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -204,7 +205,6 @@ build() {
     'link_pulseaudio=true'
     'use_custom_libcxx=false'
     'use_gnome_keyring=false'
-    'use_qt=false'
     'use_sysroot=false'
     'use_system_libwayland=true'
     'use_system_wayland_scanner=true'
@@ -302,6 +302,7 @@ package() {
     chrome_100_percent.pak
     chrome_200_percent.pak
     chrome_crashpad_handler
+    libqt5_shim.so
     resources.pak
     v8_context_snapshot.bin
 
