@@ -31,13 +31,13 @@ echo '
 [home_ungoogled_chromium_Arch]
 SigLevel = Required TrustAll
 Server = https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/$arch' | sudo tee --append /etc/pacman.conf
-sudo pacman -Sy
+sudo pacman -Syu
 ```
 
 Use this command to install ungoogled-chromium:
 
 ```sh
-sudo pacman -Sy ungoogled-chromium
+sudo pacman -S ungoogled-chromium
 ```
 
 ### Unofficial Repositories
