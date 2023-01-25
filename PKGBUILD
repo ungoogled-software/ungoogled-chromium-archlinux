@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=109.0.5414.74
+pkgver=109.0.5414.119
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=109.0.5414.74-1
+_uc_ver=109.0.5414.119-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -32,7 +32,7 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
 conflicts=('chromium')
-options=('debug' '!lto') # Chromium adds its own flags for ThinLTO
+options=('!lto') # Chromium adds its own flags for ThinLTO
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
@@ -45,9 +45,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-roll-src-third_party-ffmpeg-m102.patch
         REVERT-roll-src-third_party-ffmpeg-m106.patch
         disable-GlobalMediaControlsCastStartStop.patch
-        v8-enhance-Date-parser-to-take-Unicode-SPACE.patch)
-sha256sums=('eded233c26ab631be325ad49cb306c338513b6a6528197d42653e66187548e5d'
-            '2e07a6833ca7531ee5f64c24e31069192256bad5abbe1091ca12802ba2ad3a75'
+        v8-enhance-Date-parser-to-take-Unicode-SPACE.patch
+        fix-the-way-to-handle-codecs-in-the-system-icu.patch)
+sha256sums=('cbcdef5ee71acb53790ded3adef86871812b46e9f208dce8ec3f8ab04958be2d'
+            'e10fe46f3f4b7058c278ab86c6795cc2b68459bcb7ced5efad3355ab5c2f5de1'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '1ca780a2ad5351f60671a828064392096c8da7b589086ee999f25c9e6e799a7b'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -58,7 +59,8 @@ sha256sums=('eded233c26ab631be325ad49cb306c338513b6a6528197d42653e66187548e5d'
             '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
             '4c12d31d020799d31355faa7d1fe2a5a807f7458e7f0c374adf55edb37032152'
             '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302'
-            'b83406a881d66627757d9cbc05e345cbb2bd395a48b6d4c970e5e1cb3f6ed454')
+            'b83406a881d66627757d9cbc05e345cbb2bd395a48b6d4c970e5e1cb3f6ed454'
+            'a5d5c532b0b059895bc13aaaa600d21770eab2afa726421b78cb597a78a3c7e3')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -70,7 +72,7 @@ declare -gA _system_libs=(
   [fontconfig]=fontconfig
   [freetype]=freetype2
   [harfbuzz-ng]=harfbuzz
-  #[icu]=icu # https://crbug.com/1382032
+  [icu]=icu
   [jsoncpp]=jsoncpp
   [libaom]=aom
   [libavif]=libavif
@@ -113,6 +115,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -d v8 <../v8-enhance-Date-parser-to-take-Unicode-SPACE.patch
+  patch -Np1 -i ../fix-the-way-to-handle-codecs-in-the-system-icu.patch
 
   # Revert ffmpeg roll requiring new channel layout API support
   # https://crbug.com/1325301
