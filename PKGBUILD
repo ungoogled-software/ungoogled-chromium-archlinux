@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=110.0.5481.77
+pkgver=110.0.5481.100
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=4
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=110.0.5481.77-1
+_uc_ver=110.0.5481.100-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -46,8 +46,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         disable-GlobalMediaControlsCastStartStop.patch
         fix-the-way-to-handle-codecs-in-the-system-icu.patch
         v8-move-the-Stack-object-from-ThreadLocalTop.patch)
-sha256sums=('e348ab2dc4311083e729d714a81e95dd9db108ff71437dde451c97ac939881ce'
-            '6620119d0b683b989da771885dd186185cc3b8e37e1b4cf143004f340446cbae'
+sha256sums=('6d870d690c1f2c41a288011b0149752681077f1459ebe7a4f9215dbfde21f633'
+            '994a7241ed09e98337832628f145ee21265d81c7c5ed2a5099dfb7e11b01ee18'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '8c7f93037cc236024cc8be815b2c2bd84f6dc9e32685299e31d4c6c42efde8b7'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
