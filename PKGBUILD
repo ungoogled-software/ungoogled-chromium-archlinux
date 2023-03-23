@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=111.0.5563.64
-pkgrel=2
+pkgver=111.0.5563.110
+pkgrel=1
 _launcher_ver=8
 _gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=111.0.5563.64-1
+_uc_ver=111.0.5563.110-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -41,20 +41,16 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
-        REVERT-roll-src-third_party-ffmpeg-m102.patch
-        REVERT-roll-src-third_party-ffmpeg-m106.patch
         disable-GlobalMediaControlsCastStartStop.patch
         sql-relax-constraints-on-VirtualCursor-layout.patch)
-sha256sums=('7d5ca0e2bdb22a97713e6bfce74c651006d71aa883056c8e2c2a148039fe4074'
-            '2ad44997d95ae66b36125bf62bf1308006ec62da26ba04f8b5480d7271675079'
+sha256sums=('49dd6c73b170a2dcf6edbb516cd9f77b550cc3d968f2097927c637015487a765'
+            '4593a09ba3222b82aeb95fd84b3346f86fab63b03cc8068501b336625b481d0e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'a016588340f1559198e4ce61c6e91c48cf863600f415cb5c46322de7e1f77909'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
-            '30df59a9e2d95dcb720357ec4a83d9be51e59cc5551365da4c0073e68ccdec44'
-            '4c12d31d020799d31355faa7d1fe2a5a807f7458e7f0c374adf55edb37032152'
             '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302'
             'e66be069d932fe18811e789c57b96249b7250257ff91a3d82d15e2a7283891b7')
 
@@ -111,12 +107,6 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../sql-relax-constraints-on-VirtualCursor-layout.patch
-
-  # Revert ffmpeg roll requiring new channel layout API support
-  # https://crbug.com/1325301
-  patch -Rp1 -i ../REVERT-roll-src-third_party-ffmpeg-m102.patch
-  # Revert switch from AVFrame::pkt_duration to AVFrame::duration
-  patch -Rp1 -i ../REVERT-roll-src-third_party-ffmpeg-m106.patch
 
   # Disable kGlobalMediaControlsCastStartStop by default
   # https://crbug.com/1314342
