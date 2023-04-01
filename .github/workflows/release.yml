@@ -68,10 +68,10 @@ jobs:
 
                   echo "::endgroup::"
 
-                  echo "::set-output name=chromium-version::$CHROMIUM_VERSION"
+                  echo "chromium-version=$CHROMIUM_VERSION" >> $GITHUB_OUTPUT
 
-                  echo "::set-output name=version-tag::$VERSION_TAG"
-                  echo "::set-output name=latest-tag::$LATEST_TAG"
+                  echo "version-tag=$VERSION_TAG" >> $GITHUB_OUTPUT
+                  echo "latest-tag=$LATEST_TAG" >> $GITHUB_OUTPUT
             - name: Push image
               run: |
                   docker push "${{ steps.build.outputs.version-tag }}"
