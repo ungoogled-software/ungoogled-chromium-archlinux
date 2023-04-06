@@ -9,13 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=111.0.5563.146
+pkgver=112.0.5615.49
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=111.0.5563.146-1
+_uc_ver=112.0.5615.49-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -36,19 +35,15 @@ options=('!lto') # Chromium adds its own flags for ThinLTO
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
-        https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
-        wayland-egl.patch
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         disable-GlobalMediaControlsCastStartStop.patch
         sql-relax-constraints-on-VirtualCursor-layout.patch)
-sha256sums=('1e701fa31b55fa0633c307af8537b4dbf67e02d8cad1080c57d845ed8c48b5fe'
-            'df09f3adeb27ac6c619522ea524be0450cfe5324599eb2d5462f1c63e661a2f8'
+sha256sums=('ddfd37373c1fa0f433a6ac11f0baa2b1f3fdfb9c7b5867e32a4300f2eb5aff41'
+            '9048669535558d2a6cd264539c6588d0218ba2b12950d3ed057ef3ec5fee1baa'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            'a016588340f1559198e4ce61c6e91c48cf863600f415cb5c46322de7e1f77909'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
-            '34d08ea93cb4762cb33c7cffe931358008af32265fc720f2762f0179c3973574'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302'
@@ -112,15 +107,10 @@ prepare() {
   # https://crbug.com/1314342
   patch -Np1 -i ../disable-GlobalMediaControlsCastStartStop.patch
 
-  # Fixes for building with libstdc++ instead of libc++
-
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
   ln -s /usr/bin/java third_party/jdk/current/bin/
-
-  # Wayland/EGL regression (crbug #1071528 #1071550)
-  patch -Np1 -i ../wayland-egl.patch
 
   # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
   patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
