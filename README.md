@@ -23,22 +23,14 @@ You can get pre-built binaries from the following sources:
 
 ### Open Build Service Repository
 
-Use these commands to add the OBS repository:
+We now defer to here:
+[OBS Setup Instructions](https://software.opensuse.org//download.html?project=home%3Aungoogled_chromium&package=ungoogled-chromium)
 
-```sh
-curl -s 'https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/x86_64/home_ungoogled_chromium_Arch.key' | sudo pacman-key -a -
-echo '
-[home_ungoogled_chromium_Arch]
-SigLevel = Required TrustAll
-Server = https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arch/$arch' | sudo tee --append /etc/pacman.conf
-sudo pacman -Syu
-```
-
-Use this command to install ungoogled-chromium:
-
-```sh
-sudo pacman -S ungoogled-chromium
-```
+Also note, if you have added the repository previously, you may eventually
+get errors about expired keys. This is due to how OBS generates repository
+keys and we have no known way to control it. At present the only known
+solution is to redo the steps for adding the repository key as OBS does
+regenerate it eventually with a new expiration date.
 
 ### Unofficial Repositories
 
