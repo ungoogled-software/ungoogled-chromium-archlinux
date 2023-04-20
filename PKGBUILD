@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=112.0.5615.121
+pkgver=112.0.5615.165
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=112.0.5615.121-1
+_uc_ver=112.0.5615.165-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -40,8 +40,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         ozone-add-va-api-support-to-wayland.patch
         disable-GlobalMediaControlsCastStartStop.patch
         sql-relax-constraints-on-VirtualCursor-layout.patch)
-sha256sums=('9c7227e11b85af2eb828f41c0f83ffa94e17128ed7a368ce4afec9c1357b7ae1'
-            '102f6c9525577e61d208a83775b4d855147f7103d9080f5cb1f8261fbebbe4c3'
+sha256sums=('168c62fea9f428f99fbf967f36a75ee5da160429e3a5b86bf02188c5fe7c79fd'
+            '3e28fa0a5988be4086993e483bd031ac6d2f3284ffbebdf1f7954c7ef2b86398'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
