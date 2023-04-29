@@ -15,8 +15,8 @@ optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'qt5-base: enable Qt5 with --enable-features=AllowQt'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
             'kwallet: support for storing passwords in KWallet on Plasma')
-provides=("chromium=$pkgver")
-conflicts=('chromium')
+provides=("chromium=$pkgver" "chromedriver=$pkgver")
+conflicts=('chromium' 'chromedriver')
 source=(https://github.com/ungoogled-software/ungoogled-chromium-archlinux/releases/download/$pkgver-$pkgrel/ungoogled-chromium-$pkgver-$pkgrel-x86_64.pkg.tar.zst)
 sha256sums=('--checksum--')
 
