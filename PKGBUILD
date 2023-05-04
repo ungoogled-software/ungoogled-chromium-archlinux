@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=112.0.5615.165
+pkgver=113.0.5672.63
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=112.0.5615.165-1
+_uc_ver=113.0.5672.63-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -39,15 +39,61 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         disable-GlobalMediaControlsCastStartStop.patch
-        sql-relax-constraints-on-VirtualCursor-layout.patch)
-sha256sums=('168c62fea9f428f99fbf967f36a75ee5da160429e3a5b86bf02188c5fe7c79fd'
-            '3e28fa0a5988be4086993e483bd031ac6d2f3284ffbebdf1f7954c7ef2b86398'
+        add-cstring-for-std-strlen-in-web_view_impl.cc.patch
+        download-bubble-typename.patch
+        webauthn-variant.patch
+        chromium-112-gcc-13-0001-openscreen.patch
+        chromium-112-gcc-13-0003-ruy.patch
+        chromium-112-gcc-13-0004-swiftshader.patch
+        chromium-112-gcc-13-0005-tensorflow-tflite.patch
+        chromium-112-gcc-13-0006-vulkanmemoryallocator.patch
+        chromium-112-gcc-13-0007-misc.patch
+        chromium-112-gcc-13-0008-dawn.patch
+        chromium-112-gcc-13-0009-base.patch
+        chromium-112-gcc-13-0010-components.patch
+        chromium-112-gcc-13-0011-s2cellid.patch
+        chromium-112-gcc-13-0014-maldoca.patch
+        chromium-112-gcc-13-0015-net.patch
+        chromium-112-gcc-13-0016-cc-targetproperty.patch
+        chromium-112-gcc-13-0017-gpu_feature_info.patch
+        chromium-112-gcc-13-0018-encounteredsurfacetracker.patch
+        chromium-112-gcc-13-0019-documentattachmentinfo.patch
+        chromium-112-gcc-13-0020-pdfium.patch
+        chromium-112-gcc-13-0021-gcc-copy-list-init-net-HostCache.patch
+        chromium-112-gcc-13-0022-gcc-ambiguous-ViewTransitionElementId-type.patch
+        chromium-112-gcc-13-0023-gcc-incomplete-type-v8-subtype.patch
+        chromium-113-gcc-13-vulkan-build-fixes.patch)
+sha256sums=('76cec11dc13abe6703305b0300e1fe24c8f547c1ff313f7be09db0e23d12ee1e'
+            'ad7a3169d95f182df748940349e2c25868a201949486257829fdb42c69a83a51'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302'
-            'e66be069d932fe18811e789c57b96249b7250257ff91a3d82d15e2a7283891b7')
+            '5f868cba9e4d387499711738adc6fd87ab9f1ef61f464016bc682660ae59206a'
+            'd464eed4be4e9bf6187b4c40a759c523b7befefa25ba34ad6401b2a07649ca2a'
+            '590fabbb26270947cb477378b53a9dcd17855739076b4af9983e1e54dfcab6d7'
+            'd0e037f134842db091f7f88afa5e999531850d92a5399a1663783853fc14d3fe'
+            '4c90e796fe2eaa5f07cfd01cf4527c0a42ed21c98777fe4bd7e7720f4c34efc9'
+            'dc3135570e6f625178e5390aa77f7b9b79533fd13d50ea21cccb18b3cafb546b'
+            'ef6b52377a7e7590d1fe7e4029eccafbd44c0531abe78b12c05e9c2a08be8eb9'
+            'fe1013d0b31669d722472b39aea86948f8c7b28c4096e6bf31175570dfc40464'
+            'e9eb4684da654c03e2ff5cda1069b6f5b344de333d6800730cec8f4d15000a08'
+            'dfae1b997efb6e6af1c9a8e986c82c16d19b6401c3d91a3dd67803f9ccb4fea2'
+            'bf39f1e3adc9126db89fd4215a2d6632fda03ab93606b526776ff999350e2488'
+            '351b8548712a8d5edc009165cfbe104bc65e214c7c79d22d97b6d8eb3d7d731f'
+            'fb52f89b7017da19f3be7daa6743786456f67ad9455a9c423736051d3f7a0058'
+            '7a68c0ea1e4e6edc823e330070c8182b50eaaab64d7630ffe1578658d188170a'
+            '59c6623042f2be866da818516caf0c26098b018bb749050ae15b471e6abf047a'
+            '7bf7676ec9fcbf288919a372b3623826d272ece536b3b5e4f6c6bf3643bfe67e'
+            '7cf5f81d45c31e4b8f73840ac360a3cb412ca72a33435d842af5446fd742cf80'
+            'e49f2b58b6ea45ea1eccd4699e772bef52c8f2171b5e8e3714490e20e7791c3e'
+            '15b0ad5feed40930861e6b463ee20f4d84029eec4c803a0d346aa91200c17bca'
+            '850b20191a9d894bdf99806f7838b8e231474561405b2cc2ee51d6fb0d099e43'
+            '804888df05e86517a0d894e716c20f438bb109c344e4be29f4d01dec754115a7'
+            '8381b911b69cef40a52285cf87949ab534f2485df8d3980be73c5aae5c693e32'
+            '42ca609763db35363bf756bf3fa4f119e84fe58d3dfe0fc32151afe89aabf85a'
+            'e7f84823c43f494eb481f0a83f5d13ab9ed8eb0f179dba1a4b715ba91d788390')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -61,7 +107,7 @@ declare -gA _system_libs=(
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
   [jsoncpp]=jsoncpp
-  [libaom]=aom
+  #[libaom]=aom # https://aomedia.googlesource.com/aom/+/706ee36dcc82
   #[libavif]=libavif # https://github.com/AOMediaCodec/libavif/commit/4d2776a3
   [libdrm]=
   [libjpeg]=libjpeg
@@ -74,7 +120,7 @@ declare -gA _system_libs=(
   [re2]=re2
   [snappy]=snappy
   [woff2]=woff2
-  [zlib]=minizip
+  #[zlib]=minizip # broken include from chrome/common/safe_browsing/zip_analyzer.h
 )
 _unwanted_bundled_libs=(
   $(printf "%s\n" ${!_system_libs[@]} | sed 's/^libjpeg$/&_turbo/')
@@ -101,11 +147,38 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../sql-relax-constraints-on-VirtualCursor-layout.patch
+  patch -Np1 -i ../add-cstring-for-std-strlen-in-web_view_impl.cc.patch
+
+  # Fixes for building with gcc-13
+  patch -Np1 -i ../chromium-112-gcc-13-0001-openscreen.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0003-ruy.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0004-swiftshader.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0005-tensorflow-tflite.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0006-vulkanmemoryallocator.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0007-misc.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0008-dawn.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0009-base.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0010-components.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0011-s2cellid.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0014-maldoca.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0015-net.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0016-cc-targetproperty.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0017-gpu_feature_info.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0018-encounteredsurfacetracker.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0019-documentattachmentinfo.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0020-pdfium.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0021-gcc-copy-list-init-net-HostCache.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0022-gcc-ambiguous-ViewTransitionElementId-type.patch
+  patch -Np1 -i ../chromium-112-gcc-13-0023-gcc-incomplete-type-v8-subtype.patch
+  patch -Np1 -i ../chromium-113-gcc-13-vulkan-build-fixes.patch
 
   # Disable kGlobalMediaControlsCastStartStop by default
   # https://crbug.com/1314342
   patch -Np1 -i ../disable-GlobalMediaControlsCastStartStop.patch
+
+  # Build fixes
+  patch -Np1 -i ../download-bubble-typename.patch
+  patch -Np1 -i ../webauthn-variant.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
@@ -227,7 +300,7 @@ build() {
   msg2 'Configuring Chromium'
   gn gen out/Release --args="${_flags[*]}"
   msg2 'Building Chromium'
-  ninja -C out/Release chrome chrome_sandbox chromedriver
+  ninja -j16 -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {
