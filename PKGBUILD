@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=113.0.5672.63
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
@@ -300,7 +300,7 @@ build() {
   msg2 'Configuring Chromium'
   gn gen out/Release --args="${_flags[*]}"
   msg2 'Building Chromium'
-  ninja -j16 -C out/Release chrome chrome_sandbox chromedriver
+  ninja -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {
