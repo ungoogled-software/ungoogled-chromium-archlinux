@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=113.0.5672.92
+pkgver=113.0.5672.126
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=113.0.5672.92-1
+_uc_ver=113.0.5672.126-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -59,8 +59,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         iwyu-add-stdint.h-for-various-integer-types-in-net.patch
         iwyu-add-cstdint-for-int-types-in-s2cellid.patch
         random-fixes-for-gcc13.patch)
-sha256sums=('a4520b53c824d75bcbc80bcf5da0c3d6f213038c8e31904b8a3bfbe415893ba5'
-            'b36ecce88a380b760c468592c1bb69be4b5dbae20b084ae0aba01236720b3690'
+sha256sums=('0def7cd594304d7675821d42a4207377af98e321a78a91ee5200aea55adc2d93'
+            '1025329c38041b3b8b200fe3405d4b873345e87cba6333e036b83ad2f0000d3e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
