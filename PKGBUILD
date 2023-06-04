@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=113.0.5672.126
+pkgver=114.0.5735.90
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=113.0.5672.126-1
+_uc_ver=114.0.5735.90-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -39,53 +39,23 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         ozone-add-va-api-support-to-wayland.patch
         disable-GlobalMediaControlsCastStartStop.patch
-        add-cstring-for-std-strlen-in-web_view_impl.cc.patch
         download-bubble-typename.patch
         webauthn-variant.patch
-        swiftshader-add-cstdint-for-uint64_t.patch
-        dawn-iwyu-add-cstdint-for-uint8_t.patch
-        iwyu-add-stdint.h-for-various-int-types-in-base.patch
-        iwyu-add-cstdint-for-uintptr_t-in-device.patch
-        iwyu-add-stdint.h-for-uint32_t-in-chrome_pdf.patch
-        iwyu-add-stdint.h-for-uint64_t-in-EncounteredSurface.patch
-        iwyu-add-stdint.h-for-integer-types-in-ui.patch
-        openscreen-iwyu-add-stdint.h.patch
-        pdfium-iwyu-add-stdint.h-for-uint32_t.patch
-        unbundle-do-not-use-ZipAnalyzer-traits-header.patch
-        iwyu-add-stdint.h-for-uint32_t-in-cc.patch
-        add-missing-includes-causing-build-errors.patch
-        iwyu-add-stdint.h-for-int-types-in-gpu_feature_info.patch
-        iwyu-add-stdint.h-for-various-int-types-in-comp.patch
-        iwyu-add-stdint.h-for-various-integer-types-in-net.patch
-        iwyu-add-cstdint-for-int-types-in-s2cellid.patch
-        random-fixes-for-gcc13.patch)
-sha256sums=('0def7cd594304d7675821d42a4207377af98e321a78a91ee5200aea55adc2d93'
-            '1025329c38041b3b8b200fe3405d4b873345e87cba6333e036b83ad2f0000d3e'
+        random-fixes-for-gcc13.patch
+        add-some-typename-s-that-are-required-in-C-17.patch
+        REVERT-disable-autoupgrading-debug-info.patch)
+sha256sums=('071a8620b6175923f91f0ce0e3a0b2b20bf350a7d1a0f5513c160df7c17526d8'
+            'a96154372365e63444b4a3ee069636b53f59b74513e6d1a4e217713eb059db67'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '7f3b1b22d6a271431c1f9fc92b6eb49c6d80b8b3f868bdee07a6a1a16630a302'
-            '5f868cba9e4d387499711738adc6fd87ab9f1ef61f464016bc682660ae59206a'
             'd464eed4be4e9bf6187b4c40a759c523b7befefa25ba34ad6401b2a07649ca2a'
             '590fabbb26270947cb477378b53a9dcd17855739076b4af9983e1e54dfcab6d7'
-            '208f2ebcef5c690207e6e798ffbf9e92214e9d35f415c2f6b93efebad831b7e2'
-            '94baaaa6fbec0af6ec2e967f0b7440b4261a927e853e212d84f0aeaf56ae53f0'
-            '0003e737072f4f1b22ff932221595e85dd9bf65720ccac36f840cccb8000e3e1'
-            'ffe499d63c9c1074cbc3995c188c89b748388dbb9dccf975ce28a434c723acf7'
-            '7af466e4b5985cc9f0b33df2f3cd2e458c7cbfd7190505d105aad4401c9d072b'
-            '727588a1b42f6cfe54acf4759a0c3ad3778590d5a5cefcdcb54b579ba16b09c8'
-            '0914be53b2205b34e4da96f5a94505ac2a01e3639ff433535a23be2d0d581fa7'
-            '8c9662bed23bfd66ae76d044541f316624386ca4b3baef57a47289feb3db58a9'
-            '890b6836cea4c31513166db720b210da20d20bcd97a713545268cceffd707af5'
-            'ffa23c6233b47e0b4d688e30a44a2550e1236bbd0dc57b996d33dc42266530af'
-            'f6a0e149ef5195883c56a875ae366ed92d9960652f2657bfb65b5408badafc65'
-            '3255477d02d49ef86d47c727b9369f46dc787319bb648bf267a68f37e2041e50'
-            '94995b4e37671dcd27968bd5a2ebcf50e67bd22659a4bb4a5d0a4f81ff54f471'
-            '88320e0f08cc7b53807961d0735e7c1bd455a6faf9d8a5d056b7ba7809e37355'
-            '5dfbfd073f78c887bbffca2b644116571cc9b1196867e44e8fc0cbb40afcf1bc'
-            'd97dc00f66fa5868584e4b6d5ef817911eab2dc8022a37c75a00d063f4dac483'
-            'ba4dd0a25a4fc3267ed19ccb39f28b28176ca3f97f53a4e9f5e9215280040ea0')
+            'ba4dd0a25a4fc3267ed19ccb39f28b28176ca3f97f53a4e9f5e9215280040ea0'
+            '621ed210d75d0e846192c1571bb30db988721224a41572c27769c0288d361c11'
+            '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -139,23 +109,10 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../add-cstring-for-std-strlen-in-web_view_impl.cc.patch
-  patch -Np1 -d third_party/swiftshader <../swiftshader-add-cstdint-for-uint64_t.patch
-  patch -Np1 -d third_party/dawn <../dawn-iwyu-add-cstdint-for-uint8_t.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-various-int-types-in-base.patch
-  patch -Np1 -i ../iwyu-add-cstdint-for-uintptr_t-in-device.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-uint32_t-in-chrome_pdf.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-uint64_t-in-EncounteredSurface.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-integer-types-in-ui.patch
-  patch -Np1 -d third_party/openscreen/src <../openscreen-iwyu-add-stdint.h.patch
-  patch -Np1 -d third_party/pdfium <../pdfium-iwyu-add-stdint.h-for-uint32_t.patch
-  patch -Np1 -i ../unbundle-do-not-use-ZipAnalyzer-traits-header.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-uint32_t-in-cc.patch
-  patch -Np1 -i ../add-missing-includes-causing-build-errors.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-int-types-in-gpu_feature_info.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-various-int-types-in-comp.patch
-  patch -Np1 -i ../iwyu-add-stdint.h-for-various-integer-types-in-net.patch
-  patch -Np1 -i ../iwyu-add-cstdint-for-int-types-in-s2cellid.patch
+  patch -Np1 -i ../add-some-typename-s-that-are-required-in-C-17.patch
+
+  # Revert addition of compiler flag that needs newer clang
+  patch -Rp1 -i ../REVERT-disable-autoupgrading-debug-info.patch
 
   # Disable kGlobalMediaControlsCastStartStop by default
   # https://crbug.com/1314342
