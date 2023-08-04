@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=115.0.5790.110
+pkgver=115.0.5790.170
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=115.0.5790.110-1
+_uc_ver=115.0.5790.170-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -42,8 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         ozone-add-va-api-support-to-wayland.patch
         REVERT-disable-autoupgrading-debug-info.patch
         random-build-fixes.patch)
-sha256sums=('e9d4bcae7bc812afc430188b48cdc86ab31c4a6d161c34a770b8d56d3121f771'
-            '39a8e3bb0cb4e3b40c0c657afa7baf4bef717b363b057a59cc379dcacc5ec142'
+sha256sums=('ff9862d2e748c56940ffc222c2e6b2066a19ea1de0bc3fd99ed81c0b231172c0'
+            'aa5aab1b7f8b72f43a2971a3147c552f2dd32bf4cfcff009e847b65785bff9ac'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '4f91bd10a8ae2aa7b040a8b27e01f38910ad33cbe179e39a1ae550c9c1523384'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
