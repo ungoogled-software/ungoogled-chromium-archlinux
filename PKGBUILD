@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=115.0.5790.170
+pkgver=116.0.5845.96
 pkgrel=1
 _launcher_ver=8
-_gcc_patchset=2
+_gcc_patchset=116-patchset-2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=115.0.5790.170-1
+_uc_ver=116.0.5845.96-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -36,26 +36,24 @@ options=('!lto') # Chromium adds its own flags for ThinLTO
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
         $pkgname-$_uc_ver.tar.gz::https://github.com/$_uc_usr/ungoogled-chromium/archive/$_uc_ver.tar.gz
         https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver/chromium-launcher-$_launcher_ver.tar.gz
-        https://github.com/stha09/chromium-patches/releases/download/chromium-${pkgver%%.*}-patchset-$_gcc_patchset/chromium-${pkgver%%.*}-patchset-$_gcc_patchset.tar.xz
+        https://github.com/stha09/chromium-patches/releases/download/chromium-$_gcc_patchset/chromium-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
         use-oauth2-client-switches-as-default.patch
-        ozone-add-va-api-support-to-wayland.patch
         REVERT-disable-autoupgrading-debug-info.patch
         random-build-fixes.patch)
-sha256sums=('ff9862d2e748c56940ffc222c2e6b2066a19ea1de0bc3fd99ed81c0b231172c0'
-            'aa5aab1b7f8b72f43a2971a3147c552f2dd32bf4cfcff009e847b65785bff9ac'
+sha256sums=('1ec1052a959abced9642b36482549bc2ebefa428ed136289d8e0c54b4ccd1c81'
+            '262ffd7551b76c7d527c95a1c3e11e0431ef8627ebcb1d5c2f0d60fb902b82d8'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '4f91bd10a8ae2aa7b040a8b27e01f38910ad33cbe179e39a1ae550c9c1523384'
+            '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            'af20fc58aef22dd0b1fb560a1fab68d0d27187ff18fad7eb1670feab9bc4a8d8'
             '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69'
-            'fd472e8c2a68b2d13ce6cab1db99818d7043e49cecf807bf0c5fc931f0c036a3')
+            'e938c6ee7087eed8f0de83ffb0ca89e328575808fafa4fe3950aeb1bc58b9411')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
 declare -gA _system_libs=(
-  [brotli]=brotli
+  #[brotli]=brotli
   [dav1d]=dav1d
   [ffmpeg]=ffmpeg
   [flac]=flac
@@ -112,21 +110,16 @@ prepare() {
   patch -Np1 -i ../random-build-fixes.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../patches/chromium-114-ruy-include.patch
-  patch -Np1 -i ../patches/chromium-114-tflite-include.patch
-  patch -Np1 -i ../patches/chromium-114-vk_mem_alloc-include.patch
-  patch -Np1 -i ../patches/chromium-115-skia-include.patch
   patch -Np1 -i ../patches/chromium-114-maldoca-include.patch
-  patch -Np1 -i ../patches/chromium-115-verify_name_match-include.patch
-
+  patch -Np1 -i ../patches/chromium-114-ruy-include.patch
+  patch -Np1 -i ../patches/chromium-114-vk_mem_alloc-include.patch
+  patch -Np1 -i ../patches/chromium-116-object_paint_properties_sparse-include.patch
+  patch -Np1 -i ../patches/chromium-116-profile_view_utils-include.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
   ln -s /usr/bin/java third_party/jdk/current/bin/
-
-  # VAAPI wayland support (https://github.com/ungoogled-software/ungoogled-chromium-archlinux/issues/161)
-  patch -Np1 -i ../ozone-add-va-api-support-to-wayland.patch
 
   # Ungoogled Chromium changes
   _ungoogled_repo="$srcdir/$pkgname-$_uc_ver"
@@ -185,7 +178,6 @@ build() {
     'rtc_use_pipewire=true'
     'link_pulseaudio=true'
     'use_custom_libcxx=false'
-    'use_gnome_keyring=false'
     'use_sysroot=false'
     'use_system_libffi=true'
     'use_custom_libcxx=false'
