@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=116.0.5845.187
+pkgver=117.0.5938.62
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=116-patchset-2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=116.0.5845.187-1
+_uc_ver=117.0.5938.62-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -39,14 +39,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://github.com/stha09/chromium-patches/releases/download/chromium-$_gcc_patchset/chromium-$_gcc_patchset.tar.xz
         chromium-drirc-disable-10bpc-color-configs.conf
         use-oauth2-client-switches-as-default.patch
-        REVERT-disable-autoupgrading-debug-info.patch)
-sha256sums=('512ab82a9dc5f2b7a0ce1e9156fc1005402c15f1d655475c5dcf8c8978f65494'
-            '40ab758e06d32bb65b3f046165b268cf204238fcb91be35a979f2c81f6ce2d88'
+        REVERT-disable-autoupgrading-debug-info.patch
+        add-memory-for-std-unique_ptr-in-third_party-ip.patch
+        material-color-utilities-cmath.patch)
+sha256sums=('8b8c697208ef9fe014de112c62ebd19268cd6cd9430838700afa985c715175d7'
+            '8b75098700e6adbbde0a959f4795c1a0711cadd8e688d5e2404f362112e0732d'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69')
+            '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69'
+            '7b9708f0dbfd697be7043d3cfe52da991185aa0ee29a3b8263506cd3ae4d41a9'
+            '55e6097d347be40cffebf3ce13ba84ea92d940f60865f1bd7c9af1ef2a2ef8e1')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -100,16 +104,18 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
+  patch -Np1 -i ../add-memory-for-std-unique_ptr-in-third_party-ip.patch
 
   # Revert addition of compiler flag that needs newer clang
   patch -Rp1 -i ../REVERT-disable-autoupgrading-debug-info.patch
+
+  # Build fixes
+  patch -Np0 -i ../material-color-utilities-cmath.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-114-maldoca-include.patch
   patch -Np1 -i ../patches/chromium-114-ruy-include.patch
   patch -Np1 -i ../patches/chromium-114-vk_mem_alloc-include.patch
-  patch -Np1 -i ../patches/chromium-116-object_paint_properties_sparse-include.patch
-  patch -Np1 -i ../patches/chromium-116-profile_view_utils-include.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
