@@ -7,21 +7,24 @@ on:
 jobs:
     build-container:
         runs-on: ubuntu-latest
-        container: archlinux
+        container:
+            image: archlinux
+            volumes:
+                - /:/host
         steps:
             - name: Checkout latest commit
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-            - name: Free space on runner
-              run: |
-                  sudo rm -rf /usr/share/dotnet
-                  sudo rm -rf /usr/local/lib/android
-                  sudo rm -rf /opt/ghc
-                  sudo rm -rf /opt/hostedtoolcache/CodeQL
-                  sudo docker image prune --all --force
             - name: Install dependencies
               run: pacman -Syu --needed --noconfirm docker base-devel
+            - name: Free space on runner
+              run: |
+                  sudo rm -rf /host/usr/share/dotnet
+                  sudo rm -rf /host/usr/local/lib/android
+                  sudo rm -rf /host/opt/ghc
+                  sudo rm -rf /host/opt/hostedtoolcache/CodeQL
+                  sudo docker image prune --all --force
             - name: Log into registry
               run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             - name: Build container
