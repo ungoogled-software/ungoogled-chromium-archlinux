@@ -13,6 +13,13 @@ jobs:
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
+            - name: Free space on runner
+              run: |
+                  sudo rm -rf /usr/share/dotnet
+                  sudo rm -rf /usr/local/lib/android
+                  sudo rm -rf /opt/ghc
+                  sudo rm -rf /opt/hostedtoolcache/CodeQL
+                  sudo docker image prune --all --force
             - name: Install dependencies
               run: pacman -Syu --needed --noconfirm docker base-devel
             - name: Log into registry
