@@ -48,6 +48,8 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
         await shell('sudo rm -rf /usr/share/dotnet');
         await shell('sudo rm -rf /usr/local/lib/android');
         await shell('sudo rm -rf /opt/ghc');
+        await shell('sudo rm -rf /opt/hostedtoolcache/CodeQL');
+        await shell('sudo docker image prune --all --force');
     });
 
     if (input.useRegistry) {
