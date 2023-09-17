@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=117.0.5938.62
+pkgver=117.0.5938.88
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=116-patchset-2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=117.0.5938.62-1
+_uc_ver=117.0.5938.88-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -41,16 +41,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         REVERT-disable-autoupgrading-debug-info.patch
         add-memory-for-std-unique_ptr-in-third_party-ip.patch
-        material-color-utilities-cmath.patch)
-sha256sums=('8b8c697208ef9fe014de112c62ebd19268cd6cd9430838700afa985c715175d7'
-            '8b75098700e6adbbde0a959f4795c1a0711cadd8e688d5e2404f362112e0732d'
+        material-color-utilities-cmath.patch
+        roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch)
+sha256sums=('4691d80039e4155d1a3c4676ee68a1e526ddad61a3cf59f65d596a1a2d56c906'
+            '0b55e77d0e507bd0901ef46ec1d6e065012c75c31e997e7db465b9fb471b82e9'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
             '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69'
             '7b9708f0dbfd697be7043d3cfe52da991185aa0ee29a3b8263506cd3ae4d41a9'
-            '55e6097d347be40cffebf3ce13ba84ea92d940f60865f1bd7c9af1ef2a2ef8e1')
+            '55e6097d347be40cffebf3ce13ba84ea92d940f60865f1bd7c9af1ef2a2ef8e1'
+            '30841fbe0785f8df584eeaa86584fe75f89da26e71df80cf536887557ddef0b6')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -64,8 +66,8 @@ declare -gA _system_libs=(
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
   [jsoncpp]=jsoncpp
-  #[libaom]=aom # https://aomedia.googlesource.com/aom/+/706ee36dcc82
-  #[libavif]=libavif # https://github.com/AOMediaCodec/libavif/commit/4d2776a3
+  #[libaom]=aom
+  [libavif]=libavif
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng
@@ -105,6 +107,7 @@ prepare() {
 
   # Upstream fixes
   patch -Np1 -i ../add-memory-for-std-unique_ptr-in-third_party-ip.patch
+  patch -Np1 -i ../roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch
 
   # Revert addition of compiler flag that needs newer clang
   patch -Rp1 -i ../REVERT-disable-autoupgrading-debug-info.patch
