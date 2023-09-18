@@ -44,7 +44,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         material-color-utilities-cmath.patch
         roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch)
 sha256sums=('4691d80039e4155d1a3c4676ee68a1e526ddad61a3cf59f65d596a1a2d56c906'
-            '0b55e77d0e507bd0901ef46ec1d6e065012c75c31e997e7db465b9fb471b82e9'
+            '97d67f4783702537355cdfcaad67024413102478ec5a431b2d51b454e8baea33'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
