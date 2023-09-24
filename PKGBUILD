@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=117.0.5938.88
+pkgver=117.0.5938.92
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=116-patchset-2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=117.0.5938.88-1
+_uc_ver=117.0.5938.92-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -42,9 +42,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-disable-autoupgrading-debug-info.patch
         add-memory-for-std-unique_ptr-in-third_party-ip.patch
         material-color-utilities-cmath.patch
-        roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch)
-sha256sums=('4691d80039e4155d1a3c4676ee68a1e526ddad61a3cf59f65d596a1a2d56c906'
-            '97d67f4783702537355cdfcaad67024413102478ec5a431b2d51b454e8baea33'
+        roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch
+        free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch)
+sha256sums=('65ca491927902557cafc384c879b567c3728b06fc8ea0c46c45e2f0ce543342c'
+            'e2def21268ba379e5cba3709239f9ce57b7aa4fc4e54709372529284793d49c2'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -52,7 +53,8 @@ sha256sums=('4691d80039e4155d1a3c4676ee68a1e526ddad61a3cf59f65d596a1a2d56c906'
             '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69'
             '7b9708f0dbfd697be7043d3cfe52da991185aa0ee29a3b8263506cd3ae4d41a9'
             '55e6097d347be40cffebf3ce13ba84ea92d940f60865f1bd7c9af1ef2a2ef8e1'
-            '30841fbe0785f8df584eeaa86584fe75f89da26e71df80cf536887557ddef0b6')
+            '30841fbe0785f8df584eeaa86584fe75f89da26e71df80cf536887557ddef0b6'
+            'ab1eb107ec1c915065dc59cf4832da27e17d60eb29038e2aec633daeb946cc6a')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -108,6 +110,7 @@ prepare() {
   # Upstream fixes
   patch -Np1 -i ../add-memory-for-std-unique_ptr-in-third_party-ip.patch
   patch -Np1 -i ../roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch
+  patch -Np1 -i ../free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch
 
   # Revert addition of compiler flag that needs newer clang
   patch -Rp1 -i ../REVERT-disable-autoupgrading-debug-info.patch
