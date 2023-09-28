@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=117.0.5938.92
+pkgver=117.0.5938.132
 pkgrel=1
 _launcher_ver=8
 _gcc_patchset=116-patchset-2
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=117.0.5938.92-1
+_uc_ver=117.0.5938.132-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -44,8 +44,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         material-color-utilities-cmath.patch
         roll-src-third_party-libavif-src-b33d9ebfc.676aded35.patch
         free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch)
-sha256sums=('65ca491927902557cafc384c879b567c3728b06fc8ea0c46c45e2f0ce543342c'
-            'e2def21268ba379e5cba3709239f9ce57b7aa4fc4e54709372529284793d49c2'
+sha256sums=('28f077123a51942839a9ec518a64930cbc192186e799ef8ccdef19c93ddbaead'
+            'f987bf804a78707b76676476dc07d61508e36acbb5bd99f07d6934c823109d91'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '25ad7c1a5e0b7332f80ed15ccf07d7e871d8ffb4af64df7c8fef325a527859b0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
