@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=118.0.5993.88
+pkgver=118.0.5993.117
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=118.0.5993.88-1
+_uc_ver=118.0.5993.117-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -40,8 +40,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         use-oauth2-client-switches-as-default.patch
         REVERT-disable-autoupgrading-debug-info.patch
         free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch)
-sha256sums=('f2c0748f815cc4b5c5007788836cee3f07c505b6e74e2e1cd8ab4808e0ac8e59'
-            'df94ef2aed0fe9ac442a142a22b2b4aef858bfcfbe3da25795849299ac8558f6'
+sha256sums=('7029d851e4a2e8d5a145a6f6ba76f18f5c3043f57b2c750b35d96e92f3453786'
+            '41afb5933668b67059d48613c136c4535ed7a5a3387361cd118aff38593ae4e3'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '0d1eb054965711a2d4ed6b4cb7f06cbda5b374a48e1b99c8c38ebf6375a781a9'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
