@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=118.0.5993.117
+pkgver=119.0.6045.105
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=118.0.5993.117-1
+_uc_ver=119.0.6045.105-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -27,6 +27,7 @@ makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
             'qt5-base: enable Qt5 with --enable-features=AllowQt'
+            'gtk4: for --gtk-version=4 (GTK4 IME might work better on Wayland)'
             'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
             'kwallet: support for storing passwords in KWallet on Plasma')
 provides=('chromium')
@@ -38,16 +39,14 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://gitlab.com/Matt.Jolly/chromium-patches/-/archive/${pkgver%%.*}/chromium-patches-${pkgver%%.*}.tar.bz2
         chromium-drirc-disable-10bpc-color-configs.conf
         use-oauth2-client-switches-as-default.patch
-        REVERT-disable-autoupgrading-debug-info.patch
-        free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch)
-sha256sums=('7029d851e4a2e8d5a145a6f6ba76f18f5c3043f57b2c750b35d96e92f3453786'
-            '41afb5933668b67059d48613c136c4535ed7a5a3387361cd118aff38593ae4e3'
+        REVERT-disable-autoupgrading-debug-info.patch)
+sha256sums=('73cb8c39e928f8c627d747d37a3b020f08913ef5508f893758d70bdbd545dbcf'
+            'e5d74a46cd79b79a3f2f8f8fadce8329ad50f4a4facd76365d28e0761173aa26'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
-            '0d1eb054965711a2d4ed6b4cb7f06cbda5b374a48e1b99c8c38ebf6375a781a9'
+            '09ecf142254525ddb9c2dbbb2c71775e68722412923a5a9bba5cc2e46af8d087'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69'
-            'ab1eb107ec1c915065dc59cf4832da27e17d60eb29038e2aec633daeb946cc6a')
+            '1b782b0f6d4f645e4e0daa8a4852d63f0c972aa0473319216ff04613a0592a69')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -62,7 +61,7 @@ declare -gA _system_libs=(
   [icu]=icu
   [jsoncpp]=jsoncpp
   #[libaom]=aom
-  [libavif]=libavif
+  #[libavif]=libavif  # needs https://github.com/AOMediaCodec/libavif/commit/5410b23f76
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng
@@ -101,19 +100,17 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
-  patch -Np1 -i ../free-the-X11-pixmap-in-the-NativePixmapEGLX11Bind.patch
 
   # Revert addition of compiler flag that needs newer clang
   patch -Rp1 -i ../REVERT-disable-autoupgrading-debug-info.patch
 
   # Fixes for building with libstdc++ instead of libc++
-  patch -Np1 -i ../chromium-patches-*/chromium-114-maldoca-include.patch
   patch -Np1 -i ../chromium-patches-*/chromium-114-ruy-include.patch
   patch -Np1 -i ../chromium-patches-*/chromium-114-vk_mem_alloc-include.patch
   patch -Np1 -i ../chromium-patches-*/chromium-117-material-color-include.patch
-  patch -Np1 -i ../chromium-patches-*/chromium-118-SensorReadingField-include.patch
-  patch -Np1 -i ../chromium-patches-*/chromium-118-LightweightDetector-include.patch
-  patch -Np1 -i ../chromium-patches-*/chromium-118-system-freetype.patch
+  patch -Np1 -i ../chromium-patches-*/chromium-119-FragmentDataIterator-std.patch
+  patch -Np1 -i ../chromium-patches-*/chromium-119-at-spi-variable-consumption.patch
+  patch -Np1 -i ../chromium-patches-*/chromium-119-clang16.patch
 
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin
