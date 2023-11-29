@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=119.0.6045.159
+pkgver=119.0.6045.199
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=119.0.6045.159-1
+_uc_ver=119.0.6045.199-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -40,8 +40,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-drirc-disable-10bpc-color-configs.conf
         use-oauth2-client-switches-as-default.patch
         REVERT-disable-autoupgrading-debug-info.patch)
-sha256sums=('d0d842712805ac81582dc0fecd4396fbf4380713df2fb50ceeb853dd38d1538f'
-            '165f2de59bc20691b096036e8ee5ff9e0e80818f656abb9733204bfdba690398'
+sha256sums=('b1ae62beb7907d99802b74821d5198bd54a7456df1116d317da653bde8ce6388'
+            'c9f8747c4e96d2d62b67909895606c546fa7986e184ce1d924a25ca1c11e69e8'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '09ecf142254525ddb9c2dbbb2c71775e68722412923a5a9bba5cc2e46af8d087'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
