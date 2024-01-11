@@ -9,12 +9,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=120.0.6099.199
+pkgver=120.0.6099.216
 pkgrel=1
 _launcher_ver=8
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=120.0.6099.199-1
+_uc_ver=120.0.6099.216-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -42,8 +42,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         libxml2-2.12.patch
         drop-flags-unsupported-by-clang16.patch
         icu-74.patch)
-sha256sums=('84009db5c898517f38f7b44b81b8a98e21fd28ca3f9aad9dda07516d8640574c'
-            '33cf5428b87e9046172a714ab119ddc750eb83f3ef72f3d6187d38671c02f91a'
+sha256sums=('7e7bea15bf56f3cc920bb015fed1a1b1368267299e132e795935c5cc604adfc0'
+            '131b6fec2bca4435b2542d46df716af79a62bf80fc00c48898de640dd852aa8e'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'ffee1082fbe3d0c9e79dacb8405d5a0e1aa94d6745089a30b093f647354894d2'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
