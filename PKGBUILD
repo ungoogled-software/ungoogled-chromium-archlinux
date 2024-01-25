@@ -48,7 +48,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-ozone-wayland-implement-text_input_manager-fixes.patch
         0001-vaapi-flag-ozone-wayland.patch)
 sha256sums=('a2f46c5266681126ea9e15c1c3067560d84f3e5d902e1ace934a3813c84e7152'
-            'b96fd3d5d64ffd5efa3bc52966adfd7fd1dd3e85ebf3517924054b577ac03750'
+            'de62d7c174b443bb31d0a20ac96be3dbd7ac355d6f0778886b90cb4da8a0c727'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'e9113c1ed2900b84b488e608774ce25212d3c60094abdae005d8a943df9b505e'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
