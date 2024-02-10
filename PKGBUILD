@@ -10,9 +10,9 @@
 
 pkgname=ungoogled-chromium
 pkgver=121.0.6167.160
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
-_system_clang=1
+: ${_system_clang:=1}
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
 _uc_ver=121.0.6167.160-1
@@ -257,6 +257,10 @@ build() {
     _flags+=(
       'rust_sysroot_absolute="/usr"'
       "rustc_version=\"$(rustc --version)\""
+    )
+  else
+    _flags+=(
+      'chrome_pgo_phase=2'
     )
   fi
 
