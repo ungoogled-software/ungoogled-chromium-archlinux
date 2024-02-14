@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=121.0.6167.160
+pkgver=121.0.6167.184
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=121.0.6167.160-1
+_uc_ver=121.0.6167.184-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -50,8 +50,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-simplify-blink-NativeValueTraitsBase.patch::https://github.com/chromium/chromium/commit/940af9f2c87b436559b97c53763aa9eaaf1254eb.patch
         chromium-121-constexpr.patch
         compiler-rt-16.patch)
-sha256sums=('4586673899383d30e9d95fa3a9c5f8160f32a9d5789e40be82abf3e4dd9cc3df'
-            'ac6b04003f23f3aabb08b478eb9b3eb7d79b518dc632f48d1f24dc38d5d3eba7'
+sha256sums=('9fd6b82e7077ac26ec264bfcfc8ac8e0c2a0240378f035c9c0f34ad467aef09d'
+            'feb1039d4d5c13fbeb53736e0f0bbfea09c7d71af81bcc7b52d0fb42fd86a4a1'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'e9113c1ed2900b84b488e608774ce25212d3c60094abdae005d8a943df9b505e'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
