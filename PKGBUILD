@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=122.0.6261.69
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
@@ -49,7 +49,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         REVERT-simplify-blink-NativeValueTraitsBase.patch::https://github.com/chromium/chromium/commit/940af9f2c87b436559b97c53763aa9eaaf1254eb.patch
         chromium-constexpr.patch
         compiler-rt-16.patch
-        REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch)
+        REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch
+        support-ICU-74-in-LazyTextBreakIterator.patch)
 sha256sums=('f5bf4085ad3173883b45ea72b483d07f50ec3aa0f7546ac3837a9d26d0b4f9c0'
             '6c2405ca58cae05ea1c8116495d7885a0f42f44ca3d70b2bd8f11c27abb23c52'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -65,7 +66,8 @@ sha256sums=('f5bf4085ad3173883b45ea72b483d07f50ec3aa0f7546ac3837a9d26d0b4f9c0'
             '318df8f8662071cebcdf953698408058e17f59f184500b7e12e01a04a4206b50'
             'a061f83e2b628927feb4dbc441eb54f8b8c3d81348e447cf3b90755d7cda5f54'
             '8a2649dcc6ff8d8f24ddbe40dc2a171824f681c6f33c39c4792b645b87c9dcab'
-            '00e06b889e4face0ef41293233ce55bd52064ab040f1fdd84aa19525f8ac3601')
+            '00e06b889e4face0ef41293233ce55bd52064ab040f1fdd84aa19525f8ac3601'
+            '8c256b2a9498a63706a6e7a55eadbeb8cc814be66a75e49aec3716c6be450c6c')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
