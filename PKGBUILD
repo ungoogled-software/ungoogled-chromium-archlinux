@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=122.0.6261.69
-pkgrel=2
+pkgver=122.0.6261.94
+pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=122.0.6261.69-1
+_uc_ver=122.0.6261.94-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -51,8 +51,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         compiler-rt-16.patch
         REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch
         support-ICU-74-in-LazyTextBreakIterator.patch)
-sha256sums=('f5bf4085ad3173883b45ea72b483d07f50ec3aa0f7546ac3837a9d26d0b4f9c0'
-            '6c2405ca58cae05ea1c8116495d7885a0f42f44ca3d70b2bd8f11c27abb23c52'
+sha256sums=('2d0294d9baf94c921e4e10af7841cc6c11e3880f120e83fd57409e87ce3cb1e7'
+            'cdabd04fef8f0fc17318e537c0f4545635c9b5e38e9c7d92bc6f705e1efb5101'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '1f6acf165578288dc84edc7d9dcfabf7d38f55153b63a37ee5afa929f0e2baad'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
