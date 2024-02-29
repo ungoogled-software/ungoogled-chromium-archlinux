@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=122.0.6261.94
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
@@ -46,7 +46,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-ozone-wayland-implement-text_input_manager_v3.patch
         0001-ozone-wayland-implement-text_input_manager-fixes.patch
         0001-vaapi-flag-ozone-wayland.patch
-        REVERT-simplify-blink-NativeValueTraitsBase.patch::https://github.com/chromium/chromium/commit/940af9f2c87b436559b97c53763aa9eaaf1254eb.patch
+        REVERT-simplify-blink-NativeValueTraitsBase.patch
         chromium-constexpr.patch
         compiler-rt-16.patch
         REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch
