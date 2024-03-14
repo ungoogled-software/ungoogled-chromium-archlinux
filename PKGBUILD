@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=122.0.6261.111
+pkgver=122.0.6261.128
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=122.0.6261.111-1
+_uc_ver=122.0.6261.128-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -40,34 +40,28 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         https://gitlab.com/Matt.Jolly/chromium-patches/-/archive/${pkgver%%.*}/chromium-patches-${pkgver%%.*}.tar.bz2
         chromium-drirc-disable-10bpc-color-configs.conf
         use-oauth2-client-switches-as-default.patch
-        drop-flags-unsupported-by-clang16.patch
         0001-adjust-buffer-format-order.patch
         0001-enable-linux-unstable-deb-target.patch
         0001-ozone-wayland-implement-text_input_manager_v3.patch
         0001-ozone-wayland-implement-text_input_manager-fixes.patch
         0001-vaapi-flag-ozone-wayland.patch
-        REVERT-simplify-blink-NativeValueTraitsBase.patch
-        chromium-constexpr.patch
-        compiler-rt-16.patch
-        REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch
-        support-ICU-74-in-LazyTextBreakIterator.patch)
-sha256sums=('0b3da2f0ca63625e84a1b36571f23591248b8fcb422ce683c09283dbfc35c309'
-            '927ee3d2518d7c4757ba367e98810b18a16b9468c71a4ab39f84b2282a743c23'
+        support-ICU-74-in-LazyTextBreakIterator.patch
+        drop-flag-unsupported-by-clang17.patch
+        compiler-rt-adjust-paths.patch)
+sha256sums=('51757e7ecf5bb1db4881562d021547be5f8065e4f22a6ba9bf6e9a3a0d32c2ea'
+            '6fdb43c3818bf9b54f0b132de170000af48d492a91310c7e9b0aef75b53bbc68'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '1f6acf165578288dc84edc7d9dcfabf7d38f55153b63a37ee5afa929f0e2baad'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e393174d7695d0bafed69e868c5fbfecf07aa6969f3b64596d0bae8b067e1711'
-            '53774fd7f807ad42f77d45cab9e5480cc2bcb0a5c5138110a434407521af9607'
             '8ba5c67b7eb6cacd2dbbc29e6766169f0fca3bbb07779b1a0a76c913f17d343f'
             '2a44756404e13c97d000cc0d859604d6848163998ea2f838b3b9bb2c840967e3'
             'd9974ddb50777be428fd0fa1e01ffe4b587065ba6adefea33678e1b3e25d1285'
             'a2da75d0c20529f2d635050e0662941c0820264ea9371eb900b9d90b5968fa6a'
             '9a5594293616e1390462af1f50276ee29fd6075ffab0e3f944f6346cb2eb8aec'
-            '318df8f8662071cebcdf953698408058e17f59f184500b7e12e01a04a4206b50'
-            'a061f83e2b628927feb4dbc441eb54f8b8c3d81348e447cf3b90755d7cda5f54'
-            '8a2649dcc6ff8d8f24ddbe40dc2a171824f681c6f33c39c4792b645b87c9dcab'
-            '00e06b889e4face0ef41293233ce55bd52064ab040f1fdd84aa19525f8ac3601'
-            '8c256b2a9498a63706a6e7a55eadbeb8cc814be66a75e49aec3716c6be450c6c')
+            '8c256b2a9498a63706a6e7a55eadbeb8cc814be66a75e49aec3716c6be450c6c'
+            '3bd35dab1ded5d9e1befa10d5c6c4555fe0a76d909fb724ac57d0bf10cb666c1'
+            'b3de01b7df227478687d7517f61a777450dca765756002c80c4915f271e2d961')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -123,20 +117,11 @@ prepare() {
   # Upstream fixes
   patch -Np1 -i ../support-ICU-74-in-LazyTextBreakIterator.patch
 
-  # Fix "error: defaulted definition of equality comparison operator cannot
-  # be declared constexpr because it invokes a non-constexpr comparison
-  # function" (patch for Chromium 121 from Fedora, later extended for 122)
-  patch -Np1 -i ../chromium-constexpr.patch
+  # Drop compiler flag that needs newer clang
+  patch -Np1 -i ../drop-flag-unsupported-by-clang17.patch
 
-  # Revert usage of C++20 features which likely need newer clang
-  patch -Rp1 -i ../REVERT-use-v8-Array-Iterate-for-converting-script-wrappables.patch
-  patch -Rp1 -i ../REVERT-simplify-blink-NativeValueTraitsBase.patch
-
-  # Drop compiler flags that need newer clang
-  patch -Np1 -i ../drop-flags-unsupported-by-clang16.patch
-
-  # Allow libclang_rt.builtins from compiler-rt 16 to be used
-  patch -Np1 -i ../compiler-rt-16.patch
+  # Allow libclang_rt.builtins from compiler-rt >= 16 to be used
+  patch -Np1 -i ../compiler-rt-adjust-paths.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../chromium-patches-*/chromium-114-ruy-include.patch
