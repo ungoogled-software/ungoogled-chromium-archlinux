@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=123.0.6312.58
+pkgver=123.0.6312.86
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=123.0.6312.58-1
+_uc_ver=123.0.6312.86-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -47,8 +47,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-vaapi-flag-ozone-wayland.patch
         drop-flag-unsupported-by-clang17.patch
         compiler-rt-adjust-paths.patch)
-sha256sums=('f8dae4a2ff7b00bb44fa136c2101638fea4f232e4819be3f73381ddc0d3bf718'
-            '6fdb43c3818bf9b54f0b132de170000af48d492a91310c7e9b0aef75b53bbc68'
+sha256sums=('f4a78c1955dac4354d57ab45e93051fcda50fc5fccd681457f8116630746dffe'
+            '04e0cdb3c965c027c5a0881d0140acad9a39d18a734cbd4d7044795d8a075664'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '488f02af92b148eaa91ad5015b3bf383dfc8618ebafe9c3c250cd4c7f4e27b19'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
