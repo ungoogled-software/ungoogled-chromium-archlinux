@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=124.0.6367.91
+pkgver=124.0.6367.118
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=124.0.6367.91-1
+_uc_ver=124.0.6367.118-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -46,9 +46,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-vaapi-flag-ozone-wayland.patch
         drop-flag-unsupported-by-clang17.patch
         compiler-rt-adjust-paths.patch
-        qt-6.7.patch)
-sha256sums=('376cdcdb46b23eca7f3e6cdb933f27e73968ffb537258d70be503850bbbf1787'
-            'ac0daa8f47edd046d261c5151f7c566cf4724ed8a021a9f37e14214c78e49e99'
+        qt-6.7.patch
+        fix-a-missing-build-dependency.patch)
+sha256sums=('8aa5a14aad1234b48b568da9ef23d6e0b1b72d7f4ca5c4039462e54e6ad45d96'
+            'f56909f5071bac41c2c727ff217056925922125096d13a0cfcdce231adebe6f1'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'c2bc4e65ed2a4e23528dd10d5c15bf99f880b7bbb789cc720d451b78098a7e12'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -60,7 +61,8 @@ sha256sums=('376cdcdb46b23eca7f3e6cdb933f27e73968ffb537258d70be503850bbbf1787'
             '9a5594293616e1390462af1f50276ee29fd6075ffab0e3f944f6346cb2eb8aec'
             '3bd35dab1ded5d9e1befa10d5c6c4555fe0a76d909fb724ac57d0bf10cb666c1'
             'b3de01b7df227478687d7517f61a777450dca765756002c80c4915f271e2d961'
-            'e30623f36c54f4af3a8aa7d9400f7d2bed6ef560f15d665d2aa8fd777cb2565f')
+            'e30623f36c54f4af3a8aa7d9400f7d2bed6ef560f15d665d2aa8fd777cb2565f'
+            '75e1482d1b27c34ebe9d4bf27104fedcc219cdd95ce71fc41e77a486befd3f93')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -114,6 +116,7 @@ prepare() {
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
 
   # Upstream fixes
+  patch -Np1 -i ../fix-a-missing-build-dependency.patch
 
   # Drop compiler flag that needs newer clang
   patch -Np1 -i ../drop-flag-unsupported-by-clang17.patch
