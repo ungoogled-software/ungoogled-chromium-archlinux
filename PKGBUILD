@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=124.0.6367.118
+pkgver=124.0.6367.155
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=124.0.6367.118-1
+_uc_ver=124.0.6367.155-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -47,9 +47,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         drop-flag-unsupported-by-clang17.patch
         compiler-rt-adjust-paths.patch
         qt-6.7.patch
-        fix-a-missing-build-dependency.patch)
-sha256sums=('8aa5a14aad1234b48b568da9ef23d6e0b1b72d7f4ca5c4039462e54e6ad45d96'
-            'f56909f5071bac41c2c727ff217056925922125096d13a0cfcdce231adebe6f1'
+        fix-a-missing-build-dependency.patch
+        ninja-out-of-order-generation-fix.patch)
+sha256sums=('667d5b3522238b2458816b7e409540e47e9e70c8f2921f64342408fa2323bbc4'
+            '51b8c00c225e49ca2db0e842da87ae9a65cc5035fa3ecea2fa5f8ed389234d80'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'c2bc4e65ed2a4e23528dd10d5c15bf99f880b7bbb789cc720d451b78098a7e12'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
@@ -62,7 +63,8 @@ sha256sums=('8aa5a14aad1234b48b568da9ef23d6e0b1b72d7f4ca5c4039462e54e6ad45d96'
             '3bd35dab1ded5d9e1befa10d5c6c4555fe0a76d909fb724ac57d0bf10cb666c1'
             'b3de01b7df227478687d7517f61a777450dca765756002c80c4915f271e2d961'
             'e30623f36c54f4af3a8aa7d9400f7d2bed6ef560f15d665d2aa8fd777cb2565f'
-            '75e1482d1b27c34ebe9d4bf27104fedcc219cdd95ce71fc41e77a486befd3f93')
+            '75e1482d1b27c34ebe9d4bf27104fedcc219cdd95ce71fc41e77a486befd3f93'
+            '1a17064c2a2ba35fddca4f9a5f42a3eb386078a0ed8f9f38641543989b04c037')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -126,6 +128,9 @@ prepare() {
 
   # Fix build with Qt 6.7
   patch -Np1 -i ../qt-6.7.patch
+
+  # Fix ninja 1.12 generating files out of order
+  patch -Np1 -i ../ninja-out-of-order-generation-fix.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../chromium-patches-*/chromium-117-material-color-include.patch
