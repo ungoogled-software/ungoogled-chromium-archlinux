@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=125.0.6422.112
+pkgver=125.0.6422.141
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=125.0.6422.112-1
+_uc_ver=125.0.6422.141-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -48,8 +48,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         compiler-rt-adjust-paths.patch
         fix-a-missing-build-dependency.patch
         ninja-out-of-order-generation-fix.patch)
-sha256sums=('ba48d13e506ae68bd6d01a808cdc186ee09322daafeb0bddf95dae59b0b4276b'
-            'c6f135b6d233b71b5437dddc2977b72170b237f8e72a34a0de2a626be7d90c4e'
+sha256sums=('9966b50279d0cfaaf4b58570387f0d526388f8d5f6dd990e3f083a55d8d8e603'
+            'c7b8ed60dacb22dde8ee69ca82ab9e92e0fa2f9372b7edb441ef6d20dc356f39'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             '58c8787bd215c4818893405dbb88c17b08bf13039fb5fbcb9dfe95ac51a86f3e'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
