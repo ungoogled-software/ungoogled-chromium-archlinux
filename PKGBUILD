@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=126.0.6478.55
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
@@ -46,7 +46,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-vaapi-flag-ozone-wayland.patch
         drop-flag-unsupported-by-clang17.patch
         compiler-rt-adjust-paths.patch
-        ninja-out-of-order-generation-fix.patch
         allow-ANGLEImplementation-kVulkan.patch)
 sha256sums=('7ccef206f8c99e6a17b927b1b6d8018da808d75a0f46998282e0ca6cb80fe4c9'
             '2cbae205af05dd7bd6424b3e8be4a0664f9174ab3a4987c0e9ccbdcb638228ff'
@@ -61,7 +60,6 @@ sha256sums=('7ccef206f8c99e6a17b927b1b6d8018da808d75a0f46998282e0ca6cb80fe4c9'
             '9a5594293616e1390462af1f50276ee29fd6075ffab0e3f944f6346cb2eb8aec'
             '028acc97299cec5d1ed9f456bbdc462807fa491277d266db2aa1d405d3cd753d'
             'b3de01b7df227478687d7517f61a777450dca765756002c80c4915f271e2d961'
-            '813e6a1209ab72e4ab34f5f062412087e9664189d7b8f1dc1d0bb9481c574c45'
             '8f81059d79040ec598b5fb077808ec69d26d6c9cbebf9c4f4ea48b388a2596c5')
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -124,9 +122,6 @@ prepare() {
 
   # Allow libclang_rt.builtins from compiler-rt >= 16 to be used
   patch -Np1 -i ../compiler-rt-adjust-paths.patch
-
-  # Fix ninja 1.12 generating files out of order
-  patch -Np1 -i ../ninja-out-of-order-generation-fix.patch
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../chromium-patches-*/chromium-117-material-color-include.patch
