@@ -9,13 +9,13 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=126.0.6478.61
+pkgver=126.0.6478.114
 pkgrel=1
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=126.0.6478.61-1
+_uc_ver=126.0.6478.114-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -47,8 +47,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         drop-flag-unsupported-by-clang17.patch
         compiler-rt-adjust-paths.patch
         allow-ANGLEImplementation-kVulkan.patch)
-sha256sums=('4b4075b7885d212265053f1d87ca31496f21bbf6d2a3c5b0dbec153f6ed0f990'
-            'b0720c5c755451fc29b4c37b56a4e1c928bd63488c177bc26e1400bde8593da5'
+sha256sums=('cf4aad7fccc2a6c2339691c23f4c46ef2818e2474a9f83292b237eaa958015ed'
+            'ef62c96b0689f2df38636e84a3fffdb924fdcd51ad0b6ec611045ebf58d9f550'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'daf0df74d2601c35fd66a746942d9ca3fc521ede92312f85af51d94c399fd6e0'
             'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
