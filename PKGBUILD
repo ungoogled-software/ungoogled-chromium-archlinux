@@ -10,7 +10,7 @@
 
 pkgname=ungoogled-chromium
 pkgver=126.0.6478.126
-pkgrel=1
+pkgrel=2
 _launcher_ver=8
 _system_clang=1
 # ungoogled chromium variables
@@ -332,6 +332,7 @@ package() {
 
     # SwiftShader ICD
     libvk_swiftshader.so
+    libvulkan.so.1
     vk_swiftshader_icd.json
   )
 
