@@ -5,6 +5,49 @@ on:
             - '*'
 
 jobs:
+    push-to-aur:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout latest commit
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  path: packaging
+            - name: Publish AUR package
+              run: |
+                  mkdir -p ~/.ssh/
+                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_$SSH_KEY_ALGORITHM
+                  sudo chmod 600 ~/.ssh/id_$SSH_KEY_ALGORITHM
+                  echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+                  git clone ssh://aur@aur.archlinux.org/ungoogled-chromium.git aur-upstream
+
+                  source packaging/PKGBUILD
+
+                  rm -rf packaging/aur
+                  rm packaging/README.md
+
+                  mv packaging/* aur-upstream
+
+                  cd aur-upstream
+
+                  # To avoid conflicts with other steps in this job, makepkg for generating .SRCINFO is the only command running in an arch environment
+                  docker run --mount type=bind,source=$(pwd)/PKGBUILD,target=/home/build/PKGBUILD --entrypoint sh archlinux -c "pacman -Syu --needed --noconfirm binutils && useradd -m build && chown -R build /home/build && su build -c 'cd && makepkg --printsrcinfo > .SRCINFO'"
+                  docker cp $(docker container ls --latest --format '{{.ID}}'):/home/build/.SRCINFO .
+
+                  git config user.name "$GIT_NAME"
+                  git config user.email "$GIT_EMAIL"
+                  git add .
+                  git commit -m "Upgrade to $pkgver-$pkgrel"
+                  git push
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                  SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+                  SSH_KEY_ALGORITHM: ${{ secrets.SSH_KEY_ALGORITHM }}
+                  GIT_NAME: ${{ secrets.GIT_NAME }}
+                  GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+
     build-container:
         runs-on: ubuntu-latest
         container:
