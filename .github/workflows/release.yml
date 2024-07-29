@@ -100,8 +100,6 @@ jobs:
                       --strip-components=1 \
                       --one-top-level="$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
 
-                      https://commondatastorage.googleapis.com/chromium-browser-official/chromium-127.0.6533.72.tar.xz
-
                   tar \
                     --use-compress-program "zstd -T0" \
                     --sort name \
