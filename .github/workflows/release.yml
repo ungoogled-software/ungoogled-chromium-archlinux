@@ -81,6 +81,7 @@ jobs:
 
                   SOURCE_TARBALL_URL="$(su -c "makepkg --printsrcinfo" makepkg | grep commondatastorage.googleapis.com | awk '{ print $3 }')"
                   SOURCE_TARBALL_FILENAME="$(echo "$SOURCE_TARBALL_URL" | awk -F'/' '{ print $NF }')"
+                  SOURCE_TARBALL_INNER_DIRECTORY_NAME="$(echo "$SOURCE_TARBALL_FILENAME" | sed 's/.tar.xz//')"
                   SOURCE_TARBALL_CHECKSUM="$(su -c "makepkg --printsrcinfo" makepkg | grep sha256sums -m 1 | awk '{ print $3 }')"
 
                   # Taken from https://github.com/NixOS/nixpkgs/blob/7a14a916f856dc4acda391a9febc3bfb37f2a732/pkgs/applications/networking/browsers/chromium/recompress-tarball.nix#L31-L54
@@ -97,7 +98,9 @@ jobs:
                       --exclude=third_party/rust-toolchain \
                       --exclude=third_party/instrumented_libs \
                       --strip-components=1 \
-                      --one-top-level=source
+                      --one-top-level="$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
+
+                      https://commondatastorage.googleapis.com/chromium-browser-official/chromium-127.0.6533.72.tar.xz
 
                   tar \
                     --use-compress-program "zstd -T0" \
@@ -106,7 +109,7 @@ jobs:
                     --owner=root --group=root \
                     --numeric-owner --mode=go=rX,u+rw,a-s \
                     --remove-files \
-                    -cf "$SOURCE_TARBALL_FILENAME" source
+                    -cf "$SOURCE_TARBALL_FILENAME" "$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
 
                   RECOMPRESSED_TARBALL_CHECKSUM="$(sha256sum "$SOURCE_TARBALL_FILENAME" | awk '{ print $1 }')"
 
