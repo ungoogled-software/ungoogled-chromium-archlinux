@@ -79,9 +79,9 @@ jobs:
 
                   echo "::group::Generating source archive..."
 
-                  SOURCE_TARBALL_URL="$(makepkg --printsrcinfo | grep commondatastorage.googleapis.com | awk '{ print $3 }')"
+                  SOURCE_TARBALL_URL="$(su -c "makepkg --printsrcinfo" makepkg | grep commondatastorage.googleapis.com | awk '{ print $3 }')"
                   SOURCE_TARBALL_FILENAME="$(echo "$SOURCE_TARBALL_URL" | awk -F'/' '{ print $NF }')"
-                  SOURCE_TARBALL_CHECKSUM="$(makepkg --printsrcinfo | grep sha256sums -m 1 | awk '{ print $3 }')"
+                  SOURCE_TARBALL_CHECKSUM="$(su -c "makepkg --printsrcinfo" makepkg | grep sha256sums -m 1 | awk '{ print $3 }')"
 
                   # Taken from https://github.com/NixOS/nixpkgs/blob/7a14a916f856dc4acda391a9febc3bfb37f2a732/pkgs/applications/networking/browsers/chromium/recompress-tarball.nix#L31-L54
                   curl "$SOURCE_TARBALL_URL" \
