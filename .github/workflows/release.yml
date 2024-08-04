@@ -52,8 +52,6 @@ jobs:
 
     build:
         runs-on: self-hosted
-        container:
-            image: archlinux
         steps:
             - name: test
               run: |
