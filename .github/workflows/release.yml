@@ -318,7 +318,7 @@ jobs:
         needs: build-6
         steps:
             - name: Download package
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v4.1.7
               with:
                   name: "${{ join(needs.*.outputs.chromium-version) }}"
             - name: Format GitHub release body
