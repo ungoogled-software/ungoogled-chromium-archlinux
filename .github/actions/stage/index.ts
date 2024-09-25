@@ -1,5 +1,4 @@
-import * as artifactHost from '@actions/artifact';
-import { ArtifactClient, DownloadResponse, UploadResponse } from '@actions/artifact';
+import { DefaultArtifactClient, DownloadArtifactResponse, UploadArtifactResponse } from '@actions/artifact';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import { ExecOptions } from '@actions/exec';
@@ -28,7 +27,7 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
         core.setOutput('image-tag', input.imageTag);
     };
 
-    const artifact: ArtifactClient = artifactHost.create();
+    const artifact = new DefaultArtifactClient();
     const input = {
         finished: core.getInput('finished') === 'true',
         progressName: core.getInput('progress-name'),
@@ -59,8 +58,10 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
         await core.group<void>('Stage: Pulling image from registry...', () =>
             shell('docker', ['pull', input.imageTag]));
     } else {
-        await core.group<DownloadResponse>('Stage: Downloading image artifact...', () =>
-            artifact.downloadArtifact('image'));
+        const imageArtifact = (await artifact.getArtifact('image')).artifact;
+
+        await core.group<DownloadArtifactResponse>('Stage: Downloading image artifact...', () =>
+            artifact.downloadArtifact(imageArtifact.id));
 
         await core.group<void>('Stage: Loading image from file...', () =>
             shell('docker load --input image'));
@@ -73,8 +74,10 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
         shell('mkdir input output progress'));
 
     if (input.progressName !== '') {
-        await core.group<DownloadResponse>('Stage: Downloading progress artifact...', () =>
-            artifact.downloadArtifact(input.progressName));
+        const progressArtifact = (await artifact.getArtifact(input.progressName)).artifact;
+
+        await core.group<DownloadArtifactResponse>('Stage: Downloading progress artifact...', () =>
+            artifact.downloadArtifact(progressArtifact.id));
 
         await core.group<void>('Stage: Moving progress archive into input directory...', () =>
             shell('mv progress.tar.zst progress.tar.zst.sum input'));
@@ -90,11 +93,11 @@ const shell = async (commandLine: string, args?: Array<string>, options?: ExecOp
         input.finished = true;
     }
 
-    await core.group<UploadResponse>('Stage: Uploading progress...', () =>
+    await core.group<UploadArtifactResponse>('Stage: Uploading progress...', () =>
         artifact.uploadArtifact(github.context.job, readdirSync('progress').map(node => `progress/${node}`), 'progress'));
 
     if (input.finished)
-        await core.group<UploadResponse>('Stage: Uploading package...', () =>
+        await core.group<UploadArtifactResponse>('Stage: Uploading package...', () =>
             artifact.uploadArtifact(input.chromiumVersion, readdirSync('output').map(node => `output/${node}`), 'output'));
 
     output();
