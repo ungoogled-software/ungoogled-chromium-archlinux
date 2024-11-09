@@ -89,39 +89,43 @@ jobs:
 
                   echo "::group::Generating source archive..."
 
-                  SOURCE_TARBALL_URL="$(su -c "makepkg --printsrcinfo" makepkg | grep commondatastorage.googleapis.com | awk '{ print $3 }')"
-                  SOURCE_TARBALL_FILENAME="$(echo "$SOURCE_TARBALL_URL" | awk -F'/' '{ print $NF }')"
-                  SOURCE_TARBALL_INNER_DIRECTORY_NAME="$(echo "$SOURCE_TARBALL_FILENAME" | sed 's/.tar.xz//')"
-                  SOURCE_TARBALL_CHECKSUM="$(su -c "makepkg --printsrcinfo" makepkg | grep sha256sums -m 1 | awk '{ print $3 }')"
+                  source PKGBUILD
 
-                  # Taken from https://github.com/NixOS/nixpkgs/blob/7a14a916f856dc4acda391a9febc3bfb37f2a732/pkgs/applications/networking/browsers/chromium/recompress-tarball.nix#L31-L54
-                  curl "$SOURCE_TARBALL_URL" \
-                    | xz -d --threads=0 \
-                    | tar xf - \
-                      --warning=no-timestamp \
-                      --exclude=third_party/llvm \
-                      --exclude=third_party/rust-src \
-                      --exclude='build/linux/debian_*-sysroot' \
-                      --exclude='*.tar.[a-zA-Z0-9][a-zA-Z0-9]' \
-                      --exclude='*.tar.[a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]' \
-                      --exclude=third_party/llvm-build \
-                      --exclude=third_party/rust-toolchain \
-                      --exclude=third_party/instrumented_libs \
-                      --strip-components=1 \
-                      --one-top-level="$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
+                  if (( !_manual_clone )); then
+                    SOURCE_TARBALL_URL="$(su -c "makepkg --printsrcinfo" makepkg | grep commondatastorage.googleapis.com | awk '{ print $3 }')"
+                    SOURCE_TARBALL_FILENAME="$(echo "$SOURCE_TARBALL_URL" | awk -F'/' '{ print $NF }')"
+                    SOURCE_TARBALL_INNER_DIRECTORY_NAME="$(echo "$SOURCE_TARBALL_FILENAME" | sed 's/.tar.xz//')"
+                    SOURCE_TARBALL_CHECKSUM="$(su -c "makepkg --printsrcinfo" makepkg | grep sha256sums -m 1 | awk '{ print $3 }')"
 
-                  tar \
-                    --use-compress-program "zstd -T0" \
-                    --sort name \
-                    --mtime "1970-01-01" \
-                    --owner=root --group=root \
-                    --numeric-owner --mode=go=rX,u+rw,a-s \
-                    --remove-files \
-                    -cf "$SOURCE_TARBALL_FILENAME" "$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
+                    # Taken from https://github.com/NixOS/nixpkgs/blob/7a14a916f856dc4acda391a9febc3bfb37f2a732/pkgs/applications/networking/browsers/chromium/recompress-tarball.nix#L31-L54
+                    curl "$SOURCE_TARBALL_URL" \
+                      | xz -d --threads=0 \
+                      | tar xf - \
+                        --warning=no-timestamp \
+                        --exclude=third_party/llvm \
+                        --exclude=third_party/rust-src \
+                        --exclude='build/linux/debian_*-sysroot' \
+                        --exclude='*.tar.[a-zA-Z0-9][a-zA-Z0-9]' \
+                        --exclude='*.tar.[a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]' \
+                        --exclude=third_party/llvm-build \
+                        --exclude=third_party/rust-toolchain \
+                        --exclude=third_party/instrumented_libs \
+                        --strip-components=1 \
+                        --one-top-level="$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
 
-                  RECOMPRESSED_TARBALL_CHECKSUM="$(sha256sum "$SOURCE_TARBALL_FILENAME" | awk '{ print $1 }')"
+                    tar \
+                      --use-compress-program "zstd -T0" \
+                      --sort name \
+                      --mtime "1970-01-01" \
+                      --owner=root --group=root \
+                      --numeric-owner --mode=go=rX,u+rw,a-s \
+                      --remove-files \
+                      -cf "$SOURCE_TARBALL_FILENAME" "$SOURCE_TARBALL_INNER_DIRECTORY_NAME"
 
-                  sed -i "s/$SOURCE_TARBALL_CHECKSUM/$RECOMPRESSED_TARBALL_CHECKSUM/" PKGBUILD
+                    RECOMPRESSED_TARBALL_CHECKSUM="$(sha256sum "$SOURCE_TARBALL_FILENAME" | awk '{ print $1 }')"
+
+                    sed -i "s/$SOURCE_TARBALL_CHECKSUM/$RECOMPRESSED_TARBALL_CHECKSUM/" PKGBUILD
+                  fi
 
                   # Generate archive with all required sources for the build
                   # This either includes local or downloads files using an url
