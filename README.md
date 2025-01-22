@@ -8,7 +8,6 @@ While [extra/chromium builds are reproducible](https://reproducible.archlinux.or
 doesn't publish reproducible builds:
 
 - Due to [limitations of GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits) it's not possible to continuously run the build process on GitHub-hosted runners. This prevents being able to build in a reproducible way.
-- OBS [does not](https://github.com/openSUSE/obs-build/issues/753) build Arch Linux packages in a reproducible way.
 
 Container images published by this repository will (since version `92.0.4515.131-1`) always produce the same output, this however is not compatible by tools like [repro](https://github.com/archlinux/archlinux-repro)
 
@@ -17,20 +16,11 @@ Container images published by this repository will (since version `92.0.4515.131
 You can get pre-built binaries from the following sources:
 
 - [AUR ungoogled-chromium-bin](https://aur.archlinux.org/packages/ungoogled-chromium-bin)
-- [Contributor Binaries Source](//ungoogled-software.github.io/ungoogled-chromium-binaries/)
-- [OBS Production Project](//build.opensuse.org/package/show/home:ungoogled_chromium/ungoogled-chromium-arch)
-- [OBS Development Project](//build.opensuse.org/package/show/home:ungoogled_chromium:testing/ungoogled-chromium-arch)
 
 ### Open Build Service Repository
 
-We now defer to here:
-[OBS Setup Instructions](https://software.opensuse.org//download.html?project=home%3Aungoogled_chromium&package=ungoogled-chromium)
-
-Also note, if you have added the repository previously, you may eventually
-get errors about expired keys. This is due to how OBS generates repository
-keys and we have no known way to control it. At present the only known
-solution is to redo the steps for adding the repository key as OBS does
-regenerate it eventually with a new expiration date.
+Previously this project published releases in a Open Build Service Repository. This has since
+broken for various reasons, please switch to the AUR -bin package instead.
 
 ### Unofficial Repositories
 
