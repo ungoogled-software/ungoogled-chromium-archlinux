@@ -158,7 +158,7 @@ prepare() {
     mkdir -p third_party/node/linux/node-linux-x64/bin/
     ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
   fi
-  ln -s third_party/jdk/current/bin/
+  mkdir -p third_party/jdk/current/bin/
   ln -s /usr/bin/java third_party/jdk/current/bin/
 
   # Remove bundled libraries for which we will use the system copies; this
