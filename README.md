@@ -27,6 +27,7 @@ broken for various reasons, please switch to the AUR -bin package instead.
 - [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
 - [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
 - [cachy-repo](https://wiki.cachyos.org/en/home/Repo) - Maintained by ptr1337
+- [archlinuxcn](https://github.com/archlinuxcn/repo) - Maintained by Misaka13514
 
   All issues should go to their respective maintainers.
 
