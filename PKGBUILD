@@ -104,6 +104,7 @@ depends+=(${_system_libs[@]})
 
 prepare() {
   rustup toolchain install 1.91.0
+  rustup default 1.91.0
 
   if (( _manual_clone )); then
     ./fetch-chromium-release $pkgver
