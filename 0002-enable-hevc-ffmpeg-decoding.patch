@@ -1,0 +1,97 @@
+From 42badb98ed76fbb3f2c65da407f158590e792a93 Mon Sep 17 00:00:00 2001
+From: Sta Zhu <zhusidayoyo@hotmail.com>
+Subject: [PATCH] Video: Enable HEVC ffmpeg decoding
+
+This will consider all HEVC profile as to supported, let FFMpegVideoDecoder
+handle SW fallback and help you be able to play video's like HEVC Rext, SCC
+etc... as long as ffmpeg support it.
+---
+
+diff --git a/media/base/supported_types.cc b/media/base/supported_types.cc
+index 2ce29798709ef..10f5407d8dd6c 100644
+--- a/media/base/supported_types.cc
++++ b/media/base/supported_types.cc
+@@ -229,25 +229,12 @@ bool IsAudioCodecProprietary(AudioCodec codec) {
+ #endif  // !BUILDFLAG(USE_PROPRIETARY_CODECS)
+ 
+ bool IsDecoderHevcProfileSupported(const VideoType& type) {
+-  if (!IsDecoderColorSpaceSupported(type.color_space)) {
+-    return false;
+-  }
+-
+-#if BUILDFLAG(ENABLE_PLATFORM_HEVC)
+-#if BUILDFLAG(PLATFORM_HAS_OPTIONAL_HEVC_DECODE_SUPPORT)
+-#if BUILDFLAG(IS_CHROMEOS)
+-  if (!base::FeatureList::IsEnabled(kPlatformHEVCDecoderSupport)) {
+-    return false;
+-  }
+-#endif  // BUILDFLAG(IS_CHROMEOS)
+-  return GetSupplementalDecoderVideoProfileCache()->IsProfileSupported(
+-      type.profile);
+-#else
++#if BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
+   return true;
+-#endif  // BUIDFLAG(PLATFORM_HAS_OPTIONAL_HEVC_DECODE_SUPPORT)
+ #else
+-  return false;
+-#endif  // BUILDFLAG(ENABLE_PLATFORM_HEVC)
++  return GetSupplementalDecoderVideoProfileCache()->IsProfileSupported(
++      type.profile);
++#endif  // BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
+ }
+ 
+ bool IsDecoderVp9ProfileSupported(const VideoType& type) {
+@@ -586,7 +573,7 @@ bool IsEncoderOptionalVideoType(const media::VideoType& type) {
+ 
+ bool IsDecoderBuiltInVideoCodec(VideoCodec codec) {
+ #if BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS) && BUILDFLAG(USE_PROPRIETARY_CODECS)
+-  if (codec == VideoCodec::kH264) {
++  if (codec == VideoCodec::kH264 || codec == VideoCodec::kHEVC) {
+     return true;
+   }
+ #endif  // BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS) &&
+diff --git a/media/ffmpeg/ffmpeg_common.cc b/media/ffmpeg/ffmpeg_common.cc
+index cfd0552ee3108..29452291bde43 100644
+--- a/media/ffmpeg/ffmpeg_common.cc
++++ b/media/ffmpeg/ffmpeg_common.cc
+@@ -67,7 +67,7 @@ VideoColorSpace GetGuessedColorSpace(const VideoColorSpace& color_space) {
+ const char* GetAllowedVideoDecoders() {
+   // This should match the configured lists in //third_party/ffmpeg.
+ #if BUILDFLAG(USE_PROPRIETARY_CODECS) && BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
+-  return "h264";
++  return "h264,hevc";
+ #else
+   return "";
+ #endif
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index cc15e1edd8ebe..273d0969de054 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -82,7 +82,6 @@ static int GetFFmpegVideoDecoderThreadCount(const VideoDecoderConfig& config) {
+     case VideoCodec::kUnknown:
+     case VideoCodec::kVC1:
+     case VideoCodec::kMPEG2:
+-    case VideoCodec::kHEVC:
+     case VideoCodec::kVP9:
+     case VideoCodec::kAV1:
+     case VideoCodec::kDolbyVision:
+@@ -93,6 +92,7 @@ static int GetFFmpegVideoDecoderThreadCount(const VideoDecoderConfig& config) {
+       NOTREACHED();
+ 
+     case VideoCodec::kH264:
++    case VideoCodec::kHEVC:
+       // Normalize to three threads for 1080p content, then scale linearly
+       // with number of pixels.
+       // Examples:
+@@ -126,8 +126,9 @@ static void ReleaseVideoBufferImpl(void* opaque, uint8_t* data) {
+ 
+ // static
+ bool FFmpegVideoDecoder::IsCodecSupported(VideoCodec codec) {
+-  // We only build support for H.264.
+-  return codec == VideoCodec::kH264 && IsDecoderBuiltInVideoCodec(codec);
++  // We only build support for H.264 / H.265.
++  return (codec == VideoCodec::kH264 || codec == VideoCodec::kHEVC) &&
++         IsDecoderBuiltInVideoCodec(codec);
+ }
+ 
+ FFmpegVideoDecoder::FFmpegVideoDecoder(MediaLog* media_log)

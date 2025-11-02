@@ -50,7 +50,10 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         0001-vaapi-flag-ozone-wayland.patch
         chromium-138-nodejs-version-check.patch
         chromium-138-rust-1.86-mismatched_lifetime_syntaxes.patch
-        chromium-141-cssstylesheet-iwyu.patch)
+        chromium-141-cssstylesheet-iwyu.patch
+        0002-enable-hevc-ffmpeg-decoding.patch
+        0002-change-libavcodec-header.patch
+        0002-add-hevc-ffmpeg-decoder-parser.patch)
 sha256sums=('720a1196410080056cd97a1f5ec34d68ba216a281d9b5157b7ea81ea018ec661'
             '45892f816ab6c53e4e7f2f9d0afcb1e1c9ff4c324653d05a8d388fb83fc71458'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
@@ -64,7 +67,10 @@ sha256sums=('720a1196410080056cd97a1f5ec34d68ba216a281d9b5157b7ea81ea018ec661'
             '9a5594293616e1390462af1f50276ee29fd6075ffab0e3f944f6346cb2eb8aec'
             '11a96ffa21448ec4c63dd5c8d6795a1998d8e5cd5a689d91aea4d2bdd13fb06e'
             '5abc8611463b3097fc5ce58017ef918af8b70d616ad093b8b486d017d021bbdf'
-            'de5c873564b09713b65dd9e6a0b9049d7b3cf8f881436f36e1c091824b63e876')
+            'de5c873564b09713b65dd9e6a0b9049d7b3cf8f881436f36e1c091824b63e876'
+            '8f268724928629571ae1d46ea2ca7f225f0e365cf4c2e1fe42acb2f6eb987e36'
+            '78f9b7002cb5c57c1fc6240e7c55b9b650b6a2e8ec6e972108210fe27dc7915e'
+            '2aff1c6d6a70fe651d2f9f414089f53b91d13ec76244ed96f3f2a17183968624')
 
 if (( _manual_clone )); then
   source[0]=fetch-chromium-release
@@ -126,6 +132,12 @@ prepare() {
   # setting GOOGLE_DEFAULT_CLIENT_ID and GOOGLE_DEFAULT_CLIENT_SECRET at
   # runtime -- this allows signing into Chromium without baked-in values
   patch -Np1 -i ../use-oauth2-client-switches-as-default.patch
+
+	# Add support HEVC
+	# https://github.com/StaZhu/enable-chromium-hevc-hardware-decoding.git
+	patch -Np1 -i ../0002-add-hevc-ffmpeg-decoder-parser.patch
+	patch -Np1 -i ../0002-change-libavcodec-header.patch
+	patch -Np1 -i ../0002-enable-hevc-ffmpeg-decoding.patch
 
   # Upstream fixes
 
