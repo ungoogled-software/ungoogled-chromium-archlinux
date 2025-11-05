@@ -26,7 +26,7 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-liberation' 'systemd' 'dbus' 'libpulse' 'pciutils' 'libva'
          'libffi' 'desktop-file-utils' 'hicolor-icon-theme')
 makedepends=('python' 'gn' 'ninja' 'clang' 'lld' 'gperf' 'nodejs' 'pipewire'
-             'rustup' 'rust-bindgen' 'qt6-base' 'java-runtime-headless'
+             'rust' 'rust-bindgen' 'qt6-base' 'java-runtime-headless'
              'git' 'compiler-rt')
 optdepends=('pipewire: WebRTC desktop sharing under Wayland'
             'kdialog: support for native dialogs in Plasma'
@@ -103,9 +103,6 @@ _unwanted_bundled_libs=(
 depends+=(${_system_libs[@]})
 
 prepare() {
-  rustup toolchain install 1.91.0
-  rustup default 1.91.0
-
   if (( _manual_clone )); then
     ./fetch-chromium-release $pkgver
   fi
