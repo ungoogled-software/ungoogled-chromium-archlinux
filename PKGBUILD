@@ -10,14 +10,14 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=ungoogled-chromium
-pkgver=143.0.7499.192
+pkgver=144.0.7559.59
 pkgrel=1
 _launcher_ver=8
-_manual_clone=1
+_manual_clone=0
 _system_clang=1
 # ungoogled chromium variables
 _uc_usr=ungoogled-software
-_uc_ver=143.0.7499.192-1
+_uc_ver=144.0.7559.59-1
 pkgdesc="A lightweight approach to removing Google web service dependency"
 arch=('x86_64')
 url="https://github.com/ungoogled-software/ungoogled-chromium"
@@ -43,31 +43,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         compiler-rt-adjust-paths.patch
         increase-fortify-level.patch
         use-oauth2-client-switches-as-default.patch
-        0001-adjust-buffer-format-order.patch
-        0001-enable-linux-unstable-deb-target.patch
-        0001-ozone-wayland-implement-text_input_manager_v3.patch
-        0001-ozone-wayland-implement-text_input_manager-fixes.patch
-        0001-vaapi-flag-ozone-wayland.patch
-        chromium-138-nodejs-version-check.patch
-        chromium-138-rust-1.86-mismatched_lifetime_syntaxes.patch
-        chromium-141-cssstylesheet-iwyu.patch)
-sha256sums=('720a1196410080056cd97a1f5ec34d68ba216a281d9b5157b7ea81ea018ec661'
-            '8241c2cffa1e843f2dea8e9ffe8087b7283f4dd2b0e9191c328586be7c1a9727'
+        chromium-138-nodejs-version-check.patch)
+sha256sums=('8d6de5bbf447b9d0f3c99843230ffebe5954cbcb38d9f8c2ddbbeb5fbcfa9179'
+            '083adc19e6cb0e835f251e8dba06d3187fe56875e79358c738d872acb20cbfa3'
             '213e50f48b67feb4441078d50b0fd431df34323be15be97c55302d3fdac4483a'
             'ec8e49b7114e2fa2d359155c9ef722ff1ba5fe2c518fa48e30863d71d3b82863'
             'd634d2ce1fc63da7ac41f432b1e84c59b7cceabf19d510848a7cff40c8025342'
             'e6da901e4d0860058dc2f90c6bbcdc38a0cf4b0a69122000f62204f24fa7e374'
-            '8ba5c67b7eb6cacd2dbbc29e6766169f0fca3bbb07779b1a0a76c913f17d343f'
-            '2a44756404e13c97d000cc0d859604d6848163998ea2f838b3b9bb2c840967e3'
-            'd9974ddb50777be428fd0fa1e01ffe4b587065ba6adefea33678e1b3e25d1285'
-            'a2da75d0c20529f2d635050e0662941c0820264ea9371eb900b9d90b5968fa6a'
-            '9a5594293616e1390462af1f50276ee29fd6075ffab0e3f944f6346cb2eb8aec'
-            '11a96ffa21448ec4c63dd5c8d6795a1998d8e5cd5a689d91aea4d2bdd13fb06e'
-            '5abc8611463b3097fc5ce58017ef918af8b70d616ad093b8b486d017d021bbdf'
-            'de5c873564b09713b65dd9e6a0b9049d7b3cf8f881436f36e1c091824b63e876')
+            '11a96ffa21448ec4c63dd5c8d6795a1998d8e5cd5a689d91aea4d2bdd13fb06e')
 
 if (( _manual_clone )); then
   source[0]=fetch-chromium-release
+  sha256sums[0]='2e2f36e3cd1ebc4ad57fd310774a5e5e9db77883d5f9374fedeaabd3c103b819'
   makedepends+=('python-httplib2' 'python-pyparsing' 'python-six' 'npm' 'rsync')
 fi
 
@@ -128,10 +115,6 @@ prepare() {
 
   # Fixes from Gentoo
   patch -Np1 -i ../chromium-138-nodejs-version-check.patch
-  patch -Np1 -i ../chromium-141-cssstylesheet-iwyu.patch
-
-  # Fixes from NixOS
-  patch -Np1 -i ../chromium-138-rust-1.86-mismatched_lifetime_syntaxes.patch
 
   # Allow libclang_rt.builtins from compiler-rt >= 16 to be used
   patch -Np1 -i ../compiler-rt-adjust-paths.patch
@@ -148,6 +131,11 @@ prepare() {
 
     # To link to rust libraries we need to compile with prebuilt clang
     ./tools/clang/scripts/update.py
+  else
+    # To use correct libadler2 lib
+    # See also: https://github.com/ungoogled-software/ungoogled-chromium/pull/3598
+    sed -i 's/rustc_nightly_capability = use_chromium_rust_toolchain/rustc_nightly_capability = true/' \
+      build/config/rust.gni
   fi
 
   # Ungoogled Chromium changes
@@ -182,10 +170,12 @@ prepare() {
   ./build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
 
-  # Generate missing header
-  python3 build/util/lastchange.py -m DAWN_COMMIT_HASH \
-    -s third_party/dawn --revision gpu/webgpu/DAWN_VERSION \
-    --header gpu/webgpu/dawn_commit_hash.h
+  if (( _manual_clone )); then
+    # Generate missing header
+    python3 build/util/lastchange.py -m DAWN_COMMIT_HASH \
+      -s third_party/dawn --revision gpu/webgpu/DAWN_VERSION \
+      --header gpu/webgpu/dawn_commit_hash.h
+  fi
 }
 
 build() {
@@ -289,6 +279,15 @@ build() {
   # https://crbug.com/957519#c122
   CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS}
 
+  if [[ $CARCH == aarch64 ]] || [[ $CARCH == riscv64 ]]; then
+    # On aarch64 and riscv64, certain files (e.g. in libvpx and libyuv) needs to
+    # be compiled with additional arch features (e.g. dotprod, sve, sme, rvv)
+    # Having an arch setting in the C(XX)FLAGS overrides those
+    # and causes compilation failure
+    CFLAGS="${CFLAGS/-march=*([^ ]) }"
+    CXXFLAGS="${CXXFLAGS/-march=*([^ ]) }"
+  fi
+
   msg2 'Configuring Chromium'
   gn gen out/Release --args="${_flags[*]}"
   msg2 'Building Chromium'
@@ -315,6 +314,8 @@ package() {
     -e 's/@@MENUNAME@@/Chromium/g' \
     -e 's/@@PACKAGE@@/chromium/g' \
     -e 's/@@USR_BIN_SYMLINK_NAME@@/chromium/g' \
+    -e 's|@@URI_SCHEME@@|x-scheme-handler/chromium;|g' \
+    -e 's/@@EXTRA_DESKTOP_ENTRIES@@//g' \
     "$pkgdir/usr/share/applications/chromium.desktop" \
     "$pkgdir/usr/share/man/man1/chromium.1"
 
