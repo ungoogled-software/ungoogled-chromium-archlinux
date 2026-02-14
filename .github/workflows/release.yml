@@ -24,6 +24,8 @@ jobs:
 
                   git clone ssh://aur@aur.archlinux.org/ungoogled-chromium.git aur-upstream
 
+                  rm -r aur-upstream/*
+
                   source packaging/PKGBUILD
 
                   rm -rf packaging/aur
