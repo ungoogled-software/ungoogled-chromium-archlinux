@@ -29,5 +29,5 @@ outputs:
     image-tag:
         description: The tag of the container image to use (required if 'use-registry' is set)
 runs:
-    using: node12
+    using: node24
     main: index.js
