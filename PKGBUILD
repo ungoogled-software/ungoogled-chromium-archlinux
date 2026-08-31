@@ -252,6 +252,9 @@ prepare() {
   python "$_utils/domain_substitution.py" apply -r "$_ungoogled_repo/domain_regex.list" \
     -f "$_ungoogled_repo/domain_substitution.list" -c domainsubcache.tar.gz ./
 
+  msg2 "Embedding Russian Trusted Root CA"
+  python3 "${startdir}/scripts/embed_russian_ca.py" --source-root "${srcdir}/chromium-${pkgver}"
+
   # Link to system tools required by the build
   mkdir -p third_party/node/linux/node-linux-x64/bin \
            third_party/rust-toolchain/bin \
