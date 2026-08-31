@@ -22,6 +22,8 @@ RUN useradd --create-home build
 RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 COPY PKGBUILD /home/build
+RUN mkdir -p /home/build/scripts
+COPY scripts/embed_russian_ca.py /home/build/scripts/embed_russian_ca.py
 
 RUN sudo -u build bash -c "cd && makepkg --nobuild --noextract --syncdeps --noconfirm"
 
