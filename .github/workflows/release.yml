@@ -7,11 +7,8 @@ on:
 
 jobs:
     push-to-aur:
-        if: false # temporary disabled
+        if: false # temporarily disabled
         runs-on: ubuntu-latest
-	permissions:
-	    contents: read
-	    packages: write
         steps:
             - name: Checkout latest commit
               uses: actions/checkout@v2
@@ -19,6 +16,7 @@ jobs:
                   ref: ${{ github.event.pull_request.head.sha }}
                   path: packaging
             - name: Publish AUR package
+              if: false # temporarily disabled
               run: |
                   mkdir -p ~/.ssh/
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_$SSH_KEY_ALGORITHM
@@ -65,9 +63,9 @@ jobs:
     build-container:
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         runs-on: ubuntu-latest
-	permissions:
-	    contents: read
-	    packages: write
+        permissions:
+            contents: read
+            packages: write
         container:
             image: archlinux
             volumes:
@@ -339,6 +337,7 @@ jobs:
                   ref: ${{ github.event.pull_request.head.sha }}
                   path: packaging
             - name: Publish AUR package
+              if: false # temporarily disabled
               run: |
                   mkdir -p ~/.ssh/
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_$SSH_KEY_ALGORITHM
