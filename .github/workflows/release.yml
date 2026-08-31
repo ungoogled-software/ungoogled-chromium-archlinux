@@ -53,13 +53,6 @@ jobs:
                   GIT_NAME: ${{ secrets.GIT_NAME }}
                   GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
 
-    build:
-        runs-on: self-hosted
-        steps:
-            - name: test
-              run: |
-                  echo hi
-
     build-container:
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         runs-on: ubuntu-latest
@@ -337,7 +330,7 @@ jobs:
                   ref: ${{ github.event.pull_request.head.sha }}
                   path: packaging
             - name: Publish AUR package
-              if: false # temporarily disabled
+              if: false
               run: |
                   mkdir -p ~/.ssh/
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_$SSH_KEY_ALGORITHM
