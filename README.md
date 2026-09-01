@@ -1,103 +1,53 @@
-# ungoogled-chromium-archlinux
+# What is that?
 
-Arch Linux packaging for [ungoogled-chromium](//github.com/ungoogled-software/ungoogled-chromium).
+This repo produces and publishes Arch Linux binary builds of ungoogled-chromium-archlinux with support for Ministry of Digital Development and Communications' Certificate Authority.
 
-## A note on reproducibility
+Instead of blindly trusting any certificate issued by this CA, we trust them only for certain Russian web-sites (social networks, banks, government agencies and so on).
 
-While [extra/chromium builds are reproducible](https://reproducible.archlinux.org/api/v0/pkgs/list?name=chromium), this repository currently
-doesn't publish reproducible builds:
+If any other website will present a TLS certificate issued by this CA, it will not be trusted.
 
-- Due to [limitations of GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits) it's not possible to continuously run the build process on GitHub-hosted runners. This prevents being able to build in a reproducible way.
+Otherwise, this is fully tracking [upstream](//github.com/ungoogled-software/ungoogled-chromium-archlinux) packaging of ungoogled-chromium for Arch Linux. No other changes.
 
-Container images published by this repository will (since version `92.0.4515.131-1`) always produce the same output, this however is not compatible by tools like [repro](https://github.com/archlinux/archlinux-repro)
+# Why?
 
-## Binary Downloads
+Ministry of Digital Development and Communications' Certificate Authority is not trusted by overwhelming majority of software out there.
 
-You can get pre-built binaries from the following sources:
+Even so, many Russian websites including many banks already use certificates issued by this CA, leaving users with following options:
 
-- [AUR ungoogled-chromium-bin](https://aur.archlinux.org/packages/ungoogled-chromium-bin)
+1) Install state-issued CA system-wide and blindly trust it
+2) Install and use Yandex Browser or Atom - local forks of Chromium produced by Yandex and Mail.ru respectfully
+3) Ignore invalid certificate warnings and/or manually manage exceptions
 
-### Open Build Service Repository
+This repo provides fourth option: to use a regular Chromium (or rather, ungoogled-chromium) which trusts to client certificates issued by Russian CA, but only for a limited subset of websites specified in [this list](scripts/russian_trusted_domains.txt).
 
-Previously this project published releases in a Open Build Service Repository. This has since
-broken for various reasons, please switch to the AUR -bin package instead.
+By doing so, we lower the risk of MITM attack and avoid any additional tracking that may be present in other solutions.
 
-### Unofficial Repositories
+In turn, the amount of changes this forks applies is minimal and release flow is out in the open, so everyone can take a five and make sure themselves that these builds are not malicious.
 
-- [chaotic-aur](https://lonewolf.pedrohlc.com/chaotic-aur/) - Maintained by PedroHLC
-- [jk-aur](https://github.com/jstkdng/aur) - Maintained by JustKidding
-- [cachy-repo](https://wiki.cachyos.org/en/home/Repo) - Maintained by ptr1337
-- [archlinuxcn](https://github.com/archlinuxcn/repo) - Maintained by Misaka13514
+# How?
 
-  All issues should go to their respective maintainers.
+[embed_russian_ca.py](scripts/embed_russian_ca.py) modifies `chrome/browser/net/profile_network_context_service.cc` in build-time. The root then is added as an additional trust anchor. 
 
-## Building
+It is restricted by DNS name constraints to an allow-list of domains specified in [russian_trusted_domains.txt](scripts/russian_trusted_domains.txt). It does not become a general trust root, and it cannot vouch for arbitrary sites.
 
-### On your host (aur)
+This idea was borrowed from [Ruthenium](//github.com/rutheniumteam/ruthenium-android), but they do not provide desktop builds - hence this repo.
 
-In the AUR there are multiple ungoogled-chromium flavors:
+# Downloads?
 
-1. `ungoogled-chromium`: regular ungoogled-chromium
-2. `ungoogled-chromium-git`: ungoogled-chromium but using the master branch of upstream UC patches.
+Arch packages are available as [Releases](releases). Download it and install with:
 
-### On your host (manually)
+`sudo pacman -U package-file-name`
 
-For the latest full version, run the following commands:
+PKGBUILD auto-publishing is disabled for the moment.
 
-```sh
-# Install required dependencies. Make sure your user has access to sudo
-sudo pacman -S base-devel
+# Build on your host
 
-# Clone this repository
-git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
+Follow instructions from upstream, they work the same: 
 
-# Navigate into the repository
-cd ungoogled-chromium-archlinux
+https://github.com/ungoogled-software/ungoogled-chromium-archlinux
 
-# Check out the latest tag
-git checkout $(git describe --abbrev=0 --tags)
-
-# Start the build, this will download all necessary dependencies automatically
-makepkg -s
-```
-
-For the latest testing version, run these commands instead:
-
-```sh
-# Install required dependencies. Make sure your user has access to sudo
-sudo pacman -S base-devel
-
-# Clone this repository
-git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
-
-# Navigate into the repository
-cd ungoogled-chromium-archlinux
-
-# Start the build, this will download all necessary dependencies automatically
-makepkg -s
-```
-
-If the build succeeds, you can run `makepkg --install` or `pacman -U ungoogled-chromium-*.pkg.*`. Running the latter requires root permission.
-
-### In a container
-
-For the latest testing version, run these commands instead:
-
-```sh
-# Create a directory for the package output
-mkdir output
-
-# Start the build, the image already contains all nessesarry dependencies
-docker run --rm --mount type=bind,source=$(pwd)/output,target=/mnt/output ghcr.io/ungoogled-software/ungoogled-chromium-archlinux-testing:latest
-```
-
-Now you can install the package using `pacman -U output/ungoogled-chromium-*.pkg.*`, this requires root permission.
-
-### Hardware Requirements
-
-A 64-bit system is required, as Arch has dropped 32-bit support.
-8 GB of RAM is highly recommended (per the document in the Chromium source tree under `docs/linux_build_instructions.md`).
+Original README is [kept](README.ORIGINAL.md) in this repo as well.
 
 ## License
 
-See [LICENSE](LICENSE)
+Same as original, see [LICENSE](LICENSE)
