@@ -304,6 +304,8 @@ jobs:
     publish-release:
         runs-on: ubuntu-latest
         needs: build-7
+        permissions:
+          contents: write
         steps:
             - name: Download package
               uses: actions/download-artifact@v4.1.7
