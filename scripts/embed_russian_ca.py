@@ -11,7 +11,7 @@ from pathlib import Path
 EXPECTED_SHA256 = "d26d2d0231b7c39f92cc738512ba54103519e4405d68b5bd703e9788ca8ecf31"
 
 SOURCE_FILE = Path("chrome/browser/net/profile_network_context_service.cc")
-DOMAINS_FILE = Path("scripts/russian_trusted_domains.txt")
+DOMAINS_FILE = Path(__file__).resolve().parent / "russian_trusted_domains.txt"
 
 
 # === PASTE THE FULL ARRAY HERE (see generation command below) ===
