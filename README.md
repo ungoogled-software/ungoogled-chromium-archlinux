@@ -30,7 +30,7 @@ In turn, the amount of changes this forks applies is minimal and release flow is
 
 It is restricted by DNS name constraints to an allow-list of domains specified in [russian_trusted_domains.txt](scripts/russian_trusted_domains.txt). It does not become a general trust root, and it cannot vouch for arbitrary sites.
 
-This idea was borrowed from [Ruthenium](//github.com/rutheniumteam/ruthenium-android), with one small distinction: they trust Russian-CA-issued client certs for every second-level domain in .ru, .su and .рф (.xn--p1ai), which I believe is a bit too much, hence pre-defined domain list and this repo.
+All of this is basically an adaptation of changes introduced by [Ruthenium](//github.com/rutheniumteam/ruthenium-android) to the desktop Chromium build, with one small distinction: they trust Russian-CA-issued client certs for every second-level domain in .ru, .su and .рф (.xn--p1ai). I believe that this is a bit too much, hence pre-defined domain list and this repo.
 
 # Downloads?
 
