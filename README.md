@@ -46,7 +46,7 @@ For the latest full version, run the following commands:
 
 ```sh
 # Install required dependencies. Make sure your user has access to sudo
-sudo pacman -S base-devel
+sudo pacman -S git base-devel
 
 # Clone this repository
 git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
@@ -65,7 +65,7 @@ For the latest testing version, run these commands instead:
 
 ```sh
 # Install required dependencies. Make sure your user has access to sudo
-sudo pacman -S base-devel
+sudo pacman -S git base-devel
 
 # Clone this repository
 git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
