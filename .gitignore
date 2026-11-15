@@ -4,4 +4,5 @@
 pkg
 src
 *.tar.*
+crubit
 ungoogled-chromium-archlinux
