@@ -76,7 +76,9 @@ declare -gA _system_libs=(
     #[libvpx]=libvpx
     [libwebp]=libwebp
     [libxml]=libxml2
-    [libxslt]=libxslt
+    # https://gitlab.archlinux.org/archlinux/packaging/packages/libxslt/-/merge_requests/1
+    # unbundle again once the above MR is merged
+    #[libxslt]=libxslt
     [openh264]=openh264
     [opus]=opus
     #[re2]=re2          # needs libstdc++
