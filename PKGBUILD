@@ -32,7 +32,6 @@ depends=(
   'at-spi2-core'
   'cairo'
   'dbus'
-  'desktop-file-utils'
   'expat'
   'glib2'
   'glibc'
