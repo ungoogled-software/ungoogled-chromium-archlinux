@@ -72,7 +72,7 @@ jobs:
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
             - name: Install dependencies
-              run: pacman -Syu --needed --noconfirm docker base-devel
+              run: pacman -Syu --needed --noconfirm docker base-devel git
             - name: Free space on runner
               run: |
                   sudo rm -rf /host/usr/share/dotnet
