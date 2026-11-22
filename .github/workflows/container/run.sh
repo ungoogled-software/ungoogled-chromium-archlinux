@@ -2,7 +2,7 @@
 
 cd /home/build
 
-BUILD_ARGUMENTS=""
+BUILD_ARGUMENTS="--holdver"
 
 if [[ -d "/mnt/input" && -f "/mnt/input/progress.tar.zst.sum" && -f "/mnt/input/progress.tar.zst" ]]; then
     echo "==> Found input directory, extracting source files from there"
