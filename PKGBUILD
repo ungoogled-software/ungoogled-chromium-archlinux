@@ -446,7 +446,7 @@ build() {
   # https://crbug.com/957519#c122
   CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS}
 
-  (
+  [[ ! -f ../crubit/target/release/cc_bindings_from_rs ]] && (
     cd ../crubit
     _rustc_libs="$_rust_sysroot/lib/rustlib/$(rustc --print host-tuple)/lib"
     export CARGO_TARGET_DIR=target
